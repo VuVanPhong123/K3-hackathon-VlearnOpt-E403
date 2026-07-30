@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     openai_model: str = "gpt-5-mini"
     openai_timeout_seconds: float = 45
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-3.1-flash-lite"
+    gemini_model: str = "gemini-3.5-flash-lite"
     gemini_timeout_seconds: float = 45
     embedding_provider: str = "huggingface"
     embedding_model: str = "intfloat/multilingual-e5-small"
