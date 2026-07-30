@@ -103,6 +103,50 @@ describe("ChatPanel", () => {
     expect(screen.getAllByText("Câu trả lời từ Tutor.")).toHaveLength(1);
   });
 
+  it.each([
+    {
+      state: "cần làm rõ",
+      response: {
+        needs_clarification: true,
+        abstained: false,
+        trace: { decision: "clarify" },
+      },
+      status: "Cần thêm thông tin",
+      decision: "Quyết định: Yêu cầu làm rõ",
+    },
+    {
+      state: "từ chối suy đoán",
+      response: {
+        needs_clarification: false,
+        abstained: true,
+        trace: { decision: "abstain" },
+      },
+      status: "Chưa đủ bằng chứng",
+      decision: "Quyết định: Không suy đoán",
+    },
+  ])("lưu và hiển thị trạng thái $state từ phản hồi", async ({ response, status, decision }) => {
+    const user = userEvent.setup();
+    streamChatV2.mockImplementationOnce(async (payload, handlers) => {
+      handlers.onMeta?.({ conversation_id: "conversation-safe" });
+      handlers.onDone?.({
+        answer: "Phản hồi an toàn từ Tutor.",
+        conversation_id: "conversation-safe",
+        provider: "system",
+        model: "conditional-gate-v1",
+        fallback_used: false,
+        citations: [],
+        ...response,
+      });
+    });
+    render(<ChatPanel currentDocument={document} setContextAttachment={vi.fn()} />);
+
+    await user.type(screen.getByLabelText("Câu hỏi cho Tutor"), "Giải thích nội dung này.");
+    await user.click(screen.getByRole("button", { name: "Gửi câu hỏi" }));
+
+    expect(await screen.findByText(status)).toBeInTheDocument();
+    expect(screen.getByText(decision)).toBeInTheDocument();
+  });
+
   it("drop trang tạo attachment, trang mới thay trang cũ và remove hoạt động", () => {
     const setContextAttachment = vi.fn();
     const { container } = render(

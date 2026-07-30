@@ -10,6 +10,52 @@ from app.services.reranker_service import OptionalReranker
 from app.services.text_utils import snippet, tokenize
 
 
+RETRIEVAL_STOPWORDS = frozenset(
+    {
+        "a",
+        "an",
+        "and",
+        "are",
+        "for",
+        "how",
+        "in",
+        "is",
+        "of",
+        "on",
+        "the",
+        "to",
+        "what",
+        "bang",
+        "cac",
+        "cho",
+        "co",
+        "cua",
+        "do",
+        "duoc",
+        "đo",
+        "đuoc",
+        "gi",
+        "hay",
+        "khong",
+        "la",
+        "mo",
+        "mot",
+        "nao",
+        "nay",
+        "nhu",
+        "nhung",
+        "noi",
+        "ta",
+        "the",
+        "trong",
+        "tren",
+        "va",
+        "ve",
+    }
+)
+MIN_SEMANTIC_COSINE = 0.35
+
+
 @dataclass
 class RetrievalResult:
     chunk: dict
@@ -49,12 +95,21 @@ class RetrievalService:
         chunk_by_id = {chunk["chunk_id"]: chunk for chunk in chunks}
         candidate_ids = set(lexical_rank) | set(dense_rank)
         query_tokens = set(tokenize(query))
+        meaningful_query_tokens = query_tokens - RETRIEVAL_STOPWORDS
         fused: list[RetrievalResult] = []
         for chunk_id in candidate_ids:
             bm25_position = lexical_rank.get(chunk_id)
             dense_position = dense_rank.get(chunk_id)
             chunk_tokens = set(tokenize(chunk_by_id[chunk_id]["text"]))
-            lexical_overlap = len(query_tokens & chunk_tokens) / max(1, len(query_tokens))
+            meaningful_chunk_tokens = chunk_tokens - RETRIEVAL_STOPWORDS
+            meaningful_overlap = meaningful_query_tokens & meaningful_chunk_tokens
+            lexical_overlap = len(meaningful_overlap) / max(
+                1,
+                len(meaningful_query_tokens),
+            )
+            dense_score = dense_scores.get(chunk_id, 0.0)
+            if not meaningful_overlap and dense_score < MIN_SEMANTIC_COSINE:
+                continue
             score = 0.0
             if bm25_position:
                 score += 1.0 / (60 + bm25_position) + 0.01
@@ -74,7 +129,8 @@ class RetrievalService:
                         "chunk_id": chunk_id,
                         "bm25_rank": bm25_position,
                         "dense_rank": dense_position,
-                        "dense_score": dense_scores.get(chunk_id, 0.0),
+                        "dense_score": dense_score,
+                        "meaningful_overlap": sorted(meaningful_overlap),
                         "fused_score": normalized_score,
                     },
                 )

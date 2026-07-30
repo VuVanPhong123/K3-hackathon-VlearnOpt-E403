@@ -11,11 +11,22 @@
     "prompt_context_accuracy": 0.95,
     "history_limit_accuracy": 1.0,
     "utf8_response_accuracy": 1.0,
+<<<<<<< Updated upstream
+=======
+    "error_detail_accuracy": 1.0,
+    "decision_accuracy": 1.0,
+    "clarification_accuracy": 1.0,
+    "abstention_accuracy": 1.0,
+>>>>>>> Stashed changes
     "no_crash_rate": 1.0
   },
   "quality_bar_passed": true,
   "metrics": {
+<<<<<<< Updated upstream
     "cases": 43,
+=======
+    "cases": 46,
+>>>>>>> Stashed changes
     "categories": {
       "page_chat": 11,
       "visual_region": 3,
@@ -28,7 +39,12 @@
       "document_search": 4,
       "provider_fallback": 2,
       "provider_error": 2,
+<<<<<<< Updated upstream
       "localization": 1
+=======
+      "localization": 1,
+      "conditional_decision": 3
+>>>>>>> Stashed changes
     },
     "status_accuracy": 1.0,
     "mode_accuracy": 1.0,
@@ -40,6 +56,13 @@
     "prompt_context_accuracy": 1.0,
     "history_limit_accuracy": 1.0,
     "utf8_response_accuracy": 1.0,
+<<<<<<< Updated upstream
+=======
+    "error_detail_accuracy": 1.0,
+    "decision_accuracy": 1.0,
+    "clarification_accuracy": 1.0,
+    "abstention_accuracy": 1.0,
+>>>>>>> Stashed changes
     "no_crash_rate": 1.0,
     "overall_case_pass_rate": 1.0
   },
@@ -88,6 +111,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           4
         ],
@@ -134,6 +163,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -187,6 +222,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "VISUAL_REGION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           7
         ],
@@ -233,6 +274,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -280,6 +327,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           3
         ],
@@ -326,6 +379,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -382,6 +441,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "TEXT_SELECTION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           2
         ],
@@ -428,6 +493,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -484,6 +555,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "TEXT_SELECTION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           2
         ],
@@ -530,6 +607,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -577,6 +660,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           6
         ],
@@ -623,6 +712,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -670,6 +765,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           5
         ],
@@ -716,6 +817,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -758,6 +865,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           4
         ],
@@ -804,6 +917,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -847,6 +966,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           4
         ],
@@ -893,6 +1018,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -946,6 +1077,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "VISUAL_REGION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           7
         ],
@@ -992,6 +1129,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1025,6 +1168,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -1067,6 +1216,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1106,6 +1261,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -1148,6 +1309,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1181,6 +1348,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -1223,6 +1396,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1256,6 +1435,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -1298,6 +1483,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1335,6 +1526,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -1377,6 +1574,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1410,6 +1613,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "clarify",
+        "needs_clarification": true,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -1421,7 +1630,11 @@
           {
             "provider": "openai",
             "kind": "text",
+<<<<<<< Updated upstream
             "payload": "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nTìm phần nói về RAG.",
+=======
+            "payload": "Bạn là lớp làm rõ yêu cầu của VLearn Tutor. Không trả lời nội dung kiến thức mà người dùng đang hỏi. Hãy nói ngắn gọn rằng chưa có tài liệu PDF để tìm kiếm và yêu cầu người dùng mở hoặc tải lên tài liệu cần dùng. Chỉ trả lời bằng tiếng Việt.\nLý do cần làm rõ: missing_document\nYêu cầu ban đầu của người dùng: Tìm phần nói về RAG.\nHãy chỉ yêu cầu người dùng bổ sung ngữ cảnh còn thiếu.",
+>>>>>>> Stashed changes
             "history_count": 0,
             "image_attached": false
           }
@@ -1434,7 +1647,11 @@
           "openai"
         ],
         "provider_inputs": [
+<<<<<<< Updated upstream
           "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nTìm phần nói về RAG."
+=======
+          "Bạn là lớp làm rõ yêu cầu của VLearn Tutor. Không trả lời nội dung kiến thức mà người dùng đang hỏi. Hãy nói ngắn gọn rằng chưa có tài liệu PDF để tìm kiếm và yêu cầu người dùng mở hoặc tải lên tài liệu cần dùng. Chỉ trả lời bằng tiếng Việt.\nLý do cần làm rõ: missing_document\nYêu cầu ban đầu của người dùng: Tìm phần nói về RAG.\nHãy chỉ yêu cầu người dùng bổ sung ngữ cảnh còn thiếu."
+>>>>>>> Stashed changes
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -1452,6 +1669,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1503,6 +1726,7 @@
             },
             {
               "role": "user",
+<<<<<<< Updated upstream
               "content": "Câu hỏi số 5."
             },
             {
@@ -1519,6 +1743,8 @@
             },
             {
               "role": "user",
+=======
+>>>>>>> Stashed changes
               "content": "Câu hỏi mới nhất."
             },
             {
@@ -1534,7 +1760,11 @@
           "call_kind": "text",
           "provider": "openai",
           "fallback_used": false,
+<<<<<<< Updated upstream
           "max_history_count": 12,
+=======
+          "max_history_count": 8,
+>>>>>>> Stashed changes
           "prompt_must_contain": [
             "Câu hỏi mới nhất."
           ],
@@ -1547,6 +1777,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -1558,8 +1794,13 @@
           {
             "provider": "openai",
             "kind": "text",
+<<<<<<< Updated upstream
             "payload": "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi số 5.\nPhản hồi số 5.\nCâu hỏi số 6.\nPhản hồi số 6.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi.",
             "history_count": 12,
+=======
+            "payload": "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi.",
+            "history_count": 8,
+>>>>>>> Stashed changes
             "image_attached": false
           }
         ],
@@ -1571,9 +1812,15 @@
           "openai"
         ],
         "provider_inputs": [
+<<<<<<< Updated upstream
           "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi số 5.\nPhản hồi số 5.\nCâu hỏi số 6.\nPhản hồi số 6.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi."
         ],
         "max_history_count": 12,
+=======
+          "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi."
+        ],
+        "max_history_count": 8,
+>>>>>>> Stashed changes
         "all_images_attached": true,
         "no_crash": true
       },
@@ -1589,6 +1836,12 @@
         "history_limit": true,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1634,6 +1887,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           4
         ],
@@ -1680,6 +1939,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1721,6 +1986,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           5
         ],
@@ -1767,6 +2038,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1810,6 +2087,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           6
         ],
@@ -1856,6 +2139,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1899,6 +2188,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           2
         ],
@@ -1945,6 +2240,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -1974,6 +2275,12 @@
         "status_code": 400,
         "error": "Tài liệu chỉ có 9 trang; không có trang 99.",
         "mode": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": null,
@@ -2002,6 +2309,12 @@
         "history_limit": null,
         "utf8_response": null,
         "error_detail": true,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2036,6 +2349,12 @@
         "status_code": 400,
         "error": "Chat hiện chỉ hỗ trợ gắn một trang PDF.",
         "mode": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": null,
@@ -2064,6 +2383,12 @@
         "history_limit": null,
         "utf8_response": null,
         "error_detail": true,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2096,6 +2421,12 @@
         "status_code": 400,
         "error": "Cần có tài liệu PDF để xử lý ngữ cảnh này.",
         "mode": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": null,
@@ -2124,6 +2455,12 @@
         "history_limit": null,
         "utf8_response": null,
         "error_detail": true,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2169,6 +2506,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           3
         ],
@@ -2215,6 +2558,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2262,6 +2611,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "TEXT_SELECTION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           2
         ],
@@ -2308,6 +2663,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2360,6 +2721,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "TEXT_SELECTION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           2
         ],
@@ -2406,6 +2773,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2441,6 +2814,12 @@
         "status_code": 400,
         "error": "Đoạn được chọn không khớp với nội dung trang PDF.",
         "mode": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": null,
@@ -2469,6 +2848,12 @@
         "history_limit": null,
         "utf8_response": null,
         "error_detail": true,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2513,6 +2898,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "TEXT_SELECTION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           2
         ],
@@ -2559,6 +2950,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2609,6 +3006,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "VISUAL_REGION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           7
         ],
@@ -2655,6 +3058,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2713,6 +3122,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "VISUAL_REGION_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           7
         ],
@@ -2759,6 +3174,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2798,6 +3219,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           3,
           1
@@ -2846,6 +3273,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2884,6 +3317,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           7,
           9
@@ -2932,6 +3371,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -2971,16 +3416,30 @@
       "prediction": {
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
+<<<<<<< Updated upstream
         "pages_used": [
           1,
           5,
           6,
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+        "pages_used": [
+          1,
+          5,
+          4,
+>>>>>>> Stashed changes
           9
         ],
         "citation_pages": [
           1,
           5,
+<<<<<<< Updated upstream
           6,
+=======
+          4,
+>>>>>>> Stashed changes
           9
         ],
         "provider": "openai",
@@ -2992,7 +3451,11 @@
           {
             "provider": "openai",
             "kind": "text",
+<<<<<<< Updated upstream
             "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?",
+=======
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?",
+>>>>>>> Stashed changes
             "history_count": 0,
             "image_attached": false
           }
@@ -3005,7 +3468,11 @@
           "openai"
         ],
         "provider_inputs": [
+<<<<<<< Updated upstream
           "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?"
+=======
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?"
+>>>>>>> Stashed changes
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -3023,6 +3490,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3061,6 +3534,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           4,
           5,
@@ -3113,6 +3592,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3151,16 +3636,31 @@
       "prediction": {
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
+<<<<<<< Updated upstream
         "pages_used": [
           5,
           8,
           4,
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+        "pages_used": [
+          5,
+          4,
+          8,
+>>>>>>> Stashed changes
           6
         ],
         "citation_pages": [
           5,
+<<<<<<< Updated upstream
           8,
           4,
+=======
+          4,
+          8,
+>>>>>>> Stashed changes
           6
         ],
         "provider": "openai",
@@ -3172,7 +3672,11 @@
           {
             "provider": "openai",
             "kind": "text",
+<<<<<<< Updated upstream
             "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?",
+=======
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?",
+>>>>>>> Stashed changes
             "history_count": 0,
             "image_attached": false
           }
@@ -3185,7 +3689,11 @@
           "openai"
         ],
         "provider_inputs": [
+<<<<<<< Updated upstream
           "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?"
+=======
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?"
+>>>>>>> Stashed changes
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -3203,6 +3711,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3242,6 +3756,7 @@
       "prediction": {
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
+<<<<<<< Updated upstream
         "pages_used": [
           6,
           9
@@ -3249,6 +3764,18 @@
         "citation_pages": [
           6,
           9
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+        "pages_used": [
+          6,
+          4
+        ],
+        "citation_pages": [
+          6,
+          4
+>>>>>>> Stashed changes
         ],
         "provider": "gemini",
         "fallback_used": false,
@@ -3259,7 +3786,11 @@
           {
             "provider": "gemini",
             "kind": "multimodal",
+<<<<<<< Updated upstream
             "payload": "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 6\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nTable 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nBảng so sánh self-attention với recurrent và convolutional nói gì?",
+=======
+            "payload": "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 6\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nTable 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nBảng so sánh self-attention với recurrent và convolutional nói gì?",
+>>>>>>> Stashed changes
             "history_count": 0,
             "image_attached": true
           }
@@ -3272,7 +3803,11 @@
           "gemini"
         ],
         "provider_inputs": [
+<<<<<<< Updated upstream
           "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 6\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nTable 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nBảng so sánh self-attention với recurrent và convolutional nói gì?"
+=======
+          "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 6\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nTable 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nBảng so sánh self-attention với recurrent và convolutional nói gì?"
+>>>>>>> Stashed changes
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -3290,6 +3825,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3328,17 +3869,31 @@
       "prediction": {
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
+<<<<<<< Updated upstream
         "pages_used": [
           9,
           1,
           7,
           2
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+        "pages_used": [
+          9,
+          1,
+          7
+>>>>>>> Stashed changes
         ],
         "citation_pages": [
           9,
           1,
+<<<<<<< Updated upstream
           7,
           2
+=======
+          7
+>>>>>>> Stashed changes
         ],
         "provider": "openai",
         "fallback_used": false,
@@ -3349,7 +3904,11 @@
           {
             "provider": "openai",
             "kind": "text",
+<<<<<<< Updated upstream
             "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n\n[Trang 2] Selected text is the strongest local context. A visual region carries an exact image crop. An attached page includes text and the full page image.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?",
+=======
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?",
+>>>>>>> Stashed changes
             "history_count": 0,
             "image_attached": false
           }
@@ -3362,7 +3921,11 @@
           "openai"
         ],
         "provider_inputs": [
+<<<<<<< Updated upstream
           "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n\n[Trang 2] Selected text is the strongest local context. A visual region carries an exact image crop. An attached page includes text and the full page image.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?"
+=======
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?"
+>>>>>>> Stashed changes
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -3380,6 +3943,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3420,6 +3989,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "gemini",
@@ -3472,6 +4047,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3509,6 +4090,12 @@
         "status_code": 502,
         "error": "Cấu hình nhà cung cấp AI chưa hợp lệ. Hãy kiểm tra API key và tên mô hình.",
         "mode": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": null,
@@ -3551,6 +4138,12 @@
         "history_limit": null,
         "utf8_response": null,
         "error_detail": true,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3601,6 +4194,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "PAGE_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [
           3
         ],
@@ -3657,6 +4256,12 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3689,6 +4294,12 @@
         "status_code": 503,
         "error": "Chưa cấu hình API key cho chatbot.",
         "mode": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": null,
@@ -3717,6 +4328,12 @@
         "history_limit": null,
         "utf8_response": null,
         "error_detail": true,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }
@@ -3747,6 +4364,12 @@
       "prediction": {
         "status_code": 200,
         "mode": "GENERAL_CHAT",
+<<<<<<< Updated upstream
+=======
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+>>>>>>> Stashed changes
         "pages_used": [],
         "citation_pages": [],
         "provider": "openai",
@@ -3789,6 +4412,258 @@
         "history_limit": null,
         "utf8_response": true,
         "error_detail": null,
+<<<<<<< Updated upstream
+=======
+        "decision": null,
+        "clarification": null,
+        "abstention": null,
+        "no_crash": true,
+        "passed": true
+      }
+    },
+    {
+      "case_id": "clarify_forced_search_missing_document",
+      "case": {
+        "case_id": "clarify_forced_search_missing_document",
+        "source": {
+          "type": "synthetic"
+        },
+        "category": "conditional_decision",
+        "input": {
+          "message": "Tìm phần nói về cơ chế RAG trong tài liệu.",
+          "interaction_mode": "document_search",
+          "context": {}
+        },
+        "expected": {
+          "status_code": 200,
+          "mode": "GENERAL_CHAT",
+          "decision": "clarify",
+          "needs_clarification": true,
+          "abstained": false,
+          "exact_pages": [],
+          "exact_citation_pages": [],
+          "provider_called": true,
+          "call_kind": "text",
+          "image_used": false,
+          "provider": "openai",
+          "fallback_used": false,
+          "prompt_must_contain": [
+            "mở hoặc tải lên tài liệu",
+            "Không trả lời nội dung kiến thức"
+          ],
+          "utf8_required": true
+        }
+      },
+      "prediction": {
+        "status_code": 200,
+        "mode": "GENERAL_CHAT",
+        "decision": "clarify",
+        "needs_clarification": true,
+        "abstained": false,
+        "pages_used": [],
+        "citation_pages": [],
+        "provider": "openai",
+        "fallback_used": false,
+        "image_used": false,
+        "answer": "Câu trả lời tiếng Việt từ openai.",
+        "answer_has_vietnamese_diacritics": true,
+        "provider_calls": [
+          {
+            "provider": "openai",
+            "kind": "text",
+            "payload": "Bạn là lớp làm rõ yêu cầu của VLearn Tutor. Không trả lời nội dung kiến thức mà người dùng đang hỏi. Hãy nói ngắn gọn rằng chưa có tài liệu PDF để tìm kiếm và yêu cầu người dùng mở hoặc tải lên tài liệu cần dùng. Chỉ trả lời bằng tiếng Việt.\nLý do cần làm rõ: missing_document\nYêu cầu ban đầu của người dùng: Tìm phần nói về cơ chế RAG trong tài liệu.\nHãy chỉ yêu cầu người dùng bổ sung ngữ cảnh còn thiếu.",
+            "history_count": 0,
+            "image_attached": false
+          }
+        ],
+        "provider_called": true,
+        "call_kinds": [
+          "text"
+        ],
+        "attempted_providers": [
+          "openai"
+        ],
+        "provider_inputs": [
+          "Bạn là lớp làm rõ yêu cầu của VLearn Tutor. Không trả lời nội dung kiến thức mà người dùng đang hỏi. Hãy nói ngắn gọn rằng chưa có tài liệu PDF để tìm kiếm và yêu cầu người dùng mở hoặc tải lên tài liệu cần dùng. Chỉ trả lời bằng tiếng Việt.\nLý do cần làm rõ: missing_document\nYêu cầu ban đầu của người dùng: Tìm phần nói về cơ chế RAG trong tài liệu.\nHãy chỉ yêu cầu người dùng bổ sung ngữ cảnh còn thiếu."
+        ],
+        "max_history_count": 0,
+        "all_images_attached": true,
+        "no_crash": true
+      },
+      "scores": {
+        "status": true,
+        "mode": true,
+        "page_context": true,
+        "citation": true,
+        "provider_invocation": true,
+        "media_path": true,
+        "fallback": true,
+        "prompt_context": true,
+        "history_limit": null,
+        "utf8_response": true,
+        "error_detail": null,
+        "decision": true,
+        "clarification": true,
+        "abstention": true,
+        "no_crash": true,
+        "passed": true
+      }
+    },
+    {
+      "case_id": "search_no_evidence_abstains",
+      "case": {
+        "case_id": "search_no_evidence_abstains",
+        "source": {
+          "type": "synthetic"
+        },
+        "category": "conditional_decision",
+        "input": {
+          "message": "Quy trình phẫu thuật tim nội soi bằng robot được mô tả thế nào?",
+          "document_id": "fixture",
+          "context": {}
+        },
+        "expected": {
+          "status_code": 200,
+          "mode": "DOCUMENT_SEARCH_CHAT",
+          "decision": "abstain",
+          "needs_clarification": false,
+          "abstained": true,
+          "exact_pages": [],
+          "exact_citation_pages": [],
+          "provider_called": false,
+          "image_used": false,
+          "provider": "system",
+          "fallback_used": false,
+          "utf8_required": true
+        }
+      },
+      "prediction": {
+        "status_code": 200,
+        "mode": "DOCUMENT_SEARCH_CHAT",
+        "decision": "abstain",
+        "needs_clarification": false,
+        "abstained": true,
+        "pages_used": [],
+        "citation_pages": [],
+        "provider": "system",
+        "fallback_used": false,
+        "image_used": false,
+        "answer": "Mình chưa tìm thấy bằng chứng đủ liên quan trong tài liệu để trả lời đáng tin cậy. Bạn có thể nêu rõ từ khóa, mục hoặc trang cần tìm.",
+        "answer_has_vietnamese_diacritics": true,
+        "provider_calls": [],
+        "provider_called": false,
+        "call_kinds": [],
+        "attempted_providers": [],
+        "provider_inputs": [],
+        "max_history_count": 0,
+        "all_images_attached": true,
+        "no_crash": true
+      },
+      "scores": {
+        "status": true,
+        "mode": true,
+        "page_context": true,
+        "citation": true,
+        "provider_invocation": true,
+        "media_path": true,
+        "fallback": true,
+        "prompt_context": null,
+        "history_limit": null,
+        "utf8_response": true,
+        "error_detail": null,
+        "decision": true,
+        "clarification": true,
+        "abstention": true,
+        "no_crash": true,
+        "passed": true
+      }
+    },
+    {
+      "case_id": "search_no_evidence_allow_general",
+      "case": {
+        "case_id": "search_no_evidence_allow_general",
+        "source": {
+          "type": "synthetic"
+        },
+        "category": "conditional_decision",
+        "input": {
+          "message": "Quy trình phẫu thuật tim nội soi bằng robot được mô tả thế nào?",
+          "document_id": "fixture",
+          "interaction_mode": "document_search",
+          "answer_mode": "allow_general_knowledge",
+          "context": {}
+        },
+        "expected": {
+          "status_code": 200,
+          "mode": "DOCUMENT_SEARCH_CHAT",
+          "decision": "answer",
+          "needs_clarification": false,
+          "abstained": false,
+          "exact_pages": [],
+          "exact_citation_pages": [],
+          "provider_called": true,
+          "call_kind": "text",
+          "image_used": false,
+          "provider": "openai",
+          "fallback_used": false,
+          "prompt_must_contain": [
+            "Không tìm thấy bằng chứng phù hợp"
+          ],
+          "utf8_required": true
+        }
+      },
+      "prediction": {
+        "status_code": 200,
+        "mode": "DOCUMENT_SEARCH_CHAT",
+        "decision": "answer",
+        "needs_clarification": false,
+        "abstained": false,
+        "pages_used": [],
+        "citation_pages": [],
+        "provider": "openai",
+        "fallback_used": false,
+        "image_used": false,
+        "answer": "Câu trả lời tiếng Việt từ openai.",
+        "answer_has_vietnamese_diacritics": true,
+        "provider_calls": [
+          {
+            "provider": "openai",
+            "kind": "text",
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\nKhông tìm thấy bằng chứng phù hợp trong tài liệu.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nQuy trình phẫu thuật tim nội soi bằng robot được mô tả thế nào?",
+            "history_count": 0,
+            "image_attached": false
+          }
+        ],
+        "provider_called": true,
+        "call_kinds": [
+          "text"
+        ],
+        "attempted_providers": [
+          "openai"
+        ],
+        "provider_inputs": [
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\nKhông tìm thấy bằng chứng phù hợp trong tài liệu.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nQuy trình phẫu thuật tim nội soi bằng robot được mô tả thế nào?"
+        ],
+        "max_history_count": 0,
+        "all_images_attached": true,
+        "no_crash": true
+      },
+      "scores": {
+        "status": true,
+        "mode": true,
+        "page_context": true,
+        "citation": true,
+        "provider_invocation": true,
+        "media_path": true,
+        "fallback": true,
+        "prompt_context": true,
+        "history_limit": null,
+        "utf8_response": true,
+        "error_detail": null,
+        "decision": true,
+        "clarification": true,
+        "abstention": true,
+>>>>>>> Stashed changes
         "no_crash": true,
         "passed": true
       }

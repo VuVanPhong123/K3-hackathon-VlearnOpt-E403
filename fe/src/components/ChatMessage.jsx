@@ -4,6 +4,13 @@ function providerLabel(provider, fallbackUsed) {
   return "";
 }
 
+function decisionLabel(decision) {
+  if (decision === "answer") return "Trả lời";
+  if (decision === "clarify") return "Yêu cầu làm rõ";
+  if (decision === "abstain") return "Không suy đoán";
+  return decision;
+}
+
 export default function ChatMessage({
   message,
   onCitationClick,
@@ -12,6 +19,12 @@ export default function ChatMessage({
 }) {
   const isAssistant = message.role === "assistant";
   const badge = providerLabel(message.provider, message.fallbackUsed);
+  const decision = message.decision || message.trace?.decision;
+  const needsClarification =
+    message.needsClarification ??
+    message.needs_clarification ??
+    (decision === "clarify");
+  const abstained = message.abstained ?? (decision === "abstain");
 
   return (
     <article className={isAssistant ? "chat-message assistant" : "chat-message user"}>
@@ -38,7 +51,25 @@ export default function ChatMessage({
             </button>
           </div>
         )}
+        <p>{message.content}</p>
+        {isAssistant && needsClarification && (
+          <div className="response-state clarification-state" role="status">
+            <strong>Cần thêm thông tin</strong>
+            <span>Hãy bổ sung chi tiết để Tutor có thể trả lời chính xác hơn.</span>
+          </div>
+        )}
+        {isAssistant && abstained && (
+          <div className="response-state abstained-state" role="status">
+            <strong>Chưa đủ bằng chứng</strong>
+            <span>Tutor đã dừng trả lời để tránh suy đoán ngoài tài liệu.</span>
+          </div>
+        )}
         {isAssistant && badge && <span className="provider-badge">{badge}</span>}
+        {isAssistant && decision && (
+          <span className="decision-badge" data-decision={decision}>
+            Quyết định: {decisionLabel(decision)}
+          </span>
+        )}
         {isAssistant && message.citations?.length > 0 && (
           <div className="citation-row">
             {message.citations.map((citation, index) => {

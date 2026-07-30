@@ -118,6 +118,7 @@ class Citation(BaseModel):
 class TraceInfo(BaseModel):
     trace_id: str
     intent: str
+    decision: Literal["answer", "clarify", "abstain"] = "answer"
     pages_used: list[int] = Field(default_factory=list)
     provider: str = ""
     model: str = ""

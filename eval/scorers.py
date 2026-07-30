@@ -117,6 +117,21 @@ def score_case(case: dict, prediction: dict) -> dict:
         "history_limit": _history_limit(expected, prediction),
         "utf8_response": _utf8_response(expected, prediction),
         "error_detail": _error_detail(expected, prediction),
+        "decision": _optional_equal(
+            expected,
+            "decision",
+            prediction.get("decision"),
+        ),
+        "clarification": _optional_equal(
+            expected,
+            "needs_clarification",
+            prediction.get("needs_clarification"),
+        ),
+        "abstention": _optional_equal(
+            expected,
+            "abstained",
+            prediction.get("abstained"),
+        ),
         "no_crash": prediction.get("no_crash") is True,
     }
     scores["passed"] = all(value is not False for value in scores.values())

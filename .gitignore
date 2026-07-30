@@ -18,6 +18,7 @@ fe/node_modules/
 fe/dist/
 
 # Uploaded documents
+/app/storage/
 be/app/storage/documents/*
 !be/app/storage/documents/.gitkeep
 be/app/storage/metadata/*

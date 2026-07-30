@@ -29,7 +29,11 @@ class LexicalSearchService:
         bm25 = BM25Okapi(corpus)
         scores = bm25.get_scores(tokenize(query))
         ranked = sorted(
-            ((chunks[index]["chunk_id"], float(score)) for index, score in enumerate(scores)),
+            (
+                (chunks[index]["chunk_id"], float(score))
+                for index, score in enumerate(scores)
+                if float(score) > 0
+            ),
             key=lambda item: item[1],
             reverse=True,
         )

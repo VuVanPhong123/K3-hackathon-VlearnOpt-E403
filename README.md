@@ -119,6 +119,24 @@ Không commit `.env`, API key, `.venv`, `node_modules`, PDF upload runtime hoặ
 - Conversation context dùng rolling digest + recent window + character budget. Default: `CHAT_RECENT_MESSAGE_LIMIT=12`, `CHAT_SUMMARY_TRIGGER_MESSAGES=16`, `CHAT_MAX_HISTORY_CHARS=24000`, `CHAT_SUMMARY_MAX_CHARS=4000`.
 - Frontend có nút `Cuộc trò chuyện mới`; reset chỉ xóa conversation chat/server state, không xóa PDF hay annotation local.
 
+### Bằng chứng eval và AI thật
+
+- [Codebase manifest](codebase/README.md): entry point và ranh giới real/mock.
+- [Golden set đã freeze](eval/golden_set.jsonl): 43 case; [coverage map](eval/coverage-map.csv) kiểm tra đủ bốn lớp rủi ro.
+- [Conditional regression bổ sung](eval/supplemental-conditional.jsonl): 3 case làm rõ, abstain và cho phép kiến thức chung; không thay đổi quality bar đã chốt.
+- [Kết quả eval mới nhất](eval/results/latest.md): bảng đầy đủ mọi case, các chiều chất lượng và đối chiếu quality bar.
+- [Live AI evidence](evidence/r5-live-ai-run.md): trace đã làm sạch cho text, full-page vision, visual-region vision và provider fallback.
+
+Chạy lại eval offline từ thư mục gốc:
+
+```powershell
+be\.venv\Scripts\python.exe -X utf8 eval\run_eval.py
+be\.venv\Scripts\python.exe -X utf8 eval\validate_coverage.py
+be\.venv\Scripts\python.exe -X utf8 eval\render_report.py
+be\.venv\Scripts\python.exe -X utf8 eval\run_eval.py --supplemental
+be\.venv\Scripts\python.exe -X utf8 eval\render_report.py --input eval\results\supplemental-conditional.json --coverage eval\supplemental-coverage.csv --output eval\results\supplemental-conditional.md
+```
+
 ### Backend - Windows PowerShell
 
 ```powershell

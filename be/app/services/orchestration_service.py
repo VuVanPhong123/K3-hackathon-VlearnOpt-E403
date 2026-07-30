@@ -15,12 +15,14 @@ from fastapi import HTTPException
 from rapidfuzz import fuzz
 
 from app.config import settings
+from app.domain.evidence import Evidence
 from app.repositories.conversation_repository import ConversationRepository
 from app.schemas import BBox, ChatRequestV2, ChatResponseV2, Citation, TraceInfo
 from app.services.answer_service import AnswerService
 from app.services.conversation_memory_service import ConversationMemoryService
 from app.services.conversation_service import ConversationService
 from app.services.document_service import DocumentService
+from app.services.grounding_service import GroundingService
 from app.services.interaction_resolver import InteractionResolver
 from app.services.page_context_service import PageContextService
 from app.services.providers.base import (
@@ -28,7 +30,10 @@ from app.services.providers.base import (
     ProviderRateLimitError,
     ProviderRequestError,
     ProviderResult,
+<<<<<<< Updated upstream
     ProviderStreamChunk,
+=======
+>>>>>>> Stashed changes
     ProviderTemporaryError,
 )
 from app.services.retrieval_service import RetrievalResult, RetrievalService
@@ -64,12 +69,14 @@ class OrchestrationService:
         page_context_service: PageContextService | None = None,
         visual_context_service: VisualContextService | None = None,
         retrieval_service: RetrievalService | None = None,
+        grounding_service: GroundingService | None = None,
         conversation_repository: ConversationRepository | None = None,
     ) -> None:
         self.document_service = document_service or DocumentService()
         self.page_context_service = page_context_service or PageContextService(self.document_service)
         self.visual_context_service = visual_context_service or VisualContextService(self.document_service)
         self.retrieval_service = retrieval_service or RetrievalService()
+        self.grounding_service = grounding_service or GroundingService()
         self.answer_service = answer_service or AnswerService()
         self.interaction_resolver = InteractionResolver(self.document_service)
         self.conversation_repository = conversation_repository or ConversationRepository()
@@ -80,7 +87,19 @@ class OrchestrationService:
         started_at = time.perf_counter()
         plan = self.prepare_chat(request)
         try:
+<<<<<<< Updated upstream
             result, fallback_used = await self._execute(plan)
+=======
+            response, citations, pages_used, confidence, image_used, decision = await self._dispatch(
+                request,
+                resolved.mode,
+                resolved.page_number,
+                resolved.confidence,
+                resolved.visual_query,
+                resolved.exact_caption,
+                resolved.clarification_reason,
+            )
+>>>>>>> Stashed changes
         except ProviderConfigurationError as exc:
             raise self._provider_http_error(exc, plan.image_used) from exc
         except ProviderRequestError as exc:
@@ -94,6 +113,7 @@ class OrchestrationService:
                 detail="Các nhà cung cấp AI đang tạm thời không khả dụng. Hãy thử lại sau.",
             ) from exc
 
+<<<<<<< Updated upstream
         trace = self._trace(plan, result.provider, result.model, fallback_used, started_at)
         self._save_success(plan, result.text, trace)
         logger.info(
@@ -101,21 +121,61 @@ class OrchestrationService:
             plan.trace_id,
             plan.mode,
             plan.pages_used,
+=======
+        result, fallback_used = response
+        trace = TraceInfo(
+            trace_id=trace_id,
+            intent=resolved.mode,
+            decision=decision,
+            pages_used=pages_used,
+            provider=result.provider,
+            model=result.model,
+            fallback=fallback_used,
+            latency_ms={"total": round((time.perf_counter() - started_at) * 1000, 2)},
+            confidence=confidence,
+            image_used=image_used,
+        )
+        conversation_document_id = None if resolved.mode == "GENERAL_CHAT" else request.document_id
+        self.conversation_repository.ensure_conversation(conversation_id, conversation_document_id, None)
+        self.conversation_repository.add_message(conversation_id, "user", request.message)
+        self.conversation_repository.add_message(
+            conversation_id,
+            "assistant",
+            result.text,
+            [citation.model_dump() for citation in citations],
+            trace.model_dump(),
+        )
+        logger.info(
+            "v2_chat trace_id=%s intent=%s decision=%s pages=%s provider=%s fallback=%s image=%s",
+            trace_id,
+            resolved.mode,
+            decision,
+            pages_used,
+>>>>>>> Stashed changes
             result.provider,
             fallback_used,
             plan.image_used,
         )
         return ChatResponseV2(
             answer=result.text,
+<<<<<<< Updated upstream
             citations=plan.citations,
             confidence=plan.confidence,
             conversation_id=plan.conversation_id,
+=======
+            citations=citations,
+            confidence=confidence,
+            needs_clarification=decision == "clarify",
+            abstained=decision == "abstain",
+            conversation_id=conversation_id,
+>>>>>>> Stashed changes
             trace=trace,
             provider=result.provider,
             model=result.model,
             fallback_used=fallback_used,
         )
 
+<<<<<<< Updated upstream
     async def stream(self, request: ChatRequestV2) -> AsyncIterator[dict[str, Any]]:
         started_at = time.perf_counter()
         try:
@@ -218,12 +278,55 @@ class OrchestrationService:
                 confidence=resolved.confidence,
                 image_used=False,
             )
+=======
+    async def _dispatch(
+        self,
+        request: ChatRequestV2,
+        mode: str,
+        page_number: int | None,
+        confidence: float,
+        visual_query: bool,
+        exact_caption: str | None,
+        clarification_reason: str | None,
+    ):
+        if clarification_reason:
+            response = await self.answer_service.answer_clarification(
+                message=request.message,
+                history=request.history,
+                reason=clarification_reason,
+            )
+            return response, [], [], 0.0, False, "clarify"
+
+        if mode == "GENERAL_CHAT":
+            response = await self.answer_service.answer_general(
+                message=request.message,
+                history=request.history,
+            )
+            return response, [], [], confidence, False, "answer"
+>>>>>>> Stashed changes
 
         if not request.document_id:
             raise HTTPException(status_code=400, detail="Cần có tài liệu PDF để xử lý câu hỏi này.")
 
         metadata = self.document_service.get_metadata(request.document_id)
+<<<<<<< Updated upstream
         document_version = getattr(metadata, "version", None)
+=======
+        if mode == "PAGE_CHAT" and page_number:
+            page = self.page_context_service.get_page_text(request.document_id, page_number)
+            image_path = self.visual_context_service.render_page(request.document_id, page_number)
+            image_bytes, mime_type = self._read_image(image_path)
+            response = await self.answer_service.answer_page(
+                message=request.message,
+                history=request.history,
+                filename=metadata.original_filename,
+                page_number=page_number,
+                page_text=page.text,
+                image_bytes=image_bytes,
+                mime_type=mime_type,
+            )
+            return response, [self._citation(request.document_id, page_number)], [page_number], confidence, True, "answer"
+>>>>>>> Stashed changes
 
         if resolved.mode == "PAGE_CHAT" and resolved.page_number:
             page = self.page_context_service.get_page_text(request.document_id, resolved.page_number)
@@ -277,6 +380,11 @@ class OrchestrationService:
                 conversation_document_id=request.document_id,
                 document_version=document_version,
             )
+<<<<<<< Updated upstream
+=======
+            page_number = selection.page_number
+            return response, [self._citation(request.document_id, page_number)], [page_number], confidence, False, "answer"
+>>>>>>> Stashed changes
 
         if resolved.mode == "VISUAL_REGION_CHAT" and request.context.visual_region:
             region = request.context.visual_region
@@ -313,6 +421,11 @@ class OrchestrationService:
                 conversation_document_id=request.document_id,
                 document_version=document_version,
             )
+<<<<<<< Updated upstream
+=======
+            page_number = region.page_number
+            return response, [self._citation(request.document_id, page_number)], [page_number], confidence, True, "answer"
+>>>>>>> Stashed changes
 
         if resolved.mode == "DOCUMENT_SEARCH_CHAT":
             return self._document_search_plan(
@@ -376,6 +489,18 @@ class OrchestrationService:
         assert document_id is not None
         caption_page = self._find_caption_page(document_id, exact_caption) if exact_caption else None
         results = self.retrieval_service.search(document_id, request.message, top_k=4)
+        grounding_evidence = self._grounding_evidence(document_id, results)
+        retrieval_confidence = max(
+            (item.score for item in grounding_evidence),
+            default=0.0,
+        )
+
+        if caption_page is None and self.grounding_service.should_abstain(
+            grounding_evidence,
+            request.answer_mode,
+            retrieval_confidence,
+        ):
+            return self._abstention_response(), [], [], 0.0, False, "abstain"
 
         if visual_query:
             visual_results = self._limit_distinct_pages(results, 2)
@@ -385,10 +510,45 @@ class OrchestrationService:
                 page = self.page_context_service.get_page_text(document_id, page_number)
                 image_path = self.visual_context_service.render_page(document_id, page_number)
                 image_bytes, mime_type = self._read_image(image_path)
+<<<<<<< Updated upstream
+=======
+                response = await self.answer_service.answer_document_visual_search(
+                    message=request.message,
+                    history=request.history,
+                    filename=filename,
+                    page_number=page_number,
+                    page_text=page.text,
+                    extra_evidence=evidence,
+                    image_bytes=image_bytes,
+                    mime_type=mime_type,
+                )
+                verification_evidence = list(grounding_evidence)
+                if not any(item.page_number == page_number for item in verification_evidence):
+                    verification_evidence.insert(
+                        0,
+                        Evidence(
+                            evidence_id=f"page:{document_id}:{page_number}",
+                            document_id=document_id,
+                            document_version=1,
+                            page_number=page_number,
+                            text=page.text or "Bằng chứng hình ảnh từ trang PDF.",
+                            source_type="page",
+                            score=1.0,
+                        ),
+                    )
+                result, _ = response
+                if self._verification_failed(
+                    result.text,
+                    verification_evidence,
+                    request.answer_mode,
+                ):
+                    return self._abstention_response(), [], [], 0.0, False, "abstain"
+>>>>>>> Stashed changes
                 citations = self._citations_from_results(document_id, visual_results)
                 if not any(item.page_number == page_number for item in citations):
                     citations.insert(0, self._citation(document_id, page_number))
                 pages = list(dict.fromkeys([page_number, *[item.page_number for item in citations if item.page_number]]))
+<<<<<<< Updated upstream
                 return ChatExecutionPlan(
                     request=request,
                     conversation_id=conversation_id,
@@ -478,6 +638,26 @@ class OrchestrationService:
             else "Chưa cấu hình API key cho chatbot."
         )
         return HTTPException(status_code=503, detail=detail)
+=======
+                return response, citations, pages, confidence, True, "answer"
+
+        response = await self.answer_service.answer_document_search(
+            message=request.message,
+            history=request.history,
+            filename=filename,
+            evidence_text=self._evidence(results) or "Không tìm thấy bằng chứng phù hợp trong tài liệu.",
+        )
+        result, _ = response
+        if self._verification_failed(
+            result.text,
+            grounding_evidence,
+            request.answer_mode,
+        ):
+            return self._abstention_response(), [], [], 0.0, False, "abstain"
+        citations = self._citations_from_results(document_id, results)
+        pages = list(dict.fromkeys(item.page_number for item in citations if item.page_number))
+        return response, citations, pages, confidence if results else 0.25, False, "answer"
+>>>>>>> Stashed changes
 
     def _find_caption_page(self, document_id: str, caption: str) -> int | None:
         repository = getattr(self.document_service, "repository", None)
@@ -534,6 +714,59 @@ class OrchestrationService:
             f"[Trang {item.chunk['page_number']}] {item.chunk['text']}"
             for item in results
         )
+
+    @staticmethod
+    def _grounding_evidence(
+        document_id: str,
+        results: list[RetrievalResult],
+    ) -> list[Evidence]:
+        evidence: list[Evidence] = []
+        for index, item in enumerate(results):
+            text = str(item.chunk.get("text", "")).strip()
+            if not text:
+                continue
+            chunk_id = item.chunk.get("chunk_id")
+            page_number = item.chunk.get("page_number")
+            evidence.append(
+                Evidence(
+                    evidence_id=str(chunk_id or f"retrieval:{document_id}:{index}"),
+                    document_id=document_id,
+                    document_version=int(item.chunk.get("document_version", 1)),
+                    page_number=int(page_number) if page_number is not None else None,
+                    text=text,
+                    source_type="retrieval",
+                    chunk_id=str(chunk_id) if chunk_id is not None else None,
+                    section_id=item.chunk.get("section_id"),
+                    heading=item.chunk.get("heading"),
+                    score=float(item.score),
+                )
+            )
+        return evidence
+
+    @staticmethod
+    def _abstention_response() -> tuple[ProviderResult, bool]:
+        return (
+            ProviderResult(
+                text=(
+                    "Mình chưa tìm thấy bằng chứng đủ liên quan trong tài liệu để trả lời "
+                    "đáng tin cậy. Bạn có thể nêu rõ từ khóa, mục hoặc trang cần tìm."
+                ),
+                provider="system",
+                model="conditional-gate-v1",
+            ),
+            False,
+        )
+
+    def _verification_failed(
+        self,
+        answer: str,
+        evidence: list[Evidence],
+        answer_mode: str,
+    ) -> bool:
+        if not settings.verifier_enabled:
+            return False
+        verification = self.grounding_service.verify(answer, evidence, answer_mode)
+        return not bool(verification.get("valid"))
 
     @staticmethod
     def _first_result_page(results: list[RetrievalResult]) -> int | None:

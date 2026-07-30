@@ -457,6 +457,117 @@ async def test_document_text_search_uses_one_retrieval_and_real_citation() -> No
     assert retrieval.calls == [("doc-1", "Residual connection có tác dụng gì?", 4)]
     assert "Bằng chứng về cơ chế residual" in provider.calls[0]["messages"][-1]["content"]
     assert response.citations[0].page_number == 7
+    assert response.needs_clarification is False
+    assert response.abstained is False
+    assert response.trace.decision == "answer"
+
+
+@pytest.mark.asyncio
+async def test_forced_document_search_without_document_requests_clarification() -> None:
+    provider = FakeProvider(text="Bạn hãy mở hoặc tải lên tài liệu PDF cần tìm kiếm.")
+    document_service = FakeDocumentService()
+    response = await build_service(
+        provider,
+        document_service=document_service,
+    ).chat(
+        ChatRequestV2(
+            message="Tìm phần nói về RAG.",
+            interaction_mode="document_search",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert document_service.calls == 0
+    assert len(provider.calls) == 1
+    assert "Không trả lời nội dung kiến thức" in provider.calls[0]["system_prompt"]
+    assert response.trace.intent == "GENERAL_CHAT"
+    assert response.trace.decision == "clarify"
+    assert response.needs_clarification is True
+    assert response.abstained is False
+    assert response.citations == []
+    assert response.confidence == 0.0
+
+
+@pytest.mark.asyncio
+async def test_document_search_without_evidence_abstains_before_provider() -> None:
+    provider = FakeProvider()
+    retrieval = FakeRetrievalService([])
+    response = await build_service(
+        provider,
+        retrieval_service=retrieval,
+    ).chat(
+        ChatRequestV2(
+            message="Nội dung không tồn tại trong tài liệu là gì?",
+            document_id="doc-1",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert retrieval.calls == [("doc-1", "Nội dung không tồn tại trong tài liệu là gì?", 4)]
+    assert provider.calls == []
+    assert response.trace.intent == "DOCUMENT_SEARCH_CHAT"
+    assert response.trace.decision == "abstain"
+    assert response.needs_clarification is False
+    assert response.abstained is True
+    assert response.citations == []
+    assert response.trace.pages_used == []
+    assert response.confidence == 0.0
+    assert response.provider == "system"
+    assert response.model == "conditional-gate-v1"
+
+
+@pytest.mark.asyncio
+async def test_document_search_post_verifier_replaces_empty_answer_with_abstention() -> None:
+    result = RetrievalResult(
+        chunk={
+            "chunk_id": "chunk-2",
+            "page_number": 2,
+            "text": "Bằng chứng có liên quan trong tài liệu.",
+        },
+        score=0.91,
+        debug={},
+    )
+    provider = FakeProvider(text="   ")
+    response = await build_service(
+        provider,
+        retrieval_service=FakeRetrievalService([result]),
+    ).chat(
+        ChatRequestV2(
+            message="Hãy giải thích bằng chứng.",
+            document_id="doc-1",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert len(provider.calls) == 1
+    assert response.trace.decision == "abstain"
+    assert response.abstained is True
+    assert response.citations == []
+    assert response.provider == "system"
+
+
+@pytest.mark.asyncio
+async def test_forced_document_search_allows_general_knowledge_when_requested() -> None:
+    provider = FakeProvider()
+    retrieval = FakeRetrievalService([])
+    response = await build_service(
+        provider,
+        retrieval_service=retrieval,
+    ).chat(
+        ChatRequestV2(
+            message="Hãy giải thích khái niệm này bằng kiến thức chung.",
+            document_id="doc-1",
+            interaction_mode="document_search",
+            answer_mode="allow_general_knowledge",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert len(provider.calls) == 1
+    assert response.trace.decision == "answer"
+    assert response.needs_clarification is False
+    assert response.abstained is False
+    assert response.citations == []
 
 
 @pytest.mark.asyncio

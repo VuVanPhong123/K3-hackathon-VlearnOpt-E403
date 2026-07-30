@@ -33,6 +33,7 @@ class ResolvedInteraction:
     confidence: float = 1.0
     visual_query: bool = False
     exact_caption: str | None = None
+    clarification_reason: str | None = None
 
 
 class InteractionResolver:
@@ -100,7 +101,11 @@ class InteractionResolver:
 
         if forced == "document_search":
             if not request.document_id:
-                return ResolvedInteraction(mode="GENERAL_CHAT", confidence=0.6)
+                return ResolvedInteraction(
+                    mode="GENERAL_CHAT",
+                    confidence=0.0,
+                    clarification_reason="missing_document",
+                )
             return ResolvedInteraction(mode="DOCUMENT_SEARCH_CHAT", visual_query=is_visual_query(request.message))
 
         if request.answer_mode == "allow_general_knowledge" and forced == "auto":

@@ -46,6 +46,13 @@ DOCUMENT_SEARCH_PROMPT = (
     "Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp."
 )
 
+CLARIFICATION_PROMPT = (
+    "Bạn là lớp làm rõ yêu cầu của VLearn Tutor. "
+    "Không trả lời nội dung kiến thức mà người dùng đang hỏi. "
+    "Hãy nói ngắn gọn rằng chưa có tài liệu PDF để tìm kiếm và yêu cầu người dùng "
+    "mở hoặc tải lên tài liệu cần dùng. Chỉ trả lời bằng tiếng Việt."
+)
+
 
 class AnswerService:
     def __init__(self, provider_gateway: ProviderGateway | None = None) -> None:
@@ -58,9 +65,51 @@ class AnswerService:
             for item in history[-settings.chat_recent_message_limit:]
         ]
 
+<<<<<<< Updated upstream
     @staticmethod
     def page_prompt(*, message: str, filename: str, page_number: int, page_text: str) -> str:
         return (
+=======
+    async def answer_general(
+        self,
+        *,
+        message: str,
+        history: list[ChatHistoryItem],
+    ) -> tuple[ProviderResult, bool]:
+        messages = [*self._history(history), {"role": "user", "content": message}]
+        return await self.provider_gateway.generate(system_prompt=GENERAL_CHAT_PROMPT, messages=messages)
+
+    async def answer_clarification(
+        self,
+        *,
+        message: str,
+        history: list[ChatHistoryItem],
+        reason: str,
+    ) -> tuple[ProviderResult, bool]:
+        content = (
+            f"Lý do cần làm rõ: {reason}\n"
+            f"Yêu cầu ban đầu của người dùng: {message}\n"
+            "Hãy chỉ yêu cầu người dùng bổ sung ngữ cảnh còn thiếu."
+        )
+        messages = [*self._history(history), {"role": "user", "content": content}]
+        return await self.provider_gateway.generate(
+            system_prompt=CLARIFICATION_PROMPT,
+            messages=messages,
+        )
+
+    async def answer_page(
+        self,
+        *,
+        message: str,
+        history: list[ChatHistoryItem],
+        filename: str,
+        page_number: int,
+        page_text: str,
+        image_bytes: bytes,
+        mime_type: str = "image/png",
+    ) -> tuple[ProviderResult, bool]:
+        text_prompt = (
+>>>>>>> Stashed changes
             f"Tên tài liệu: {filename}\n"
             f"Trang PDF: {page_number}\n\n"
             "Văn bản trích xuất:\n"

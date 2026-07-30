@@ -651,6 +651,41 @@ body.resizing-panels {
   font-size: 12px;
 }
 
+.decision-badge {
+  display: inline-flex;
+  margin: 8px 0 0 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #eef2f6;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.response-state {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border: 1px solid;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.response-state strong,
+.response-state span {
+  display: block;
+}
+
+.clarification-state {
+  border-color: #f2c94c;
+  background: #fffae8;
+  color: #7a4d00;
+}
+
+.abstained-state {
+  border-color: #f0b4af;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
 .low-confidence {
   display: block;
   margin-top: 8px;

@@ -43,6 +43,10 @@ QUALITY_BAR = {
     "prompt_context_accuracy": 0.95,
     "history_limit_accuracy": 1.00,
     "utf8_response_accuracy": 1.00,
+    "error_detail_accuracy": 1.00,
+    "decision_accuracy": 1.00,
+    "clarification_accuracy": 1.00,
+    "abstention_accuracy": 1.00,
     "no_crash_rate": 1.00,
 }
 
@@ -306,6 +310,9 @@ async def predict(case: dict, temp_dir: Path) -> dict:
         return {
             "status_code": 200,
             "mode": response.trace.intent,
+            "decision": response.trace.decision,
+            "needs_clarification": response.needs_clarification,
+            "abstained": response.abstained,
             "pages_used": response.trace.pages_used,
             "citation_pages": [
                 citation.page_number
@@ -338,6 +345,9 @@ async def predict(case: dict, temp_dir: Path) -> dict:
             "status_code": exc.status_code,
             "error": str(exc.detail),
             "mode": None,
+            "decision": None,
+            "needs_clarification": False,
+            "abstained": False,
             "pages_used": [],
             "citation_pages": [],
             "provider": None,
@@ -366,6 +376,9 @@ async def predict(case: dict, temp_dir: Path) -> dict:
             "status_code": 500,
             "error": f"{type(exc).__name__}: {exc}",
             "mode": None,
+            "decision": None,
+            "needs_clarification": False,
+            "abstained": False,
             "pages_used": [],
             "citation_pages": [],
             "provider_calls": calls,
@@ -392,6 +405,10 @@ def aggregate(results: list[dict]) -> dict:
         "prompt_context": "prompt_context_accuracy",
         "history_limit": "history_limit_accuracy",
         "utf8_response": "utf8_response_accuracy",
+        "error_detail": "error_detail_accuracy",
+        "decision": "decision_accuracy",
+        "clarification": "clarification_accuracy",
+        "abstention": "abstention_accuracy",
         "no_crash": "no_crash_rate",
     }
     for score_name, metric_name in score_to_metric.items():

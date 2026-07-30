@@ -52,3 +52,37 @@ def test_retrieval_preserves_relevance_order_instead_of_saturating_scores() -> N
 
     assert results[0].chunk["page_number"] == 2
     assert results[0].score > results[1].score
+
+
+def test_retrieval_rejects_stopword_only_overlap() -> None:
+    texts = [
+        "Multi-head attention dùng nhiều attention head để học quan hệ bổ sung.",
+        "Trợ lý grounded cần nói rõ khi thiếu bằng chứng.",
+    ]
+    embedding_provider = HashEmbeddingProvider()
+    embeddings = embedding_provider.embed_passages(texts)
+    chunks = [
+        {
+            "chunk_id": f"c{index}",
+            "document_id": "d1",
+            "page_number": index,
+            "text": text,
+            "embedding": embedding,
+        }
+        for index, (text, embedding) in enumerate(
+            zip(texts, embeddings),
+            start=1,
+        )
+    ]
+    service = RetrievalService(
+        InMemoryChunkRepository(chunks),
+        EmbeddingService(embedding_provider),
+    )
+
+    results = service.search(
+        "d1",
+        "Quy trình phẫu thuật tim nội soi bằng robot được mô tả thế nào?",
+        top_k=3,
+    )
+
+    assert results == []
