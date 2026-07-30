@@ -2799,12 +2799,10 @@
         "status_code": 200,
         "mode": "DOCUMENT_SEARCH_CHAT",
         "pages_used": [
-          3,
-          1
+          3
         ],
         "citation_pages": [
-          3,
-          1
+          3
         ],
         "provider": "gemini",
         "fallback_used": false,
@@ -2815,7 +2813,7 @@
           {
             "provider": "gemini",
             "kind": "multimodal",
-            "payload": "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 3\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nFigure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nGiải thích Figure 1 trong tài liệu.",
+            "payload": "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 3\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nFigure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n(Không có)\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nGiải thích Figure 1 trong tài liệu.",
             "history_count": 0,
             "image_attached": true
           }
@@ -2828,7 +2826,7 @@
           "gemini"
         ],
         "provider_inputs": [
-          "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 3\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nFigure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nGiải thích Figure 1 trong tài liệu."
+          "Bạn là VLearn Tutor. Người dùng đang hỏi về một trang PDF cụ thể.\nBạn nhận được cả ảnh render của trang và phần văn bản trích xuất.\nHãy quan sát trực tiếp hình ảnh để hiểu bảng, hình, biểu đồ, sơ đồ, công thức và bố cục.\nChỉ trả lời dựa trên nội dung thật sự nhìn thấy ở trang này. Không dùng trí nhớ về một tài liệu nổi tiếng để đoán nội dung trang. Nếu không nhìn thấy đối tượng người dùng hỏi, hãy nói rõ. Trả lời bằng tiếng Việt, có cấu trúc và dễ hiểu.\nTên tài liệu: tài-liệu-đánh-giá.pdf\nTrang PDF ứng viên phù hợp nhất: 3\n\nVăn bản của trang/chú thích hình:\n--- VĂN BẢN TRANG ---\nFigure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n--- KẾT THÚC VĂN BẢN TRANG ---\n\nBằng chứng bổ sung từ tìm kiếm:\n--- BẰNG CHỨNG BỔ SUNG ---\n(Không có)\n--- KẾT THÚC BẰNG CHỨNG BỔ SUNG ---\n\nCâu hỏi:\nGiải thích Figure 1 trong tài liệu."
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -2992,7 +2990,7 @@
           {
             "provider": "openai",
             "kind": "text",
-            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?",
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?",
             "history_count": 0,
             "image_attached": false
           }
@@ -3005,7 +3003,7 @@
           "openai"
         ],
         "provider_inputs": [
-          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?"
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nRAG và citation được dùng để làm gì?"
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -3082,7 +3080,7 @@
           {
             "provider": "openai",
             "kind": "text",
-            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nScaled dot-product attention dùng công thức nào?",
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nScaled dot-product attention dùng công thức nào?",
             "history_count": 0,
             "image_attached": false
           }
@@ -3095,7 +3093,7 @@
           "openai"
         ],
         "provider_inputs": [
-          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nScaled dot-product attention dùng công thức nào?"
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nScaled dot-product attention dùng công thức nào?"
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -3155,13 +3153,13 @@
           5,
           8,
           4,
-          6
+          3
         ],
         "citation_pages": [
           5,
           8,
           4,
-          6
+          3
         ],
         "provider": "openai",
         "fallback_used": false,
@@ -3172,7 +3170,7 @@
           {
             "provider": "openai",
             "kind": "text",
-            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?",
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?",
             "history_count": 0,
             "image_attached": false
           }
@@ -3185,7 +3183,7 @@
           "openai"
         ],
         "provider_inputs": [
-          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 6] Table 1 so sánh self-attention, recurrent và convolutional theo complexity, sequential operations và maximum path length.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?"
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 5] Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. Đầu ra được nối lại rồi chiếu tuyến tính.\n\n[Trang 8] Visual-only attention map gồm một ma trận màu, gần như không có văn bản.\n\n[Trang 4] Scaled dot-product attention dùng công thức Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. Hệ số scale kiểm soát tích vô hướng lớn trước softmax.\n\n[Trang 3] Figure 1: Encoder-decoder architecture. Input tokens flow through attention before output generation.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nMulti-head attention có tác dụng gì?"
         ],
         "max_history_count": 0,
         "all_images_attached": true,
@@ -3331,14 +3329,12 @@
         "pages_used": [
           9,
           1,
-          7,
-          2
+          7
         ],
         "citation_pages": [
           9,
           1,
-          7,
-          2
+          7
         ],
         "provider": "openai",
         "fallback_used": false,
@@ -3349,7 +3345,7 @@
           {
             "provider": "openai",
             "kind": "text",
-            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n\n[Trang 2] Selected text is the strongest local context. A visual region carries an exact image crop. An attached page includes text and the full page image.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?",
+            "payload": "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?",
             "history_count": 0,
             "image_attached": false
           }
@@ -3362,7 +3358,7 @@
           "openai"
         ],
         "provider_inputs": [
-          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n\n[Trang 2] Selected text is the strongest local context. A visual region carries an exact image crop. An attached page includes text and the full page image.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?"
+          "Bạn là VLearn Tutor. Hãy trả lời dựa trên bằng chứng trích xuất từ tài liệu PDF. Câu hỏi có thể là yêu cầu định nghĩa hoặc giải thích một thuật ngữ. Nếu tài liệu không có câu định nghĩa trực tiếp dạng 'X là...', hãy tổng hợp từ các đoạn mô tả chức năng, cấu trúc, cách hoạt động hoặc ví dụ trong bằng chứng. Chỉ suy luận trong phạm vi bằng chứng được cung cấp; không dùng kiến thức ngoài tài liệu khi người dùng đang hỏi theo tài liệu. Nếu bằng chứng chỉ nhắc tên thuật ngữ mà không giải thích đủ, hãy nói rõ giới hạn đó. Nếu bằng chứng không đủ, hãy nói rõ không tìm thấy đủ thông tin, nhưng không nói rằng đã kiểm tra toàn bộ tài liệu. Không đoán nội dung hình, bảng hoặc biểu đồ nếu không có bằng chứng hoặc hình ảnh được cung cấp.\nTên tài liệu: tài-liệu-đánh-giá.pdf\n\nBằng chứng tìm được:\n--- BẰNG CHỨNG ---\n[Trang 9] Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng thay vì tự bịa nội dung.\n\n[Trang 1] RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.\n\n[Trang 7] Training loss chart cho thấy loss giảm dần khi số training step tăng. Đường biểu diễn đi xuống ổn định.\n--- KẾT THÚC BẰNG CHỨNG ---\n\nCâu hỏi:\nTrợ lý grounded nên làm gì khi thiếu bằng chứng?"
         ],
         "max_history_count": 0,
         "all_images_attached": true,

@@ -1,46 +1,57 @@
 .DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
 node_modules/
-*.env
+dist/
+build/
+.vite/
+coverage/
 
 # Environment
 .env
 .env.*
 !.env.example
 
-# Python
-be/.venv/
-__pycache__/
-*.py[cod]
-.pytest_cache/
+# Runtime databases
+*.db
+*.sqlite
+*.sqlite3
 
-# Node
-fe/node_modules/
-fe/dist/
+# Backend runtime storage
+codebase/backend/app/storage/documents/*
+codebase/backend/app/storage/cache/*
+codebase/backend/app/storage/index/*
+codebase/backend/app/storage/metadata/*
+codebase/backend/app/storage/model-cache/*
+codebase/backend/app/storage/page-cache/*
+!codebase/backend/app/storage/**/.gitkeep
 
-# Uploaded documents
-be/app/storage/documents/*
-!be/app/storage/documents/.gitkeep
-be/app/storage/metadata/*
-!be/app/storage/metadata/.gitkeep
-be/app/storage/index/*
-!be/app/storage/index/.gitkeep
-be/app/storage/cache/*
-!be/app/storage/cache/.gitkeep
-be/app/storage/model-cache/*
-!be/app/storage/model-cache/.gitkeep
-be/app/storage/page-cache/*
-!be/app/storage/page-cache/.gitkeep
-be/app/storage/**/*.db
-be/app/storage/**/*.sqlite
-be/app/storage/**/*.npz
-be/app/storage/**/*.png
-be/app/storage/**/*.jpg
-be/app/storage/**/*.jpeg
+# Generated uploads/renders
+uploads/
+page-renders/
+crops/
+generated/
 
-# Misc
+# Temporary files
+*.tmp
+*.bak
+*.log
+temp*
 job.txt
 
 # Evaluation runtime outputs
 eval/results/*.json
 !eval/results/.gitkeep
 !eval/results/latest.json
+!eval/results/term_search_latest.json

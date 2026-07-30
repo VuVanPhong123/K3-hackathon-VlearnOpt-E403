@@ -2,7 +2,9 @@
 
 ## 1. Dataset Và Phạm Vi
 
-Nguồn dữ liệu: `data/vlearn-pack/chatlog/chat_history_anonymized_for_hackathon.csv`.
+Nguồn dữ liệu ban đầu: `data/vlearn-pack/chatlog/chat_history_anonymized_for_hackathon.csv`.
+
+Data pack gốc không nằm trong repo nộp bài cuối để tránh commit dữ liệu nguồn. Report này chỉ giữ số liệu tổng hợp, quote ngắn cần cho rubric và mã tham chiếu `conversation_id/turn_id`.
 
 Phạm vi phân tích: toàn bộ chatlog VLearn tutor trong file CSV, gồm message của `student` và `tutor`. Transcript bài giảng không được dùng làm evidence pain; chỉ CSV được dùng để đếm và trích dẫn failure signal.
 
@@ -19,12 +21,12 @@ Tài liệu đã đọc trước khi mining:
 
 ## 2. Phương Pháp Đếm
 
-Script: `scripts/analyze_vlearn_chatlog_pain.py`.
+Script: `evidence/scripts/analyze_vlearn_chatlog_pain.py`.
 
 Cách chạy:
 
 ```bash
-python scripts/analyze_vlearn_chatlog_pain.py --limit 60
+python evidence/scripts/analyze_vlearn_chatlog_pain.py --csv <path-to-chat_history_anonymized_for_hackathon.csv> --limit 60
 ```
 
 Quy tắc:
@@ -82,7 +84,7 @@ chart
 
 ## 4. Aggregate Results
 
-Kết quả từ `python scripts/analyze_vlearn_chatlog_pain.py --limit 60`:
+Kết quả từ lần chạy trên data pack ban đầu với `--limit 60`:
 
 | Metric | Result |
 |---|---:|
@@ -357,7 +359,7 @@ What this evidence does NOT prove: Không chứng minh hệ thống không thể
 ## 10. Cách Chạy Lại Phân Tích
 
 ```bash
-python scripts/analyze_vlearn_chatlog_pain.py --limit 60
+python evidence/scripts/analyze_vlearn_chatlog_pain.py --csv <path-to-chat_history_anonymized_for_hackathon.csv> --limit 60
 ```
 
-Output cần khớp các aggregate ở mục 4 nếu CSV không thay đổi. Script không hardcode kết quả aggregate và không tạo file tạm.
+Output cần khớp các aggregate ở mục 4 nếu CSV không thay đổi. Script không hardcode kết quả aggregate và không tạo file tạm. Vì CSV gốc không được ship trong repo cuối, người audit cần có bản data pack được cấp hợp lệ để chạy lại.
