@@ -5,7 +5,7 @@
 ## PHẦN 1 — 25 ĐIỂM NỘP: mỗi checkpoint 5 điểm
 
 | CP1 | CP2 | CP3 | CP4 | CP5 |
-|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:| 
 | 5 | 5 | 5 | 5 | 5 |
 
 - **Nộp đúng hạn → 5 điểm · Nộp muộn → 0 điểm cho mốc đó.** Artifact từng mốc: xem bảng Phần 3.
