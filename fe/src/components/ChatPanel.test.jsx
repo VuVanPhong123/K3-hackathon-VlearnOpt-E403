@@ -3,11 +3,12 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PDF_PAGE_MIME } from "../constants/dragTypes";
-import { sendChatV2 } from "../services/api";
+import { deleteConversation, streamChatV2 } from "../services/api";
 import ChatPanel from "./ChatPanel";
 
 vi.mock("../services/api", () => ({
-  sendChatV2: vi.fn(),
+  deleteConversation: vi.fn(),
+  streamChatV2: vi.fn(),
 }));
 
 function dataTransfer(payload, mime = PDF_PAGE_MIME) {
@@ -38,17 +39,28 @@ function pagePayload(pageNumber, documentId = "doc-1") {
   };
 }
 
-describe("ChatPanel", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    sendChatV2.mockResolvedValue({
-      answer: "Câu trả lời từ Tutor.",
+function mockStreamAnswer(answer = "Câu trả lời từ Tutor.") {
+  streamChatV2.mockImplementation(async (payload, handlers) => {
+    handlers.onMeta?.({ conversation_id: "conversation-1", trace_id: "trace-1", mode: "GENERAL_CHAT" });
+    handlers.onDelta?.({ text: answer.slice(0, 4) });
+    handlers.onDelta?.({ text: answer.slice(4) });
+    handlers.onDone?.({
+      answer,
       conversation_id: "conversation-1",
       provider: "openai",
       model: "fake",
       fallback_used: false,
-      citations: [],
+      citations: [{ page_number: 2 }],
+      trace: { provider: "openai", model: "fake", fallback: false },
     });
+  });
+}
+
+describe("ChatPanel", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    deleteConversation.mockResolvedValue({ deleted: true });
+    mockStreamAnswer();
   });
 
   it("hiển thị giao diện tiếng Việt và không còn tính năng ngoài scope", () => {
@@ -62,19 +74,33 @@ describe("ChatPanel", () => {
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   });
 
-  it("chat khi đang mở tài liệu gửi document_id để backend tự định tuyến", async () => {
+  it("chat khi đang mở tài liệu gửi document_id và history fallback không chứa welcome", async () => {
     const user = userEvent.setup();
     render(<ChatPanel currentDocument={document} setContextAttachment={vi.fn()} />);
 
     await user.type(screen.getByLabelText("Câu hỏi cho Tutor"), "Tôi nên học thế nào?");
     await user.click(screen.getByRole("button", { name: "Gửi câu hỏi" }));
 
-    await waitFor(() => expect(sendChatV2).toHaveBeenCalledTimes(1));
-    expect(sendChatV2.mock.calls[0][0]).toMatchObject({
+    await waitFor(() => expect(streamChatV2).toHaveBeenCalledTimes(1));
+    expect(streamChatV2.mock.calls[0][0]).toMatchObject({
       document_id: "doc-1",
       context: { attached_pages: [] },
       answer_mode: "document_only",
+      history: [],
     });
+  });
+
+  it("delta nối vào một assistant bubble và done gắn citation/provider/model", async () => {
+    const user = userEvent.setup();
+    render(<ChatPanel currentDocument={document} setContextAttachment={vi.fn()} />);
+
+    await user.type(screen.getByLabelText("Câu hỏi cho Tutor"), "Giải thích giúp tôi.");
+    await user.click(screen.getByRole("button", { name: "Gửi câu hỏi" }));
+
+    expect(await screen.findByText("Câu trả lời từ Tutor.")).toBeInTheDocument();
+    expect(screen.getByText("OpenAI")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Trang 2" })).toBeInTheDocument();
+    expect(screen.getAllByText("Câu trả lời từ Tutor.")).toHaveLength(1);
   });
 
   it("drop trang tạo attachment, trang mới thay trang cũ và remove hoạt động", () => {
@@ -127,20 +153,37 @@ describe("ChatPanel", () => {
     await user.type(screen.getByLabelText("Câu hỏi cho Tutor"), "Giải thích trang này.");
     await user.click(screen.getByRole("button", { name: "Gửi câu hỏi" }));
 
-    await waitFor(() => expect(sendChatV2).toHaveBeenCalledTimes(1));
-    expect(sendChatV2.mock.calls[0][0]).toMatchObject({
+    await waitFor(() => expect(streamChatV2).toHaveBeenCalledTimes(1));
+    expect(streamChatV2.mock.calls[0][0]).toMatchObject({
       document_id: "doc-1",
       context: { attached_pages: [3] },
       answer_mode: "document_only",
     });
   });
 
-  it("đổi tài liệu reset attachment, hội thoại và lời nhắn", async () => {
+  it("nút tạo conversation mới reset UI và gọi DELETE conversation", async () => {
+    const user = userEvent.setup();
+    render(<ChatPanel currentDocument={document} setContextAttachment={vi.fn()} />);
+    await user.type(screen.getByLabelText("Câu hỏi cho Tutor"), "Câu hỏi cũ");
+    await user.click(screen.getByRole("button", { name: "Gửi câu hỏi" }));
+    await screen.findByText("Câu trả lời từ Tutor.");
+
+    await user.click(screen.getByRole("button", { name: "Tạo cuộc trò chuyện mới" }));
+
+    await waitFor(() => expect(deleteConversation).toHaveBeenCalledWith("conversation-1"));
+    expect(screen.queryByText("Câu hỏi cũ")).not.toBeInTheDocument();
+    expect(screen.getAllByText(/Xin chào!/)).toHaveLength(1);
+  });
+
+  it("đổi tài liệu xóa conversation cũ và reset attachment/history", async () => {
     const user = userEvent.setup();
     const props = { setContextAttachment: vi.fn() };
-    const { rerender } = render(
+    const { container, rerender } = render(
       <ChatPanel {...props} currentDocument={document} />,
     );
+    fireEvent.drop(container.querySelector(".chat-panel"), {
+      dataTransfer: dataTransfer(pagePayload(3)),
+    });
     await user.type(screen.getByLabelText("Câu hỏi cho Tutor"), "Câu hỏi tài liệu cũ");
     await user.click(screen.getByRole("button", { name: "Gửi câu hỏi" }));
     await screen.findByText("Câu trả lời từ Tutor.");
@@ -152,7 +195,27 @@ describe("ChatPanel", () => {
       />,
     );
 
+    await waitFor(() => expect(deleteConversation).toHaveBeenCalledWith("conversation-1"));
     expect(screen.queryByText("Câu hỏi tài liệu cũ")).not.toBeInTheDocument();
+    expect(screen.queryByText("Trang 3")).not.toBeInTheDocument();
     expect(screen.getAllByText(/Xin chào!/)).toHaveLength(1);
+  });
+
+  it("error sau partial response giữ text đã nhận và hiện thử lại", async () => {
+    const user = userEvent.setup();
+    streamChatV2.mockImplementation(async (payload, handlers) => {
+      handlers.onMeta?.({ conversation_id: "conversation-1" });
+      handlers.onDelta?.({ text: "Một phần" });
+      handlers.onError?.({ detail: "Mất kết nối", retryable: true });
+    });
+    render(<ChatPanel currentDocument={document} setContextAttachment={vi.fn()} />);
+
+    await user.type(screen.getByLabelText("Câu hỏi cho Tutor"), "Câu hỏi lỗi");
+    await user.click(screen.getByRole("button", { name: "Gửi câu hỏi" }));
+
+    expect(await screen.findByText(/Một phần/)).toBeInTheDocument();
+    expect(screen.getByText("Mất kết nối")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(screen.getByLabelText("Câu hỏi cho Tutor")).toHaveValue("Câu hỏi lỗi");
   });
 });

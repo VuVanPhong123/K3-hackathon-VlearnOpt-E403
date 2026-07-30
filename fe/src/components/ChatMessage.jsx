@@ -4,7 +4,12 @@ function providerLabel(provider, fallbackUsed) {
   return "";
 }
 
-export default function ChatMessage({ message, onCitationClick, showDebug = false }) {
+export default function ChatMessage({
+  message,
+  onCitationClick,
+  onRetry,
+  showDebug = false,
+}) {
   const isAssistant = message.role === "assistant";
   const badge = providerLabel(message.provider, message.fallbackUsed);
 
@@ -18,7 +23,21 @@ export default function ChatMessage({ message, onCitationClick, showDebug = fals
             {message.attachment.type === "visual_region" && " - Vùng hình ảnh"}
           </div>
         )}
-        <p>{message.content}</p>
+        <p>
+          {message.content}
+          {message.streaming && <span className="stream-cursor" aria-hidden="true">|</span>}
+        </p>
+        {message.statusText && !message.content && (
+          <p className="message-status">{message.statusText}</p>
+        )}
+        {message.incomplete && (
+          <div className="partial-error">
+            <span>{message.errorDetail || "Phản hồi bị gián đoạn."}</span>
+            <button type="button" onClick={() => onRetry?.(message.retryText || "")}>
+              Thử lại
+            </button>
+          </div>
+        )}
         {isAssistant && badge && <span className="provider-badge">{badge}</span>}
         {isAssistant && message.citations?.length > 0 && (
           <div className="citation-row">

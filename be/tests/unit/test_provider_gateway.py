@@ -10,9 +10,15 @@ from app.services.providers.base import (
 
 
 class FakeProvider:
-    def __init__(self, name: str, error: Exception | None = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        error: Exception | None = None,
+        stream_error_after_delta: Exception | None = None,
+    ) -> None:
         self.name = name
         self.error = error
+        self.stream_error_after_delta = stream_error_after_delta
         self.calls = 0
 
     async def generate(self, *, system_prompt: str, messages: list[dict[str, str]]) -> ProviderResult:
@@ -20,6 +26,14 @@ class FakeProvider:
         if self.error:
             raise self.error
         return ProviderResult(text="Câu trả lời", provider=self.name, model=f"fake-{self.name}")
+
+    async def stream_generate(self, *, system_prompt: str, messages: list[dict[str, str]]):
+        self.calls += 1
+        if self.error:
+            raise self.error
+        yield f"{self.name}-delta"
+        if self.stream_error_after_delta:
+            raise self.stream_error_after_delta
 
 
 @pytest.fixture
@@ -71,3 +85,37 @@ async def test_gemini_runs_directly_when_openai_key_is_empty(provider_settings, 
     assert fallback_used is False
     assert openai.calls == 0
     assert gemini.calls == 1
+
+
+@pytest.mark.asyncio
+async def test_stream_temporary_failure_before_first_delta_uses_fallback(provider_settings) -> None:
+    openai = FakeProvider("openai", ProviderTemporaryError("timeout"))
+    gemini = FakeProvider("gemini")
+    gateway = ProviderGateway(lambda: openai, lambda: gemini)
+
+    chunks = [
+        chunk
+        async for chunk in gateway.stream_generate(system_prompt="hệ thống", messages=[])
+    ]
+
+    assert [chunk.text for chunk in chunks] == ["gemini-delta"]
+    assert chunks[0].provider == "gemini"
+    assert chunks[0].fallback_used is True
+    assert openai.calls == 1
+    assert gemini.calls == 1
+
+
+@pytest.mark.asyncio
+async def test_stream_failure_after_first_delta_does_not_fallback(provider_settings) -> None:
+    openai = FakeProvider("openai", stream_error_after_delta=ProviderTemporaryError("late"))
+    gemini = FakeProvider("gemini")
+    gateway = ProviderGateway(lambda: openai, lambda: gemini)
+    received = []
+
+    with pytest.raises(ProviderTemporaryError):
+        async for chunk in gateway.stream_generate(system_prompt="hệ thống", messages=[]):
+            received.append(chunk.text)
+
+    assert received == ["openai-delta"]
+    assert openai.calls == 1
+    assert gemini.calls == 0

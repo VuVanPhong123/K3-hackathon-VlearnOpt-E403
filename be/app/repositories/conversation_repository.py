@@ -83,6 +83,21 @@ class ConversationRepository:
             items.append(item)
         return items
 
+    def count_messages(self, conversation_id: str) -> int:
+        with self.db.connect() as connection:
+            row = connection.execute(
+                "SELECT COUNT(*) AS count FROM conversation_messages WHERE conversation_id = ?",
+                (conversation_id,),
+            ).fetchone()
+        return int(row["count"]) if row else 0
+
+    def update_summary(self, conversation_id: str, summary: str) -> None:
+        with self.db.connect() as connection:
+            connection.execute(
+                "UPDATE conversations SET summary = ?, updated_at = ? WHERE conversation_id = ?",
+                (summary, now_iso(), conversation_id),
+            )
+
     def get_conversation(self, conversation_id: str) -> dict[str, Any] | None:
         with self.db.connect() as connection:
             row = connection.execute(

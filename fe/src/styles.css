@@ -517,12 +517,20 @@ body.resizing-panels {
 
 .chat-header {
   flex: 0 0 auto;
-  height: 72px;
+  min-height: 72px;
   padding: 14px 16px;
   display: flex;
   gap: 12px;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--line);
+}
+
+.chat-title-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .bot-icon {
@@ -575,6 +583,56 @@ body.resizing-panels {
 
 .message-bubble p {
   margin: 0;
+}
+
+.message-status {
+  color: var(--muted);
+}
+
+.stream-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--blue);
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.partial-error {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  color: var(--danger);
+  font-size: 12px;
+}
+
+.partial-error button,
+.reset-chat-button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--navy);
+}
+
+.partial-error button {
+  min-height: 28px;
+  padding: 3px 8px;
+}
+
+.reset-chat-button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 6px 9px;
+  font-size: 12px;
 }
 
 .message-attachment {
@@ -640,6 +698,16 @@ body.resizing-panels {
   background: white;
   text-align: center;
   font-weight: 650;
+}
+
+.inline-warning {
+  margin: 0 14px 10px;
+  color: #8a5a00;
+  background: #fff7df;
+  border: 1px solid #f2d48a;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
 }
 
 .composer {

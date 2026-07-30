@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from collections.abc import AsyncIterator
 from typing import Protocol
 
 
@@ -9,6 +10,14 @@ class ProviderResult:
     text: str
     provider: str
     model: str
+
+
+@dataclass
+class ProviderStreamChunk:
+    text: str
+    provider: str
+    model: str
+    fallback_used: bool = False
 
 
 class ProviderConfigurationError(Exception):
@@ -45,4 +54,23 @@ class LLMProvider(Protocol):
         mime_type: str,
         history: list[dict[str, str]] | None = None,
     ) -> ProviderResult:
+        ...
+
+    async def stream_generate(
+        self,
+        *,
+        system_prompt: str,
+        messages: list[dict[str, str]],
+    ) -> AsyncIterator[str]:
+        ...
+
+    async def stream_generate_multimodal(
+        self,
+        *,
+        system_prompt: str,
+        text_prompt: str,
+        image_bytes: bytes,
+        mime_type: str,
+        history: list[dict[str, str]] | None = None,
+    ) -> AsyncIterator[str]:
         ...

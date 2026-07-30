@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import AsyncIterator
 
 from google import genai
 from google.genai import errors, types
@@ -58,7 +59,10 @@ class GeminiProvider:
         mime_type: str,
         history: list[dict[str, str]] | None = None,
     ) -> ProviderResult:
-        history_prompt = "\n\n".join(f"{item['role']}: {item['content']}" for item in (history or [])[-8:])
+        history_prompt = "\n\n".join(
+            f"{item['role']}: {item['content']}"
+            for item in (history or [])[-settings.chat_recent_message_limit:]
+        )
         prompt = f"{history_prompt}\n\nuser: {text_prompt}" if history_prompt else text_prompt
         try:
             response = await asyncio.wait_for(
@@ -74,6 +78,74 @@ class GeminiProvider:
             )
             text = getattr(response, "text", "") or "Mình chưa tạo được câu trả lời từ hình ảnh hiện có."
             return ProviderResult(text=text, provider=self.provider_name, model=self.vision_model)
+        except errors.APIError as exc:
+            self._raise_provider_error(exc)
+        except (TimeoutError, asyncio.TimeoutError) as exc:
+            raise ProviderTemporaryError(str(exc)) from exc
+
+    async def stream_generate(
+        self,
+        *,
+        system_prompt: str,
+        messages: list[dict[str, str]],
+    ) -> AsyncIterator[str]:
+        prompt = "\n\n".join(f"{item['role']}: {item['content']}" for item in messages)
+        yielded = False
+        try:
+            stream = await asyncio.wait_for(
+                self.client.aio.models.generate_content_stream(
+                    model=self.model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(system_instruction=system_prompt),
+                ),
+                timeout=self.timeout + 5,
+            )
+            async for chunk in stream:
+                text = getattr(chunk, "text", "") or ""
+                if text:
+                    yielded = True
+                    yield text
+            if not yielded:
+                raise ProviderTemporaryError("Gemini returned an empty stream.")
+        except errors.APIError as exc:
+            self._raise_provider_error(exc)
+        except (TimeoutError, asyncio.TimeoutError) as exc:
+            raise ProviderTemporaryError(str(exc)) from exc
+
+    async def stream_generate_multimodal(
+        self,
+        *,
+        system_prompt: str,
+        text_prompt: str,
+        image_bytes: bytes,
+        mime_type: str,
+        history: list[dict[str, str]] | None = None,
+    ) -> AsyncIterator[str]:
+        history_prompt = "\n\n".join(
+            f"{item['role']}: {item['content']}"
+            for item in (history or [])[-settings.chat_recent_message_limit:]
+        )
+        prompt = f"{history_prompt}\n\nuser: {text_prompt}" if history_prompt else text_prompt
+        yielded = False
+        try:
+            stream = await asyncio.wait_for(
+                self.client.aio.models.generate_content_stream(
+                    model=self.vision_model,
+                    contents=[
+                        types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
+                        prompt,
+                    ],
+                    config=types.GenerateContentConfig(system_instruction=system_prompt),
+                ),
+                timeout=self.timeout + 5,
+            )
+            async for chunk in stream:
+                text = getattr(chunk, "text", "") or ""
+                if text:
+                    yielded = True
+                    yield text
+            if not yielded:
+                raise ProviderTemporaryError("Gemini returned an empty multimodal stream.")
         except errors.APIError as exc:
             self._raise_provider_error(exc)
         except (TimeoutError, asyncio.TimeoutError) as exc:

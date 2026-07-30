@@ -41,6 +41,16 @@ export async function deleteDocument(documentId) {
   return parseResponse(response);
 }
 
+export async function deleteConversation(conversationId) {
+  const response = await fetch(`${API_BASE_URL}/api/conversations/${conversationId}`, {
+    method: "DELETE",
+  });
+  if (response.status === 404) {
+    return { deleted: true, document_id: conversationId };
+  }
+  return parseResponse(response);
+}
+
 export async function sendChat(payload) {
   const response = await fetch(`${API_BASE_URL}/api/chat`, {
     method: "POST",
@@ -57,6 +67,64 @@ export async function sendChatV2(payload) {
     body: JSON.stringify(payload),
   });
   return parseResponse(response);
+}
+
+export function parseSseBlock(block) {
+  const event = { event: "message", data: "" };
+  for (const line of block.split(/\r?\n/)) {
+    if (line.startsWith("event:")) {
+      event.event = line.slice(6).trim();
+    } else if (line.startsWith("data:")) {
+      event.data += line.slice(5).trimStart();
+    }
+  }
+  if (!event.data) return null;
+  return {
+    event: event.event,
+    data: JSON.parse(event.data),
+  };
+}
+
+export async function streamChatV2(payload, handlers = {}, signal) {
+  const response = await fetch(`${API_BASE_URL}/api/v2/chat/stream`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    signal,
+  });
+  if (!response.ok || !response.body) {
+    await parseResponse(response);
+    return;
+  }
+
+  const decoder = new TextDecoder("utf-8");
+  const reader = response.body.getReader();
+  let buffer = "";
+
+  async function flushBlock(block) {
+    const parsed = parseSseBlock(block);
+    if (!parsed) return;
+    if (parsed.event === "meta") handlers.onMeta?.(parsed.data);
+    if (parsed.event === "delta") handlers.onDelta?.(parsed.data);
+    if (parsed.event === "done") handlers.onDone?.(parsed.data);
+    if (parsed.event === "error") handlers.onError?.(parsed.data);
+  }
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const blocks = buffer.split(/\r?\n\r?\n/);
+    buffer = blocks.pop() || "";
+    for (const block of blocks) {
+      await flushBlock(block);
+    }
+  }
+
+  buffer += decoder.decode();
+  if (buffer.trim()) {
+    await flushBlock(buffer);
+  }
 }
 
 export async function getDocumentStatus(documentId) {

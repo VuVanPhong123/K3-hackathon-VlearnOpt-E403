@@ -37,9 +37,10 @@ class Settings(BaseSettings):
     retrieval_fused_top_k: int = 12
     retrieval_final_top_k: int = 6
     retrieval_min_score: float = 0.2
-    chat_recent_message_limit: int = 8
-    chat_summary_trigger_messages: int = 12
-    chat_max_history_chars: int = 16000
+    chat_recent_message_limit: int = 12
+    chat_summary_trigger_messages: int = 16
+    chat_max_history_chars: int = 24000
+    chat_summary_max_chars: int = 4000
     max_evidence_chars: int = 24000
     max_query_chars: int = 2000
     max_selected_text_chars: int = 6000
