@@ -1503,6 +1503,22 @@
             },
             {
               "role": "user",
+              "content": "Câu hỏi số 5."
+            },
+            {
+              "role": "assistant",
+              "content": "Phản hồi số 5."
+            },
+            {
+              "role": "user",
+              "content": "Câu hỏi số 6."
+            },
+            {
+              "role": "assistant",
+              "content": "Phản hồi số 6."
+            },
+            {
+              "role": "user",
               "content": "Câu hỏi mới nhất."
             },
             {
@@ -1518,7 +1534,7 @@
           "call_kind": "text",
           "provider": "openai",
           "fallback_used": false,
-          "max_history_count": 8,
+          "max_history_count": 12,
           "prompt_must_contain": [
             "Câu hỏi mới nhất."
           ],
@@ -1542,8 +1558,8 @@
           {
             "provider": "openai",
             "kind": "text",
-            "payload": "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi.",
-            "history_count": 8,
+            "payload": "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi số 5.\nPhản hồi số 5.\nCâu hỏi số 6.\nPhản hồi số 6.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi.",
+            "history_count": 12,
             "image_attached": false
           }
         ],
@@ -1555,9 +1571,9 @@
           "openai"
         ],
         "provider_inputs": [
-          "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi."
+          "Bạn là VLearn Tutor, một trợ lý học tập thân thiện. Hãy trả lời bằng tiếng Việt rõ ràng, có cấu trúc và phù hợp với câu hỏi. Không tự nhận rằng câu trả lời đến từ tài liệu nếu người dùng chưa mở tài liệu phù hợp.\nCâu hỏi số 2.\nPhản hồi số 2.\nCâu hỏi số 3.\nPhản hồi số 3.\nCâu hỏi số 4.\nPhản hồi số 4.\nCâu hỏi số 5.\nPhản hồi số 5.\nCâu hỏi số 6.\nPhản hồi số 6.\nCâu hỏi mới nhất.\nPhản hồi mới nhất.\nTiếp tục giải thích giúp tôi."
         ],
-        "max_history_count": 8,
+        "max_history_count": 12,
         "all_images_attached": true,
         "no_crash": true
       },

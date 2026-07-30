@@ -112,6 +112,13 @@ Prototype CP2 gồm:
 
 Không commit `.env`, API key, `.venv`, `node_modules`, PDF upload runtime hoặc metadata runtime.
 
+## Checkpoint 4/5 Update
+
+- `spec.md` và `eval/results/latest.json` được track để nộp CP4; các kết quả eval runtime khác vẫn bị ignore.
+- Chat v2 giữ `POST /api/v2/chat` cho backward compatibility và thêm `POST /api/v2/chat/stream` cho SSE streaming.
+- Conversation context dùng rolling digest + recent window + character budget. Default: `CHAT_RECENT_MESSAGE_LIMIT=12`, `CHAT_SUMMARY_TRIGGER_MESSAGES=16`, `CHAT_MAX_HISTORY_CHARS=24000`, `CHAT_SUMMARY_MAX_CHARS=4000`.
+- Frontend có nút `Cuộc trò chuyện mới`; reset chỉ xóa conversation chat/server state, không xóa PDF hay annotation local.
+
 ### Backend - Windows PowerShell
 
 ```powershell

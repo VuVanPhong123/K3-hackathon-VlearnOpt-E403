@@ -1,127 +1,127 @@
-# AI SPEC - VLearn Tutor theo ngu canh - Nhom TODO
-Huong: [x] A - VLearn
-Loai: [x] Toi uu tinh nang co san
+# AI SPEC - VLearn Tutor theo ngữ cảnh - Nhóm TODO
+Hướng: [x] A - VLearn
+Loại: [x] Tối ưu tính năng có sẵn
 
 ## §1. User & Job
 
-- Job executor + workflow: Hoc vien dang hoc truc tiep tren VLearn, da chon mot trang, doan van ban hoac vung noi dung chua hieu va muon duoc giai thich ngay trong luc hoc. Nguoi dung dang doc PDF, keo trang vao chat, boi den van ban hoac khoanh vung hinh anh de hoi Tutor.
-- Core JTBD: Hieu dung noi dung cua phan tai lieu dang xem de tiep tuc bai hoc ma khong phai nhap lai toan bo ngu canh.
-- Problem statement: Khi yeu cau giai thich noi dung dang xem, hoc vien doi khi khong nhan duoc cau tra loi dua dung tren trang hoac vung da chon, phai cung cap lai thong tin hoac co nguy co nhan nguon khong khop.
+- Job executor + workflow: Học viên đang học trực tiếp trên VLearn, đã chọn một trang, đoạn văn bản hoặc vùng nội dung chưa hiểu và muốn được giải thích ngay trong lúc học. Người dùng đang đọc PDF, kéo trang vào chat, bôi đen văn bản hoặc khoanh vùng hình ảnh để hỏi Tutor.
+- Core JTBD: Hiểu đúng nội dung của phần tài liệu đang xem để tiếp tục bài học mà không phải nhập lại toàn bộ ngữ cảnh.
+- Problem statement: Khi yêu cầu giải thích nội dung đang xem, học viên đôi khi không nhận được câu trả lời dựa đúng trên trang hoặc vùng đã chọn, phải cung cấp lại thông tin hoặc có nguy cơ nhận nguồn không khớp.
 
-Evidence dat chuan mining B, ghi chi tiet tai `evidence/cp1-vlearn-chatlog-mining.md`:
+Evidence đạt chuẩn mining B, ghi chi tiết tại `evidence/cp1-vlearn-chatlog-mining.md`:
 
-- Nguon du lieu: `data/vlearn-pack/chatlog/chat_history_anonymized_for_hackathon.csv`.
-- Tong 2.522 messages, 1.261 question-answer turns, 1.261 tutor responses.
-- 582/1.261 tutor responses khong co citation, tuong duong 46,2%.
-- 175/1.261 tutor responses co ngon ngu retrieval/fallback, tuong duong 13,9%; 13 response trong nhom nay bi `rating=down`.
-- 164 turn co user ghi `Trang N`, tutor dung ngon ngu retrieval/fallback va `citations=[]`.
-- 239 turn co `Trang N` nhung citation khong chua selected page.
-- 32 visual/chart/image intents; 6 co failure hoac mismatch signal.
+- Nguồn dữ liệu: `data/vlearn-pack/chatlog/chat_history_anonymized_for_hackathon.csv`.
+- Tổng 2.522 messages, 1.261 question-answer turns, 1.261 tutor responses.
+- 582/1.261 tutor responses không có citation, tương đương 46,2%.
+- 175/1.261 tutor responses có ngôn ngữ retrieval/fallback, tương đương 13,9%; 13 response trong nhóm này bị `rating=down`.
+- 164 turn có user ghi `Trang N`, tutor dùng ngôn ngữ retrieval/fallback và `citations=[]`.
+- 239 turn có `Trang N` nhưng citation không chứa selected page.
+- 32 visual/chart/image intents; 6 có failure hoặc mismatch signal.
 
-Nam case nguyen van dai dien, co `conversation_id` va `turn_id`:
+Năm case nguyên văn đại diện, có `conversation_id` và `turn_id`:
 
-| Evidence | conversation_id | turn_id | Tin hieu |
+| Evidence | conversation_id | turn_id | Tín hiệu |
 |---|---|---|---|
-| CP1-E01 | C0021 | T0769 | User hoi trang 4: `(Trang 4, đoạn được chọn: "giải thích nghĩa chi tiết của trang 4") giải thích nghĩa chi tiết của trang 4`. Tutor tra loi khong tim thay noi dung cu the cho trang 4, yeu cau cung cap noi dung/tieu de, `citations=[]`, `rating=down`. |
-| CP1-E02 | C0023 | T0399 | User hoi trang 6: `(Trang 6, đoạn được chọn: "Giải thích biều đồ đc bôi đỏ") Giải thích biều đồ đc bôi đỏ`. Tutor noi ket qua tra cuu trang 6 dang tra ve noi dung trang 71, `citations=[71]`. |
-| CP1-E03 | C0001 | T0649 | User hoi trang 37: `(Trang 37, đoạn được chọn: "tóm tắt nội dung chính trong slide này") tóm tắt nội dung chính trong slide này`. Tutor khong tim thay noi dung cu the cho slide 37, `citations=[]`. |
-| CP1-E04 | C0015 | T0811 | User chon doan co `ReAct`: `(Trang 2, đoạn được chọn: "Designt Pattern ReAct là gì có lưu ý gì về nó?")`. Tutor van khong tim thay dinh nghia chi tiet ve ReAct, `citations=[]`. |
-| CP1-E05 | C0002 | T0092 | User neu ba chu de tren trang 50: `kỹ thuật tối ưu prompt, cơ chế gọi tool và cách xử lý ngữ cảnh`. Tutor van hoi lai ten chu de/muc tieu hoc tap, `citations=[]`. |
-| CP1-E10 | C0547 | T0135 | User hoi tom tat cac giai doan tren bieu do o trang 16, tutor khong tim thay noi dung lien quan va bi `rating=down`. |
+| CP1-E01 | C0021 | T0769 | User hỏi trang 4: `(Trang 4, đoạn được chọn: "giải thích nghĩa chi tiết của trang 4") giải thích nghĩa chi tiết của trang 4`. Tutor trả lời không tìm thấy nội dung cụ thể cho trang 4, yêu cầu cung cấp nội dung/tiêu đề, `citations=[]`, `rating=down`. |
+| CP1-E02 | C0023 | T0399 | User hỏi trang 6: `(Trang 6, đoạn được chọn: "Giải thích biều đồ đc bôi đỏ") Giải thích biều đồ đc bôi đỏ`. Tutor nói kết quả tra cứu trang 6 đang trả về nội dung trang 71, `citations=[71]`. |
+| CP1-E03 | C0001 | T0649 | User hỏi trang 37: `(Trang 37, đoạn được chọn: "tóm tắt nội dung chính trong slide này") tóm tắt nội dung chính trong slide này`. Tutor không tìm thấy nội dung cụ thể cho slide 37, `citations=[]`. |
+| CP1-E04 | C0015 | T0811 | User chọn đoạn có `ReAct`: `(Trang 2, đoạn được chọn: "Designt Pattern ReAct là gì có lưu ý gì về nó?")`. Tutor vẫn không tìm thấy định nghĩa chi tiết về ReAct, `citations=[]`. |
+| CP1-E05 | C0002 | T0092 | User nêu ba chủ đề trên trang 50: `kỹ thuật tối ưu prompt, cơ chế gọi tool và cách xử lý ngữ cảnh`. Tutor vẫn hỏi lại tên chủ đề/mục tiêu học tập, `citations=[]`. |
+| CP1-E10 | C0547 | T0135 | User hỏi tóm tắt các giai đoạn trên biểu đồ ở trang 16, tutor không tìm thấy nội dung liên quan và bị `rating=down`. |
 
-Gioi han cua evidence: chatlog chung minh tin hieu hanh vi va failure signal, khong chung minh hoc vien mat niem tin, khong ket luan moi citation deu sai, va khong xac dinh chac chan nguyen nhan ky thuat la retriever, page mapping hay thieu visual context.
+Giới hạn của evidence: chatlog chứng minh tín hiệu hành vi và failure signal, không chứng minh học viên mất niềm tin, không kết luận mọi citation đều sai, và không xác định chắc chắn nguyên nhân kỹ thuật là retriever, page mapping hay thiếu visual context.
 
-## §2. Impact & quyet dinh chon
+## §2. Impact & Quyết Định Chọn
 
-| Ung vien pain | Tac dong | Tan suat / evidence | Effort | Quyet dinh |
+| Ứng viên pain | Tác động | Tần suất / evidence | Effort | Quyết định |
 |---|---|---:|---|---|
-| Khong su dung dung selected page/context | Hoc vien phai nhap lai context hoac nhan cau tra loi khong co nguon kiem chung. | 164 strong cases `Trang N` + fallback + empty citations; them 239 case citation khong chua selected page. | Cao kha thi trong hackathon: gan page, text selection, retrieval va citation da co duong build ro. | Chon lam slice trung tam. |
-| Khong doc duoc bang, hinh va bieu do | Hoc vien khong hieu phan visual tren slide du da chi ra vi tri can hoi. | 32 visual/chart/image intents; 6 co failure/mismatch; CP1-E02, CP1-E10. | Trung binh: can render page/crop va provider vision; chua co OCR rieng. | Dua vao scope prototype qua page image va visual region, nhung khong chon lam pain primary doc lap. |
-| Khong tim duoc noi dung trong toan tai lieu | Hoc vien khong nhan duoc phan lien quan khi cau hoi khong gan trang cu the. | Whole-session/document summary intents 57; 37 co failure/empty citation signal. | Trung binh-den-cao: can retrieval da trang va coverage. | Dua vao backlog/secondary mode document search; khong mo thanh summarization toan bo trong CP4. |
+| Không sử dụng đúng selected page/context | Học viên phải nhập lại context hoặc nhận câu trả lời không có nguồn kiểm chứng. | 164 strong cases `Trang N` + fallback + empty citations; thêm 239 case citation không chứa selected page. | Cao khả thi trong hackathon: gắn page, text selection, retrieval và citation đã có đường build rõ. | Chọn làm slice trung tâm. |
+| Không đọc được bảng, hình và biểu đồ | Học viên không hiểu phần visual trên slide dù đã chỉ ra vị trí cần hỏi. | 32 visual/chart/image intents; 6 có failure/mismatch; CP1-E02, CP1-E10. | Trung bình: cần render page/crop và provider vision; chưa có OCR riêng. | Đưa vào scope prototype qua page image và visual region, nhưng không chọn làm pain primary độc lập. |
+| Không tìm được nội dung trong toàn tài liệu | Học viên không nhận được phần liên quan khi câu hỏi không gắn trang cụ thể. | Whole-session/document summary intents 57; 37 có failure/empty citation signal. | Trung bình đến cao: cần retrieval đa trang và coverage. | Đưa vào backlog/secondary mode document search; không mở thành summarization toàn bộ trong CP4. |
 
-Ly do chon ung vien 1: so luong case manh nhat, co nhieu quote kiem tra duoc, co downvote, phu hop lat cat mot viec la giai thich noi dung dang xem. Ung vien visual/table/figure duoc ho tro trong prototype vi co lien quan truc tiep toi selected context, nhung khong phong dai thanh OCR hoan chinh. Ung vien tim toan tai lieu va summary toan bo bi loai khoi primary slice vi scope rong hon va can danh gia coverage rieng.
+Lý do chọn ứng viên 1: số lượng case mạnh nhất, có nhiều quote kiểm tra được, có downvote, phù hợp lát cắt một việc là giải thích nội dung đang xem. Ứng viên visual/table/figure được hỗ trợ trong prototype vì có liên quan trực tiếp tới selected context, nhưng không phóng đại thành OCR hoàn chỉnh. Ứng viên tìm toàn tài liệu và summary toàn bộ bị loại khỏi primary slice vì scope rộng hơn và cần đánh giá coverage riêng.
 
-## §3. Giai phap tuong tu da nghien cuu
+## §3. Giải Pháp Tương Tự Đã Nghiên Cứu
 
-- ChatGPT voi file/PDF: flow manh o chat lien tuc va co the hoi ve file, nhung neu khong gan dung trang/nguon thi user kho kiem chung trong bai hoc. VLearn Tutor can uu tien trang/vung dang xem va citation theo page.
-- NotebookLM: dang hoc o viec hien nguon canh cau tra loi va buoc nguoi dung quay lai source. Diem can ne la khong bien prototype thanh cong cu tong hop toan bo notebook; slice nay chi giai thich page/selection/region.
-- Khanmigo / tutor hoc tap: dang hoc o giong dieu ho tro va khong dua dap an thay hoc vien trong ngu canh hoc. Diem can ne la tra loi qua tu tin khi thieu can cu.
-- ChatPDF / AskYourPDF: flow upload va hoi tai lieu nhanh, nhung thuong tap trung toan tai lieu; VLearn khac o viec user dang o dung trang, co drag page, text selection, visual region va citation click.
+- ChatGPT với file/PDF: flow mạnh ở chat liên tục và có thể hỏi về file, nhưng nếu không gắn đúng trang/nguồn thì user khó kiểm chứng trong bài học. VLearn Tutor cần ưu tiên trang/vùng đang xem và citation theo page.
+- NotebookLM: đáng học ở việc hiện nguồn cạnh câu trả lời và buộc người dùng quay lại source. Điểm cần né là không biến prototype thành công cụ tổng hợp toàn bộ notebook; slice này chỉ giải thích page/selection/region.
+- Khanmigo / tutor học tập: đáng học ở giọng điệu hỗ trợ và không đưa đáp án thay học viên trong ngữ cảnh học. Điểm cần né là trả lời quá tự tin khi thiếu căn cứ.
+- ChatPDF / AskYourPDF: flow upload và hỏi tài liệu nhanh, nhưng thường tập trung toàn tài liệu; VLearn khác ở việc user đang ở đúng trang, có drag page, text selection, visual region và citation click.
 
-Khong co so lieu moi duoc tao cho muc nay; day la tong hop flow tuong tu o muc dinh huong thiet ke.
+Không có số liệu mới được tạo cho mục này; đây là tổng hợp flow tương tự ở mức định hướng thiết kế.
 
-## §4. Thiet ke
+## §4. Thiết Kế
 
-- Lat cat mot cau: Voi hoc vien hoi ve mot trang, doan van hoac vung hinh anh trong PDF, he thong quyet dinh ngu canh do co du can cu de tra loi hay phai bao thieu thong tin, de hoc vien nhan loi giai thich co the kiem chung theo dung trang.
-- Quyet dinh AI trung tam: AI quyet dinh noi dung trong trang, doan van hoac vung hinh anh duoc chon co du can cu de tra loi hay phai thong bao chua du thong tin.
-- Muc prototype: [x] Working. Flow that: upload PDF, extract page text, build retrieval index, render page/crop image, call model provider, return answer with citation. Citation click, drag page, text selection va visual region da co trong UI. Limitations: chua authentication, chua OCR day du cho scanned PDF, dung SQLite/local storage, offline eval khong tu cham toan bo semantic correctness cua model that.
-- Model: Text primary theo env/source la OpenAI qua `OPENAI_MODEL`, default `gpt-5-mini`. Vision primary la Gemini qua `GEMINI_VISION_MODEL` hoac `GEMINI_MODEL`, default `gemini-3.5-flash-lite`. Infrastructure fallback OpenAI <-> Gemini theo `PRIMARY_TEXT_PROVIDER`, `FALLBACK_TEXT_PROVIDER`, `VISION_PRIMARY_PROVIDER`, `VISION_FALLBACK_PROVIDER` va `ENABLE_GEMINI_FALLBACK`.
-- Automation: Conditional automation. Du context thi tra loi co citation. Khong du context thi noi ro hoac hoi lai. Cost-of-error: tra loi sai hoac cite sai co the lam hoc vien hoc sai noi dung bai hoc, nen khong doan khi thieu can cu.
+- Lát cắt một câu: Với học viên hỏi về một trang, đoạn văn hoặc vùng hình ảnh trong PDF, hệ thống quyết định ngữ cảnh đó có đủ căn cứ để trả lời hay phải báo thiếu thông tin, để học viên nhận lời giải thích có thể kiểm chứng theo đúng trang.
+- Quyết định AI trung tâm: AI quyết định nội dung trong trang, đoạn văn hoặc vùng hình ảnh được chọn có đủ căn cứ để trả lời hay phải thông báo chưa đủ thông tin.
+- Mức prototype: [x] Working. Flow thật: upload PDF, extract page text, build retrieval index, render page/crop image, call model provider, return answer with citation. Citation click, drag page, text selection, visual region, streaming UI và reset conversation đã có. Limitations: chưa authentication, chưa OCR đầy đủ cho scanned PDF, dùng SQLite/local storage, offline eval không tự chấm toàn bộ semantic correctness của model thật.
+- Model: Text primary theo env/source là OpenAI qua `OPENAI_MODEL`, default `gpt-5-mini`. Vision primary là Gemini qua `GEMINI_VISION_MODEL` hoặc `GEMINI_MODEL`, default `gemini-3.5-flash-lite`. Infrastructure fallback OpenAI <-> Gemini theo `PRIMARY_TEXT_PROVIDER`, `FALLBACK_TEXT_PROVIDER`, `VISION_PRIMARY_PROVIDER`, `VISION_FALLBACK_PROVIDER` và `ENABLE_GEMINI_FALLBACK`.
+- Automation: Conditional automation. Đủ context thì trả lời có citation. Không đủ context thì nói rõ hoặc hỏi lại. Cost-of-error: trả lời sai hoặc cite sai có thể làm học viên học sai nội dung bài học, nên không đoán khi thiếu căn cứ.
 
 Non-goals:
 
-- Khong lam authentication.
-- Khong lam collaborative annotation.
-- Khong lam LMS production hoan chinh.
-- Khong gui toan bo PDF vao moi request.
-- Khong tu dua dap an bai kiem tra.
-- Khong khai OCR day du cho scanned PDF.
+- Không làm authentication.
+- Không làm collaborative annotation.
+- Không làm LMS production hoàn chỉnh.
+- Không gửi toàn bộ PDF vào mọi request.
+- Không tự đưa đáp án bài kiểm tra.
+- Không khai OCR đầy đủ cho scanned PDF.
 
-Nguyen tac HAX/PAIR ap dung:
+Nguyên tắc HAX/PAIR áp dụng:
 
-| Nguyen tac | Ap cu the vao prototype |
+| Nguyên tắc | Áp cụ thể vào prototype |
 |---|---|
-| Lam ro kha nang va gioi han | Welcome message trong `ChatPanel` noi user co the nhap cau hoi, keo trang, boi den van ban hoac khoanh vung hinh anh; spec va README ghi ro chua authentication/OCR day du. |
-| Hien thi citation dung trang | `ChatResponseV2.citations` tra `page_number`; `ChatMessage` hien nut `Trang N`; click citation goi `onCitationClick` de nhay den page card. |
-| Cho phep nguoi dung sua/chon lai context | `PageAttachment` co nut remove; context moi tu drag page/text selection/visual region thay context cu. |
-| Ho tro correction bang xoa attachment va tao cuoc tro chuyen moi | CP4 ghi viec can hoan thien nut `Cuoc tro chuyen moi` va reset context; sau CP4 se cap nhat changelog khi da implement/test. |
-| Khong doan khi thieu can cu | Prompt page/selection/document search yeu cau chi tra loi dua tren noi dung thay duoc va noi ro khi khong du bang chung. |
-| Hien thi tien trinh phan hoi bang streaming | La viec con thieu truoc CP5; se them `/api/v2/chat/stream` va UI streaming sau commit artifact CP4. |
+| Làm rõ khả năng và giới hạn | Welcome message trong `ChatPanel` nói user có thể nhập câu hỏi, kéo trang, bôi đen văn bản hoặc khoanh vùng hình ảnh; spec và README ghi rõ chưa authentication/OCR đầy đủ. |
+| Hiển thị citation đúng trang | `ChatResponseV2.citations` trả `page_number`; `ChatMessage` hiện nút `Trang N`; click citation gọi `onCitationClick` để nhảy đến page card. |
+| Cho phép người dùng sửa/chọn lại context | `PageAttachment` có nút remove; context mới từ drag page/text selection/visual region thay context cũ. |
+| Hỗ trợ correction bằng xóa attachment và tạo cuộc trò chuyện mới | `ChatPanel` có nút `Cuộc trò chuyện mới`, abort stream đang chạy, xóa conversation server theo best effort và reset local context. |
+| Không đoán khi thiếu căn cứ | Prompt page/selection/document search yêu cầu chỉ trả lời dựa trên nội dung thấy được và nói rõ khi không đủ bằng chứng. |
+| Hiển thị tiến trình phản hồi bằng streaming | `/api/v2/chat/stream` trả SSE `meta/delta/done/error`; frontend nối delta vào một assistant bubble. |
 
-## §5. Kieu loi - 4 lop cho kho + kich ban
+## §5. Kiểu Lỗi - 4 Lớp Chỗ Khó Và Kịch Bản
 
-Khong them golden-set case moi trong CP4. Cac kich ban duoi day dua tren 43 case hien co trong `eval/golden_set.jsonl`.
+Không thêm golden-set case mới trong CP4. Các kịch bản dưới đây dựa trên 43 case hiện có trong `eval/golden_set.jsonl`.
 
-| Lop | Kich ban | Trigger | Hanh vi mong muon | Hanh vi khong cho phep | Hau qua | Case lien quan |
+| Lớp | Kịch bản | Trigger | Hành vi mong muốn | Hành vi không cho phép | Hậu quả | Case liên quan |
 |---|---|---|---|---|---|---|
-| Khong co can cu | Trang khong ton tai | User hoi trang 99 | HTTP 400 noi tai lieu khong co trang 99 | Goi provider va doan noi dung | Hoc sai/cite sai | `page_out_of_range` |
-| Khong co can cu | Khong co document khi can page | User gan page nhung thieu `document_id` | HTTP 400 yeu cau co PDF | Tra loi bang tri nho chung | Mat grounding | `page_missing_document` |
-| Khong co can cu | Selection bi forge | Selected text khong khop page text | Tu choi voi loi khong khop noi dung trang PDF | Chap nhan selected text gia | Hoc vien tin vao context sai | `selection_forged` |
-| Mo ho/confidence thap | Cau hoi visual can dung trang | User hoi bieu do/hinh tren page | Dung image render/crop va page text, citation dung trang | Chi tra loi text chung | Bo sot thong tin visual | `visual_region_standard`, `page_visual_question` |
-| Mo ho/confidence thap | Cau hoi khong gan page nhung co document | User hoi RAG/multi-head | Retrieval chon page lien quan, citation | Lay active page bat ky | Citation lech nguon | `search_rag`, `search_multi_head` |
-| Ngoai pham vi/khong duoc phep | General chat bi ep search nhung khong document | `interaction_mode=document_search` khong co PDF | Roi ve general chat an toan | Bao da search tai lieu khong ton tai | Gay hieu nham | `forced_search_without_document` |
-| Ngoai pham vi/khong duoc phep | Provider request/config sai | Provider bao bad request/model/key invalid | Khong fallback, bao loi cau hinh ro | Fallback de che loi config | Kho debug va sai provider | `provider_text_request_error` |
-| Sai gay hau qua that | Citation khong dung selected page | User hoi trang cu the | Citation phai dung page da dung trong context | Citation sang page khac | Hoc vien hoc sai source | `page_real_C0021_T0769`, `page_real_C0266_T1084` |
-| Sai gay hau qua that | Fallback provider sai thoi diem | Primary loi tam thoi truoc khi co answer | Fallback chi voi temporary/rate/timeout/5xx | Fallback voi bad request hoac config | Ket qua khong nhat quan | `fallback_text_temporary`, `fallback_vision_temporary` |
-| Sai gay hau qua that | Lich su chat qua dai/ro context | History dai hon gioi han | Chi dung recent window theo config, khong dua luot cu nhat | Gui vo han hoac leak welcome/local UI | Tang token, nhieu context | `history_limit_general` |
+| Không có căn cứ | Trang không tồn tại | User hỏi trang 99 | HTTP 400 nói tài liệu không có trang 99 | Gọi provider và đoán nội dung | Học sai/cite sai | `page_out_of_range` |
+| Không có căn cứ | Không có document khi cần page | User gắn page nhưng thiếu `document_id` | HTTP 400 yêu cầu có PDF | Trả lời bằng trí nhớ chung | Mất grounding | `page_missing_document` |
+| Không có căn cứ | Selection bị forge | Selected text không khớp page text | Từ chối với lỗi không khớp nội dung trang PDF | Chấp nhận selected text giả | Học viên tin vào context sai | `selection_forged` |
+| Mơ hồ/confidence thấp | Câu hỏi visual cần đúng trang | User hỏi biểu đồ/hình trên page | Dùng image render/crop và page text, citation đúng trang | Chỉ trả lời text chung | Bỏ sót thông tin visual | `visual_region_standard`, `page_visual_question` |
+| Mơ hồ/confidence thấp | Câu hỏi không gắn page nhưng có document | User hỏi RAG/multi-head | Retrieval chọn page liên quan, citation | Lấy active page bất kỳ | Citation lệch nguồn | `search_rag`, `search_multi_head` |
+| Ngoài phạm vi/không được phép | General chat bị ép search nhưng không document | `interaction_mode=document_search` không có PDF | Rơi về general chat an toàn | Báo đã search tài liệu không tồn tại | Gây hiểu nhầm | `forced_search_without_document` |
+| Ngoài phạm vi/không được phép | Provider request/config sai | Provider báo bad request/model/key invalid | Không fallback, báo lỗi cấu hình rõ | Fallback để che lỗi config | Khó debug và sai provider | `provider_text_request_error` |
+| Sai gây hậu quả thật | Citation không đúng selected page | User hỏi trang cụ thể | Citation phải đúng page đã dùng trong context | Citation sang page khác | Học viên học sai source | `page_real_C0021_T0769`, `page_real_C0266_T1084` |
+| Sai gây hậu quả thật | Fallback provider sai thời điểm | Primary lỗi tạm thời trước khi có answer | Fallback chỉ với temporary/rate/timeout/5xx trước delta đầu | Fallback sau khi đã gửi partial delta hoặc fallback với bad request | Kết quả không nhất quán | `fallback_text_temporary`, `fallback_vision_temporary` |
+| Sai gây hậu quả thật | Lịch sử chat quá dài/rò context | History dài hơn giới hạn | Chỉ dùng recent window theo config, không đưa lượt cũ nhất | Gửi vô hạn hoặc leak welcome/local UI | Tăng token, nhiễu context | `history_limit_general` |
 
-## §6. Bon duong di cua trai nghiem
+## §6. Bốn Đường Đi Của Trải Nghiệm
 
-- Happy path: User mo PDF, keo mot trang hoac chon text/region, hoi. Backend validate document/page/selection, tao context, goi provider text hoac multimodal, luu conversation va tra answer kem citation. Case: `page_attached_standard`, `selection_valid`, `visual_region_standard`.
-- Low-confidence: User hoi noi dung co the can tim trong toan tai lieu. Backend retrieval cac page lien quan; neu evidence yeu, prompt yeu cau noi ro khong du thong tin. Case: `search_grounded_abstention`.
-- Failure/no evidence: Trang ngoai range, thieu document, selection khong khop hoac provider chua co key. He thong tra loi loi ro rang, khong goi model khi validation fail. Case: `page_out_of_range`, `page_missing_document`, `selection_forged`, `provider_credentials_missing`.
-- Correction: User xoa attachment, chon lai page/text/region hoac tao chat moi. CP4 hien da co remove attachment; nut tao chat moi va xoa remote conversation la viec con thieu truoc CP5.
-- Ngoai pham vi: Khi user ep document search ma khong co document, he thong khong gia vo co tai lieu va xu ly nhu general chat. Case: `forced_search_without_document`.
-- Visual/table/figure: Page chat va visual region gui image bytes cho vision provider; table/figure/chart co citation page. Case: `page_visual_question`, `search_table_comparison`, `visual_real_C0547_T0135`.
-- Doi tai lieu: Hien tai frontend reset local chat/attachment khi `currentDocument.id` thay doi; CP5 can xoa conversation server cu theo best effort va khong mang context cu sang document moi.
-- Tao chat moi: CP5 can them nut `Cuoc tro chuyen moi`, abort stream dang chay, xoa conversation server neu co, reset messages va focus textarea.
+- Happy path: User mở PDF, kéo một trang hoặc chọn text/region, hỏi. Backend validate document/page/selection, tạo context, gọi provider text hoặc multimodal, lưu conversation và trả answer kèm citation. Case: `page_attached_standard`, `selection_valid`, `visual_region_standard`.
+- Low-confidence: User hỏi nội dung có thể cần tìm trong toàn tài liệu. Backend retrieval các page liên quan; nếu evidence yếu, prompt yêu cầu nói rõ không đủ thông tin. Case: `search_grounded_abstention`.
+- Failure/no evidence: Trang ngoài range, thiếu document, selection không khớp hoặc provider chưa có key. Hệ thống trả lỗi rõ ràng, không gọi model khi validation fail. Case: `page_out_of_range`, `page_missing_document`, `selection_forged`, `provider_credentials_missing`.
+- Correction: User xóa attachment, chọn lại page/text/region hoặc tạo chat mới. Nút tạo chat mới abort stream đang chạy, xóa conversation server theo best effort, reset messages/attachment và focus textarea.
+- Ngoài phạm vi: Khi user ép document search mà không có document, hệ thống không giả vờ có tài liệu và xử lý như general chat. Case: `forced_search_without_document`.
+- Visual/table/figure: Page chat và visual region gửi image bytes cho vision provider; table/figure/chart có citation page. Case: `page_visual_question`, `search_table_comparison`, `visual_real_C0547_T0135`.
+- Đổi tài liệu: Khi `currentDocument.id` thay đổi, frontend abort stream cũ, xóa conversation server cũ theo best effort, clear attachment/history và mở chat mới; không xóa PDF hay annotation.
+- Tạo chat mới: Nút `Cuộc trò chuyện mới` reset context chat và server conversation; không xóa PDF, document metadata, annotation hoặc panel width.
 
-## §7. Kiem thu
+## §7. Kiểm Thử
 
-Golden set hien co 43 case, giu nguyen tong so case trong CP4. Trong do 10 case duoc chuyen the tu chatlog VLearn da an danh va 33 case tong hop. Khong them golden case moi.
+Golden set hiện có 43 case, giữ nguyên tổng số case. Trong đó 10 case được chuyển thể từ chatlog VLearn đã ẩn danh và 33 case tổng hợp. Không thêm golden case mới; chỉ cập nhật case history hiện có từ `max_history_count=8` sang `12` để khớp default mới.
 
-Chieu chat luong va dinh nghia pass/fail:
+Chiều chất lượng và định nghĩa pass/fail:
 
-- Status accuracy: status code dung voi expected.
-- Mode accuracy: routing dung `GENERAL_CHAT`, `PAGE_CHAT`, `TEXT_SELECTION_CHAT`, `VISUAL_REGION_CHAT`, `DOCUMENT_SEARCH_CHAT`.
-- Page context accuracy: page dung exact hoac include required page.
-- Citation accuracy: citation page dung expected.
-- Provider invocation/media path: goi provider dung/khoi goi dung text hoac multimodal; image path co image khi can.
-- Fallback accuracy: provider va `fallback_used` dung, attempted providers dung voi expected.
-- Prompt context accuracy: prompt chua/chua khong chua cac chuoi bat buoc/cam.
-- History limit accuracy: khong vuot gioi han lich su theo case.
-- UTF-8 response accuracy: answer/lỗi co dau tieng Viet.
-- No crash: runner khong crash.
+- Status accuracy: status code đúng với expected.
+- Mode accuracy: routing đúng `GENERAL_CHAT`, `PAGE_CHAT`, `TEXT_SELECTION_CHAT`, `VISUAL_REGION_CHAT`, `DOCUMENT_SEARCH_CHAT`.
+- Page context accuracy: page đúng exact hoặc include required page.
+- Citation accuracy: citation page đúng expected.
+- Provider invocation/media path: gọi provider đúng/không gọi đúng text hoặc multimodal; image path có image khi cần.
+- Fallback accuracy: provider và `fallback_used` đúng, attempted providers đúng với expected.
+- Prompt context accuracy: prompt chứa/không chứa các chuỗi bắt buộc/cấm.
+- History limit accuracy: không vượt giới hạn lịch sử theo case.
+- UTF-8 response accuracy: answer/lỗi có dấu tiếng Việt.
+- No crash: runner không crash.
 
 Quality bar trong `eval/run_eval.py`:
 
@@ -140,42 +140,39 @@ Quality bar trong `eval/run_eval.py`:
 | utf8_response_accuracy | 1.00 | 1.00 |
 | no_crash_rate | 1.00 | 1.00 |
 
-Ket qua latest CP4 tu `eval/results/latest.json`: 43/43 case pass, `quality_bar_passed=true`, `failed_cases=[]`.
+Kết quả latest sau implementation từ `eval/results/latest.json`: 43/43 case pass, `quality_bar_passed=true`, `failed_cases=[]`.
 
-Offline eval chay `OrchestrationService`, retrieval va fake provider. No kiem tra contract, routing, page, media path, fallback, UTF-8 va history. No khong thay the viec cham chat luong ngon ngu cua model that va khong phai bang chung tuyet doi rang model tra loi dung kien thuc. Live smoke can ghi rieng khi co API key; tai CP4 chua ghi PASS live provider neu test bi skip.
+Offline eval chạy `OrchestrationService`, retrieval và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Backend unit/integration tests bổ sung streaming và conversation memory bằng fake streaming providers. Live smoke cần ghi riêng khi có API key; không ghi PASS live provider nếu test bị skip.
 
-## §8. Phan cong & ke hoach
+## §8. Phân Công & Kế Hoạch
 
-Thanh vien va phan cong:
+Thanh viên và phân công:
 
-| Thanh vien | MSSV | Phan cong |
+| Thành viên | MSSV | Phân công |
 |---|---|---|
-| Vu Van Phong | 2A202601647 | Spec owner, dieu phoi checkpoint, tong hop changelog. |
-| Doan Nhat Nam | 2A202601123 | Evidence/mining, kiem tra so lieu va quote co `conversation_id/turn_id`. |
-| Ha Duy Anh | 2A202601511 | JTBD, problem statement, impact table, pain candidates bi loai. |
-| Nguyen Quang Vinh | 2A202601517 | Prompt, failure taxonomy, HAX/PAIR va provider behavior. |
-| Hoang Le Minh | 2A202601653 | Frontend flow: PDF workspace, chat panel, attachment, reset/streaming UI. |
-| Pham Sy Duc | 2A202601601 | Eval/validation/demo, golden set, latest result va live smoke plan. |
+| Vũ Văn Phong | 2A202601647 | Spec owner, điều phối checkpoint, tổng hợp changelog. |
+| Đoàn Nhật Nam | 2A202601123 | Evidence/mining, kiểm tra số liệu và quote có `conversation_id/turn_id`. |
+| Hà Duy Anh | 2A202601511 | JTBD, problem statement, impact table, pain candidates bị loại. |
+| Nguyễn Quang Vinh | 2A202601517 | Prompt, failure taxonomy, HAX/PAIR và provider behavior. |
+| Hoàng Lê Minh | 2A202601653 | Frontend flow: PDF workspace, chat panel, attachment, reset/streaming UI. |
+| Phạm Sỹ Đức | 2A202601601 | Eval/validation/demo, golden set, latest result và live smoke plan. |
 
-Willing users: TODO - chua co ten nguoi dung ngoai nhom duoc xac nhan trong repo. Day la blocker CP5. Can toi thieu 5 nguoi validation, uu tien 3 willing users tu CP1 neu xac nhan duoc.
+Willing users: TODO - chưa có tên người dùng ngoài nhóm được xác nhận trong repo. Đây là blocker CP5. Cần tối thiểu 5 người validation, ưu tiên 3 willing users từ CP1 nếu xác nhận được.
 
-Viec con thieu truoc CP5:
+Việc còn thiếu trước CP5:
 
-- Streaming response.
-- Rolling conversation context.
-- Reset conversation.
 - Live smoke.
-- Validation it nhat nam nguoi.
+- Validation ít nhất năm người.
 - Dry run.
 
-Nhung viec tren da duoc ghi trong spec o CP4, nen khi hoan thien se la hoan thien scope da khai, khong phai mo feature moi tuy tien.
+Những việc trên đã được ghi trong spec ở CP4, nên khi hoàn thiện sẽ là hoàn thiện scope đã khai, không phải mở feature mới tùy tiện.
 
 ## §9. Changelog
 
-| Thoi diem | Doi gi | Vi sao |
+| Thời điểm | Đổi gì | Vì sao |
 |---|---|---|
-| CP1 | Chot pain selected-context/retrieval failure va canvas VLearn Tutor. | Mining cho thay 164 strong cases `Trang N` + fallback + empty citation va 239 mismatch citation page. |
-| CP2 | Co prototype PDF/chat: upload PDF, doc page, chat voi provider, drag page vao chat. | Can flow bam duoc de chung minh hoc vien hoi theo context dang xem. |
-| CP3 | Mo rong multimodal, text selection, visual region, retrieval va eval offline 43 case. | Bao phu page, selection, region, document search, provider fallback va UTF-8. |
-| CP4 | Track `eval/results/latest.json`, chot quality bar va spec gan cuoi; ghi ke hoach hoan thien context/streaming/reset. | Artifact CP4 can duoc commit/push truoc khi them streaming; latest result 43/43 pass. |
-| Sau CP4 | TODO: them streaming/reset/context memory vao changelog sau khi implement va test pass. | Chua duoc khai la hoan thanh trong artifact CP4. |
+| CP1 | Chốt pain selected-context/retrieval failure và canvas VLearn Tutor. | Mining cho thấy 164 strong cases `Trang N` + fallback + empty citation và 239 mismatch citation page. |
+| CP2 | Có prototype PDF/chat: upload PDF, đọc page, chat với provider, drag page vào chat. | Cần flow bấm được để chứng minh học viên hỏi theo context đang xem. |
+| CP3 | Mở rộng multimodal, text selection, visual region, retrieval và eval offline 43 case. | Bao phủ page, selection, region, document search, provider fallback và UTF-8. |
+| CP4 | Track `eval/results/latest.json`, chốt quality bar và spec gần cuối; ghi kế hoạch hoàn thiện context/streaming/reset. | Artifact CP4 cần được commit/push trước khi thêm streaming; latest result 43/43 pass. |
+| Sau CP4 | Thêm `/api/v2/chat/stream`, provider streaming, fallback rule trước delta đầu, rolling conversation digest + recent window 12 + character budget, nút `Cuộc trò chuyện mới`, document-switch cleanup và tests fake streaming provider. | Hoàn thiện các việc CP4 đã ghi là cần làm trước CP5 mà không thêm golden case mới. |
