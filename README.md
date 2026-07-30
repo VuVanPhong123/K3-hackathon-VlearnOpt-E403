@@ -129,19 +129,19 @@ PDF eval không commit vào repo. Runner dùng `PageExtractionService`, `Section
 - Chưa OCR đầy đủ cho scanned PDF; visual flow dựa vào ảnh page/crop và text extraction hiện có.
 - SQLite/local storage phù hợp prototype, chưa phải production deployment.
 - Document search chỉ truy hồi top-k chunks, không khẳng định đã đọc toàn bộ PDF ở mỗi câu hỏi.
-- Validation với người thật và quote nguyên văn chưa có trong repo, đang `BLOCKED_BY_REAL_USER_DATA`.
-- Reflection cá nhân đã có bản draft theo phân công trong repo; từng thành viên nên đọc lại nhanh trước khi nộp.
-- `demo-slides.pdf` chưa có trong repo; người dùng sẽ tự bổ sung slide, task này không tạo hoặc sửa slide.
+- Prototype đã được thử nghiệm với 7 người vào ngày 30/07/2026. Báo cáo tại `validation/README.md` đã ghi nhận đủ 7 quote nguyên văn, 2 willing user và các chủ đề feedback; 5 người còn lại chỉ test nhanh, không phải willing user.
+- Reflection cá nhân đã được nhóm kiểm tra theo phân công trong repo.
+- `demo-slides.pdf` do người dùng tự bổ sung ngoài phạm vi dọn repo này; task này không tạo hoặc sửa slide.
 - Data pack gốc đã bị xóa khỏi working tree; các evidence còn lại chỉ giữ quote ngắn và mã nguồn tham chiếu.
 
 ## Artifact status
 
 | Artifact | Trạng thái | Ghi chú |
 |---|---|---|
-| `spec.md` | PARTIAL | Đủ spec chính, còn blocked willing users/validation thật |
+| `spec.md` | DONE | Đủ spec chính, đã có validation 7 người, 7 quote và 2 willing user |
 | `codebase/` | PASS | Chứa source backend/frontend chạy prototype |
 | `evidence/` | PASS | Có mining report với số liệu và quote nguồn ngắn |
 | `eval/` | PASS | Có golden set, runner, latest result và term regression |
-| `validation/` | BLOCKED_BY_REAL_USER_DATA | Có template, chưa có người thử/quote thật |
-| `reflection/` | DRAFT_FILLED | Có bản draft từng thành viên theo phân công; cần thành viên xác nhận lần cuối |
-| Slide | MISSING | Người dùng tự bổ sung `demo-slides.pdf`; Codex không tạo/sửa slide trong cleanup này |
+| `validation/` | DONE | Đã test 7 người ngày 30/07/2026; đã ghi 7 quote nguyên văn, 2 willing user và feedback tổng hợp |
+| `reflection/` | DONE | Reflection cá nhân đã được nhóm kiểm tra theo phân công |
+| Slide | USER_HANDLED | Người dùng tự bổ sung `demo-slides.pdf`; Codex không tạo/sửa slide trong cleanup này |

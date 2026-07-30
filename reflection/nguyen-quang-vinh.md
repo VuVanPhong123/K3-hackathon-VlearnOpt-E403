@@ -1,6 +1,6 @@
 # Reflection - Nguyễn Quang Vinh
 
-Trạng thái: `DRAFT_NEEDS_MEMBER_CONFIRMATION`.
+Trạng thái: `DONE`.
 
 - Họ tên: Nguyễn Quang Vinh
 - MSSV: 2A202601517

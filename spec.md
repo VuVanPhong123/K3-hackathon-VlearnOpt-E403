@@ -1,12 +1,12 @@
 # AI SPEC - VLearn Tutor theo ngữ cảnh - Nhóm VlearnOpt
 
 Tên nhóm chính thức: VlearnOpt.
-Hướng: [x] A - VLearn
-Loại: [x] Tối ưu tính năng có sẵn
+Hướng: A - VLearn
+Loại: Tối ưu tính năng có sẵn
 
 ## §1. User & Job
 
-- Job executor + workflow: Học viên đang học trực tiếp trên VLearn, đã chọn một trang, đoạn văn bản hoặc vùng nội dung chưa hiểu và muốn được giải thích ngay trong lúc học. Người dùng đang đọc PDF, kéo trang vào chat, bôi đen văn bản hoặc khoanh vùng hình ảnh để hỏi Tutor.
+- Job executor + workflow: Học viên đang học trực tiếp trên VLearn, đã chọn một trang, đoạn văn bản hoặc vùng nội dung chưa hiểu và muốn được giải thích ngay trong lúc học. Người dùng đang đọc PDF, kéo trang vào chat, bôi đen văn bản hoặc crop vùng hình ảnh để hỏi Tutor.
 - Core JTBD: Hiểu đúng nội dung của phần tài liệu đang xem để tiếp tục bài học mà không phải nhập lại toàn bộ ngữ cảnh.
 - Problem statement: Khi yêu cầu giải thích nội dung đang xem, học viên đôi khi không nhận được câu trả lời dựa đúng trên trang hoặc vùng đã chọn, phải cung cấp lại thông tin hoặc có nguy cơ nhận nguồn không khớp.
 
@@ -74,7 +74,7 @@ Nguyên tắc HAX/PAIR áp dụng:
 
 | Nguyên tắc | Áp cụ thể vào prototype |
 |---|---|
-| Làm rõ khả năng và giới hạn | Welcome message trong `ChatPanel` nói user có thể nhập câu hỏi, kéo trang, bôi đen văn bản hoặc khoanh vùng hình ảnh; spec và README ghi rõ chưa authentication/OCR đầy đủ. |
+| Làm rõ khả năng và giới hạn | Welcome message trong `ChatPanel` nói user có thể nhập câu hỏi, kéo trang, bôi đen văn bản hoặc crop vùng hình ảnh; spec và README ghi rõ chưa authentication/OCR đầy đủ. |
 | Hiển thị citation đúng trang | `ChatResponseV2.citations` trả `page_number`; `ChatMessage` hiện nút `Trang N`; click citation gọi `onCitationClick` để nhảy đến page card. |
 | Cho phép người dùng sửa/chọn lại context | `PageAttachment` có nút remove; context mới từ drag page/text selection/visual region thay context cũ. |
 | Hỗ trợ correction bằng xóa attachment và tạo cuộc trò chuyện mới | `ChatPanel` có nút `Cuộc trò chuyện mới`, abort stream đang chạy, xóa conversation server theo best effort và reset local context. |
@@ -95,7 +95,7 @@ Không thêm golden-set case mới trong CP4. Các kịch bản dưới đây d�
 | Ngoài phạm vi/không được phép | General chat bị ép search nhưng không document | `interaction_mode=document_search` không có PDF | Rơi về general chat an toàn | Báo đã search tài liệu không tồn tại | Gây hiểu nhầm | `forced_search_without_document` |
 | Ngoài phạm vi/không được phép | Provider request/config sai | Provider báo bad request/model/key invalid | Không fallback, báo lỗi cấu hình rõ | Fallback để che lỗi config | Khó debug và sai provider | `provider_text_request_error` |
 | Sai gây hậu quả thật | Citation không đúng selected page | User hỏi trang cụ thể | Citation phải đúng page đã dùng trong context | Citation sang page khác | Học viên học sai source | `page_real_C0021_T0769`, `page_real_C0266_T1084` |
-| Sai gây hậu quả thật | Fallback provider sai thời điểm | Primary lỗi tạm thời trước khi có answer | Fallback chỉ với temporary/rate/timeout/5xx trước delta đầu | Fallback sau khi đã gửi partial delta hoặc fallback với bad request | Kết quả không nhất quán | `fallback_text_temporary`, `fallback_vision_temporary` |
+| Sai gây hậu quả thật | Fallback provider sai thời điểm | Primary lỗi tạm thời trước khi có answer | Fallback chỉ với temporary/rate/timeout/5xx trước delta đầu | Fallback sau khi đã gửi delta đầu hoặc fallback với bad request | Kết quả không nhất quán | `fallback_text_temporary`, `fallback_vision_temporary` |
 | Sai gây hậu quả thật | Lịch sử chat quá dài/rò context | History dài hơn giới hạn | Chỉ dùng recent window theo config, không đưa lượt cũ nhất | Gửi vô hạn hoặc leak welcome/local UI | Tăng token, nhiễu context | `history_limit_general` |
 | Mơ hồ/confidence thấp | Hỏi định nghĩa thuật ngữ có typo nhỏ | User hỏi `double diamnd là gì` khi document có `Double Diamond` rõ ràng | Sửa typo bằng candidate lấy từ chính document, vẫn giữ query gốc trong plan | Hardcode thuật ngữ hoặc tự sửa sang từ không có trong document | Không tìm thấy evidence hoặc cite sai | `term_double_diamond_typo`, `term_parallelization_typo` |
 | Không có căn cứ | Hỏi thuật ngữ không tồn tại | User hỏi `xyzabc là gì` | Không tạo citation, prompt báo không tìm thấy bằng chứng phù hợp | Trả kiến thức chung trong document-only hoặc cite giả | Học viên tin nhầm tài liệu có nội dung đó | `term_nonexistent`, `test_document_term_no_evidence_does_not_create_fake_citation` |
@@ -168,13 +168,18 @@ Thành viên và phân công:
 | Hoàng Lê Minh | 2A202601653 | Frontend flow: PDF workspace, chat panel, attachment, reset/streaming UI. |
 | Phạm Sỹ Đức | 2A202601601 | Eval/validation/demo, golden set, latest result và demo readiness. |
 
-Willing users: TODO - chưa có tên người dùng ngoài nhóm được xác nhận trong repo. Đây là blocker CP5 và R6, cần người thật ngoài nhóm. Cần tối thiểu 5 người validation, ưu tiên 3 willing users từ CP1 nếu xác nhận được. Không có quote validation thật trong repo nên không đánh dấu R6 PASS.
+Validation: `DONE` - đã có 7 người tham gia thử nghiệm prototype vào ngày 30/07/2026. Tất cả đã thử các chức năng chính: mở hoặc tải tài liệu PDF, hỏi đáp theo nội dung tài liệu, sử dụng ngữ cảnh trang/đoạn/vùng nội dung, tìm kiếm trong tài liệu và kiểm tra citation. Báo cáo đã ghi nhận đủ 7 quote nguyên văn và 2 willing user; chi tiết người tham gia nằm ở `validation/README.md`.
 
-Việc còn thiếu trước khi nộp:
+Chủ đề feedback: sản phẩm nhìn chung sử dụng được và các luồng chính hoạt động; giao diện cần cải thiện để trực quan hơn; thời gian xử lý hoặc phản hồi đôi lúc còn chậm; thiếu streaming làm trải nghiệm chat khó chịu; truy hồi thuật ngữ cần trích xuất chính xác và hỗ trợ gõ sai chính tả; crop ảnh/sơ đồ hoặc kéo trang vào chat là hướng phù hợp hơn khoanh/vẽ để hỏi; prototype đã cải thiện pain point VLearn đã chọn, đặc biệt ở việc hỏi nội dung tài liệu, sử dụng đúng ngữ cảnh và kiểm tra nguồn/citation; workflow model có rủi ro chi phí nếu scale lớn.
 
-- Validation ít nhất năm người ngoài nhóm, có tên/vai trò/quote thật.
-- Bổ sung `demo-slides.pdf` sau khi nhóm tự hoàn thiện slide pitching.
-- Mỗi thành viên đọc lại reflection draft và xác nhận nội dung cá nhân.
+Thay đổi sau validation: nhóm đã cập nhật giao diện, bổ sung trích xuất thuật ngữ chính xác hơn để tìm kỹ trong tài liệu, hỗ trợ gõ sai chính tả ở retrieval, quyết định bỏ phần khoanh tròn để hỏi bằng crop ảnh hoặc kéo trang vào chat, và bổ sung response streaming để cải thiện trải nghiệm. Không biến các nhận xét này thành metric định lượng nếu chưa có đo lường.
+
+Quote nguyên văn: đã có đủ 7/7. Willing user: đã xác nhận Lê Tiến Minh và Nguyễn Huy Nghĩa; 5 người còn lại chỉ test nhanh, không phải willing user.
+
+Việc ngoài phạm vi tài liệu repo:
+
+- `demo-slides.pdf` do người dùng tự bổ sung sau khi nhóm hoàn thiện slide pitching.
+- Reflection cá nhân đã được nhóm kiểm tra theo phân công.
 
 Không cần thêm live provider artifact cho đợt nộp này; nếu có API key trong lúc demo, chỉ dùng qua `.env` local và không commit key/log nhạy cảm.
 
