@@ -93,12 +93,12 @@ export default function PdfPageCard({
     <article
       className="page-card"
       data-page-number={pageNumber}
-      draggable={true}
-      onDragStart={handleDragStart}
     >
       <div className="page-card-header">
         <span>Trang {pageNumber}</span>
-        <span className="drag-handle"><GripVertical size={16} /> Kéo trang này vào Tutor</span>
+        <span className="drag-handle" draggable={true} onDragStart={handleDragStart}>
+          <GripVertical size={16} /> Kéo trang này vào Tutor
+        </span>
       </div>
       <div className="page-shell" style={{ width }}>
         <Page

@@ -16,6 +16,9 @@ export default function PdfWorkspace({
   const scrollRef = useRef(null);
   const [pageCount, setPageCount] = useState(currentDocument?.page_count || 0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [documentReady, setDocumentReady] = useState(false);
   const [tool, setTool] = useState("pointer");
   const [color, setColor] = useState("#2563eb");
   const [strokeWidth, setStrokeWidth] = useState(4);
@@ -24,10 +27,58 @@ export default function PdfWorkspace({
   const { getStrokes, addStroke, undoPage, clearPage, eraseNearPoint } = usePageAnnotations(currentDocument?.id);
 
   useEffect(() => {
-    setPageCount(currentDocument?.page_count || 0);
+    setPageCount(0);
     setCurrentPage(1);
+    setDocumentReady(false);
     setLoadError("");
-  }, [currentDocument?.id, currentDocument?.page_count]);
+  }, [currentDocument?.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    let objectUrl = "";
+
+    async function loadPdfBlob() {
+      if (!currentDocument?.id) {
+        setPdfUrl("");
+        return;
+      }
+
+      setPdfLoading(true);
+      setDocumentReady(false);
+      setLoadError("");
+      try {
+        const response = await fetch(getDocumentFileUrl(currentDocument.id));
+        if (!response.ok) {
+          throw new Error("Không thể tải PDF. Hãy thử lại.");
+        }
+        const blob = await response.blob();
+        objectUrl = URL.createObjectURL(blob);
+        if (!cancelled) {
+          setPdfUrl(objectUrl);
+        } else {
+          URL.revokeObjectURL(objectUrl);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setPdfUrl("");
+          setLoadError(error?.message || "Không thể tải PDF. Hãy thử lại.");
+        }
+      } finally {
+        if (!cancelled) {
+          setPdfLoading(false);
+        }
+      }
+    }
+
+    loadPdfBlob();
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [currentDocument?.id]);
 
   useEffect(() => {
     const root = scrollRef.current;
@@ -60,6 +111,15 @@ export default function PdfWorkspace({
   }
 
   const pageWidth = Math.round(720 * zoom);
+  const jumpToPage = (pageNumber) => {
+    if (!scrollRef.current || !pageCount) return;
+    const nextPage = Math.min(Math.max(pageNumber, 1), pageCount);
+    const target = scrollRef.current.querySelector(`[data-page-number="${nextPage}"]`);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      setCurrentPage(nextPage);
+    }
+  };
 
   return (
     <section className="pdf-workspace">
@@ -77,22 +137,31 @@ export default function PdfWorkspace({
         onImport={() => uploadInputRef.current?.click()}
         onUndo={() => undoPage(currentPage)}
         onClear={() => clearPage(currentPage)}
+        onPreviousPage={() => jumpToPage(currentPage - 1)}
+        onNextPage={() => jumpToPage(currentPage + 1)}
+        onJumpPage={jumpToPage}
       />
 
       {loadError && <div className="workspace-error">{loadError}</div>}
 
       <div className="pdf-scroll" ref={scrollRef}>
-        <Document
-          file={getDocumentFileUrl(currentDocument.id)}
+        {pdfLoading && <div className="pdf-loading">Đang tải PDF...</div>}
+        {!pdfLoading && pdfUrl && (
+          <Document
+          file={pdfUrl}
           loading={<div className="pdf-loading">Đang tải PDF...</div>}
-          error={<div className="pdf-loading error">Không thể tải PDF. Hãy thử lại.</div>}
+          error={<div className="pdf-loading error">{loadError || "Không thể tải PDF. Hãy thử lại."}</div>}
           onLoadSuccess={({ numPages }) => {
             setPageCount(numPages);
+            setDocumentReady(true);
             setLoadError("");
           }}
-          onLoadError={() => setLoadError("Không thể tải PDF. Hãy thử lại.")}
+          onLoadError={(error) => {
+            setDocumentReady(false);
+            setLoadError(error?.message || "Không thể tải PDF. Hãy thử lại.");
+          }}
         >
-          {Array.from({ length: pageCount }, (_, index) => (
+          {documentReady && Array.from({ length: pageCount }, (_, index) => (
             <PdfPageCard
               key={`${currentDocument.id}-${index + 1}`}
               document={currentDocument}
@@ -106,7 +175,8 @@ export default function PdfWorkspace({
               eraseNearPoint={eraseNearPoint}
             />
           ))}
-        </Document>
+          </Document>
+        )}
       </div>
     </section>
   );

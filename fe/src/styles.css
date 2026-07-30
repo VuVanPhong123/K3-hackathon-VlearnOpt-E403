@@ -25,6 +25,13 @@ body {
   background: var(--bg);
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
 button,
 input,
 textarea,
@@ -44,18 +51,21 @@ button:disabled {
 .app-shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 420px;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
 .main-area {
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--line);
+  overflow: hidden;
 }
 
 .workspace-header {
+  flex: 0 0 auto;
   min-height: 72px;
   padding: 14px 20px;
   background: var(--surface);
@@ -128,6 +138,7 @@ button:disabled {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .empty-state {
@@ -166,6 +177,7 @@ button:disabled {
 }
 
 .pdf-toolbar {
+  flex: 0 0 auto;
   min-height: 58px;
   display: flex;
   align-items: center;
@@ -241,9 +253,13 @@ button:disabled {
 
 .pdf-scroll {
   min-height: 0;
+  height: 100%;
   flex: 1;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: scroll;
   padding: 22px;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .react-pdf__Document {
@@ -278,6 +294,27 @@ button:disabled {
   color: var(--muted);
   font-weight: 500;
   font-size: 13px;
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.page-jump label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.page-jump select {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 10px;
+  background: white;
+  color: var(--text);
 }
 
 .page-shell {
@@ -318,11 +355,13 @@ button:disabled {
 }
 
 .chat-panel {
-  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   background: var(--surface);
   position: relative;
+  overflow: hidden;
 }
 
 .chat-panel.drag-over {
@@ -332,6 +371,7 @@ button:disabled {
 }
 
 .chat-header {
+  flex: 0 0 auto;
   height: 72px;
   padding: 14px 16px;
   display: flex;
@@ -423,6 +463,7 @@ button:disabled {
 }
 
 .composer {
+  flex: 0 0 auto;
   border-top: 1px solid var(--line);
   padding: 14px;
   display: grid;
@@ -493,10 +534,11 @@ button:focus-visible,
   .app-shell {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(58vh, 1fr) minmax(360px, 42vh);
+    overflow: hidden;
   }
 
   .chat-panel {
-    height: auto;
+    height: 100%;
     min-height: 360px;
     border-top: 1px solid var(--line);
   }

@@ -1,4 +1,6 @@
 import {
+  ChevronDown,
+  ChevronUp,
   Eraser,
   Highlighter,
   MousePointer2,
@@ -34,6 +36,9 @@ export default function PdfToolbar({
   onImport,
   onUndo,
   onClear,
+  onPreviousPage,
+  onNextPage,
+  onJumpPage,
 }) {
   const chooseTool = (value) => tool === value ? "tool-button active" : "tool-button";
   return (
@@ -97,6 +102,41 @@ export default function PdfToolbar({
       </div>
       <div className="page-indicator">
         Trang {currentPage || 0} / {pageCount || 0}
+      </div>
+      <div className="toolbar-group page-jump">
+        <button
+          className="tool-button"
+          onClick={onPreviousPage}
+          disabled={!pageCount || currentPage <= 1}
+          title="Lên trang trước"
+          aria-label="Lên trang trước"
+        >
+          <ChevronUp size={18} />
+        </button>
+        <label>
+          <span>Đi tới</span>
+          <select
+            value={pageCount ? currentPage : ""}
+            disabled={!pageCount}
+            onChange={(event) => onJumpPage(Number(event.target.value))}
+            aria-label="Chọn trang PDF"
+          >
+            {Array.from({ length: pageCount }, (_, index) => index + 1).map((page) => (
+              <option key={page} value={page}>
+                Trang {page}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button
+          className="tool-button"
+          onClick={onNextPage}
+          disabled={!pageCount || currentPage >= pageCount}
+          title="Xuống trang sau"
+          aria-label="Xuống trang sau"
+        >
+          <ChevronDown size={18} />
+        </button>
       </div>
       <button className="toolbar-action import-compact" onClick={onImport} title="Thêm tài liệu" aria-label="Thêm tài liệu">
         <Plus size={18} />
