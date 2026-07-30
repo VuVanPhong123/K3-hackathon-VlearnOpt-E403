@@ -12,7 +12,7 @@ Loại: [x] Tối ưu tính năng có sẵn
 
 Evidence đạt chuẩn mining B, ghi chi tiết tại `evidence/cp1-vlearn-chatlog-mining.md`:
 
-- Nguồn dữ liệu: `data/vlearn-pack/chatlog/chat_history_anonymized_for_hackathon.csv`.
+- Nguồn dữ liệu ban đầu: `data/vlearn-pack/chatlog/chat_history_anonymized_for_hackathon.csv`. Data pack gốc không nằm trong repo nộp bài cuối; evidence giữ số liệu tổng hợp, quote ngắn và mã `conversation_id/turn_id` để kiểm chứng.
 - Tổng 2.522 messages, 1.261 question-answer turns, 1.261 tutor responses.
 - 582/1.261 tutor responses không có citation, tương đương 46,2%.
 - 175/1.261 tutor responses có ngôn ngữ retrieval/fallback, tương đương 13,9%; 13 response trong nhóm này bị `rating=down`.
@@ -153,7 +153,7 @@ Kết quả latest sau implementation từ `eval/results/latest.json`: 43/43 cas
 
 Kết quả term-search regression từ `eval/results/term_search_latest.json`: 14/14 case pass, `failed=[]`. Đây là kiểm thử offline của retrieval/plan/citation, không phải live provider semantic eval.
 
-Offline eval chạy `OrchestrationService`, retrieval và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Backend unit/integration tests bổ sung streaming và conversation memory bằng fake streaming providers. Live smoke cần ghi riêng khi có API key; không ghi PASS live provider nếu test bị skip.
+Offline eval chạy `OrchestrationService`, retrieval và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Trước cleanup cuối, backend unit/integration tests đã chạy để ghi baseline; các test build-only không còn là artifact nộp bài. Live smoke cần ghi riêng khi có API key; không ghi PASS live provider nếu test bị skip.
 
 ## §8. Phân Công & Kế Hoạch
 

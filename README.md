@@ -4,14 +4,6 @@ Prototype tối ưu AI Tutor hiện có trên VLearn: học viên đang đọc P
 
 Tên nhóm chính thức: **TODO - cần nhóm xác nhận trước khi nộp**.
 
-## Mục tiêu lab
-
-- Chọn một pain cụ thể có bằng chứng từ data pack VLearn.
-- Viết spec sản phẩm AI theo `03-template-ai-spec.md`.
-- Build prototype working cho lát cắt đã chọn.
-- Đo bằng golden set và regression, không chỉnh số liệu để làm đẹp kết quả.
-- Validation/reflection phải dùng dữ liệu người thật; repo hiện chỉ có template vì chưa có log thật.
-
 ## Thành viên và phân công
 
 | Thành viên | MSSV | Phân công |
@@ -29,18 +21,20 @@ Pain đã chọn: khi học viên hỏi về trang/đoạn/vùng đang xem, tuto
 
 Lát cắt một câu: với học viên hỏi về một trang, đoạn văn hoặc vùng hình ảnh trong PDF, hệ thống quyết định context đó có đủ căn cứ để trả lời hay phải báo thiếu thông tin, để học viên nhận lời giải thích có thể kiểm chứng theo đúng trang.
 
-## Kiến trúc ngắn gọn
+## Tính năng chính
 
-- `fe/`: React Vite frontend, PDF workspace, page attachment, text selection, visual region, chat streaming.
-- `be/`: FastAPI backend, document upload, page extraction, chunking, embedding, retrieval, answer orchestration.
-- Storage local: SQLite ở `app/storage/index/vlearn.db`, PDF/runtime cache trong `app/storage/...`.
-- Provider: OpenAI/Gemini qua env; tests và eval offline dùng provider giả.
+- Upload PDF, trích xuất text, render page/crop và tạo index local.
+- Page chat, active page, attached page, text selection và visual region.
+- Document search và retrieval thuật ngữ với lexical/dense hybrid, typo guardrail và citation.
+- Streaming SSE qua `/api/v2/chat/stream` với event `meta`, `delta`, `done`, `error`.
+- Conversation reset và memory bằng recent window + rolling digest.
+- Provider thật qua OpenAI/Gemini khi có env key; eval offline dùng provider giả.
 
-Active chat path:
+## Kiến trúc
 
 ```text
-Frontend
--> POST /api/v2/chat hoặc /api/v2/chat/stream
+codebase/frontend
+-> POST /api/v2/chat/stream
 -> InteractionResolver
 -> OrchestrationService
 -> RetrievalService / PageContextService / VisualContextService
@@ -48,32 +42,34 @@ Frontend
 -> ProviderGateway
 ```
 
-## Các flow chính
+## Cấu trúc repository
 
-- General chat khi không có document hoặc user cho phép kiến thức chung.
-- Page chat khi user gắn trang, hỏi trang cụ thể hoặc hỏi "trang này".
-- Text selection chat khi đoạn bôi đen khớp nội dung trang.
-- Visual region chat khi user khoanh vùng ảnh/bảng/biểu đồ.
-- Document search khi user hỏi toàn tài liệu, gồm truy hồi thuật ngữ.
-- Document visual search khi câu hỏi toàn tài liệu có tín hiệu hình/bảng/figure.
-- Streaming SSE qua `/api/v2/chat/stream` với event `meta`, `delta`, `done`, `error`.
-- Conversation memory dùng recent window + rolling digest.
+```text
+repo/
+├── README.md
+├── spec.md
+├── codebase/
+│   ├── backend/
+│   └── frontend/
+├── evidence/
+│   ├── cp1-vlearn-chatlog-mining.md
+│   └── scripts/
+├── eval/
+│   ├── golden_set.jsonl
+│   ├── term_search_regression.jsonl
+│   ├── run_eval.py
+│   ├── run_term_search_regression.py
+│   └── results/
+├── validation/
+└── reflection/
+```
 
-## Cơ chế retrieval
-
-- Lexical: BM25 trên token đã normalize; BM25 score 0 không còn được xem là hit.
-- Dense: embedding query/chunk, mặc định HuggingFace nếu có thể tải model, fallback hash embedding để test offline ổn định.
-- Hybrid: merge lexical và dense bằng reciprocal-rank style score, lọc theo `retrieval_min_score`.
-- Term extraction: nhận diện câu định nghĩa/giải thích tiếng Việt và tiếng Anh, tách term trung tâm như `encoder`, `RAG`, `multi head attention`, `chuỗi cung ứng`.
-- Query variants: giữ query gốc, term trích ra, bản normalize/bỏ dấu khi khác, biến thể hyphen như `multi-head attention`, và candidate typo nếu đủ chắc; giới hạn tối đa 5 variant.
-- Typo-tolerant search: RapidFuzz so với vocabulary động lấy từ heading/text/chunk của tài liệu hiện tại. Không dùng dictionary hardcode theo domain.
-- Guardrail: không sửa term quá ngắn, không sửa nếu exact phrase đã có, không sửa prefix/truncated mơ hồ, không sửa khi similarity thấp hoặc nhiều candidate gần ngang nhau.
-- Evidence/citation: merge theo `chunk_id`, boost exact phrase trong heading/text, ưu tiên page khác nhau và chỉ citation các chunk thật sự đưa vào prompt.
+`evidence/` được giữ ngoài cấu trúc tối thiểu vì rubric yêu cầu log mining có bằng chứng kiểm chứng được.
 
 ## Chạy backend
 
 ```powershell
-cd be
+cd codebase/backend
 py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
@@ -82,64 +78,64 @@ Copy-Item .env.example .env
 uvicorn app.main:app --reload --port 8000
 ```
 
+Swagger ở `http://localhost:8000/docs`.
+
 ## Chạy frontend
 
 ```powershell
-cd fe
+cd codebase/frontend
 npm install
 Copy-Item .env.example .env
 npm run dev
 ```
 
-Mở `http://localhost:5173`. Swagger backend ở `http://localhost:8000/docs`.
+Mở `http://localhost:5173`.
 
-## Env an toàn
+## Environment variables
 
-Không commit `.env`, API key, `.venv`, `node_modules`, PDF upload runtime, SQLite runtime ngoài artifact được chủ đích track, cache hoặc model cache.
+Không commit `.env`, API key, `.venv`, `node_modules`, PDF upload runtime, SQLite runtime hoặc cache.
 
 Các biến chính: `OPENAI_API_KEY`, `OPENAI_MODEL`, `GEMINI_API_KEY`, `GEMINI_MODEL`, `PRIMARY_TEXT_PROVIDER`, `FALLBACK_TEXT_PROVIDER`, `VISION_PRIMARY_PROVIDER`, `VISION_FALLBACK_PROVIDER`, `ENABLE_GEMINI_FALLBACK`.
 
-## Tests và eval
+## Eval
 
 ```powershell
-$env:PYTHONPATH=".;be"
-python -m compileall be/app
-pytest -q be/tests/unit/test_query_planner.py be/tests/integration/test_document_search.py be/tests/integration/test_chat_v2_mvp.py be/tests/integration/test_chat_v2_streaming.py
-pytest -q be/tests
+$env:PYTHONPATH=".;codebase/backend"
+python -m compileall codebase/backend/app
 python -X utf8 eval/run_eval.py
 python -X utf8 eval/run_term_search_regression.py
 ```
 
-Golden eval hiện có 43 case trong `eval/golden_set.jsonl`. Latest tracked result: `eval/results/latest.json`, 43/43 pass, quality bar passed.
+Golden eval có 43 case trong `eval/golden_set.jsonl`. Latest tracked result: `eval/results/latest.json`, 43/43 pass, quality bar passed.
 
-Term-search regression mới ở `eval/term_search_regression.jsonl`. Latest result: `eval/results/term_search_latest.json`, 14/14 pass.
-
-Live provider tests trong `be/tests/live/` chỉ chạy khi có API key thật; không tính là PASS nếu bị skip hoặc chưa chạy.
+Term-search regression ở `eval/term_search_regression.jsonl`. Latest result: `eval/results/term_search_latest.json`, 14/14 pass.
 
 ## Phần thật và phần fake
 
 - Thật trong prototype: upload PDF, extract text, chunking, embedding/retrieval, render page/crop, routing, citation, provider gateway, streaming, conversation state.
 - AI thật khi có env key: text/multimodal provider qua OpenAI hoặc Gemini.
-- Fake trong tests/eval offline: provider giả trả text cố định để kiểm contract, routing, prompt context, fallback và citation; không dùng để kết luận chất lượng semantic của model thật.
+- Fake trong eval offline: provider giả trả text cố định để kiểm contract, routing, prompt context, fallback và citation; không dùng để kết luận chất lượng semantic của model thật.
 
-## Limitation
+## Limitations
 
 - Chưa có authentication/permission model.
-- Chưa OCR đầy đủ cho scanned PDF; visual flow dựa vào ảnh trang/crop và text extraction hiện có.
+- Chưa OCR đầy đủ cho scanned PDF; visual flow dựa vào ảnh page/crop và text extraction hiện có.
 - SQLite/local storage phù hợp prototype, chưa phải production deployment.
 - Document search chỉ truy hồi top-k chunks, không khẳng định đã đọc toàn bộ PDF ở mỗi câu hỏi.
-- Validation với người thật và quote nguyên văn chưa có trong repo, đang blocked bởi dữ liệu người thật.
+- Validation với người thật và quote nguyên văn chưa có trong repo, đang `BLOCKED_BY_REAL_USER_DATA`.
+- Reflection cá nhân còn template, từng thành viên cần tự hoàn thiện.
+- `demo-slides.pdf` chưa có trong repo; người dùng sẽ tự bổ sung slide, task này không tạo hoặc sửa slide.
 - Tên nhóm chính thức chưa có nguồn xác nhận trong repo.
+- Data pack gốc đã bị xóa khỏi working tree; các evidence còn lại chỉ giữ quote ngắn và mã nguồn tham chiếu.
 
-## Artifact
+## Artifact status
 
 | Artifact | Trạng thái | Ghi chú |
 |---|---|---|
 | `spec.md` | PARTIAL | Đủ spec chính, còn blocked tên nhóm/willing users/validation thật |
-| `cp1-canvas.md` | PARTIAL | Đã điền phân công, willing users còn blocked |
-| `evidence/` | PASS | Có mining report với số liệu và quote nguồn |
+| `codebase/` | PASS | Chứa source backend/frontend chạy prototype |
+| `evidence/` | PASS | Có mining report với số liệu và quote nguồn ngắn |
 | `eval/` | PASS | Có golden set, runner, latest result và term regression |
 | `validation/` | BLOCKED_BY_REAL_USER_DATA | Có template, chưa có người thử/quote thật |
 | `reflection/` | BLOCKED_BY_REAL_USER_DATA | Có template từng thành viên, mỗi người phải tự điền |
-| `lab-audit.md` | PASS | Audit rubric/artifact hiện tại |
-| Slide | Ngoài phạm vi task này | Người dùng tự làm slide; Codex không tạo/sửa slide |
+| Slide | MISSING | Người dùng tự bổ sung `demo-slides.pdf`; Codex không tạo/sửa slide trong cleanup này |

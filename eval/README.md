@@ -16,7 +16,7 @@ Bộ eval bao phủ:
 Chạy từ thư mục gốc:
 
 ```powershell
-be\.venv\Scripts\python.exe -X utf8 eval\run_eval.py
+codebase\backend\.venv\Scripts\python.exe -X utf8 eval\run_eval.py
 ```
 
 Runner gọi `OrchestrationService` và retrieval thật, nhưng dùng provider giả để
@@ -37,7 +37,7 @@ không chỉnh lịch sử CP4.
 Chạy từ thư mục gốc:
 
 ```powershell
-be\.venv\Scripts\python.exe -X utf8 eval\run_term_search_regression.py
+codebase\backend\.venv\Scripts\python.exe -X utf8 eval\run_term_search_regression.py
 ```
 
 Runner dùng retrieval thật, query planner thật và fixture offline có nhiều loại
