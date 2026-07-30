@@ -46,7 +46,7 @@ class GeminiProvider:
                 ),
                 timeout=self.timeout + 5,
             )
-            text = getattr(response, "text", "") or "Mình chưa tạo được câu trả lời từ nội dung hiện có."
+            text = self._text_from_response(response).strip() or "Mình chưa tạo được câu trả lời từ nội dung hiện có."
             return ProviderResult(text=text, provider=self.provider_name, model=self.model)
         except errors.APIError as exc:
             self._raise_provider_error(exc)
@@ -79,7 +79,7 @@ class GeminiProvider:
                 ),
                 timeout=self.timeout + 5,
             )
-            text = getattr(response, "text", "") or "Mình chưa tạo được câu trả lời từ hình ảnh hiện có."
+            text = self._text_from_response(response).strip() or "Mình chưa tạo được câu trả lời từ hình ảnh hiện có."
             return ProviderResult(text=text, provider=self.provider_name, model=self.vision_model)
         except errors.APIError as exc:
             self._raise_provider_error(exc)
@@ -105,7 +105,7 @@ class GeminiProvider:
                 timeout=self.timeout + 5,
             )
             async for chunk in stream:
-                text = getattr(chunk, "text", "") or ""
+                text = self._text_from_response(chunk)
                 if text:
                     yielded = True
                     yield text
@@ -154,7 +154,7 @@ class GeminiProvider:
                 timeout=self.timeout + 5,
             )
             async for chunk in stream:
-                text = getattr(chunk, "text", "") or ""
+                text = self._text_from_response(chunk)
                 if text:
                     yielded = True
                     yield text
@@ -179,6 +179,17 @@ class GeminiProvider:
                 history=history,
             )
             yield result.text
+
+    @staticmethod
+    def _text_from_response(response: object) -> str:
+        texts: list[str] = []
+        for candidate in getattr(response, "candidates", None) or []:
+            content = getattr(candidate, "content", None)
+            for part in getattr(content, "parts", None) or []:
+                text = getattr(part, "text", None)
+                if text:
+                    texts.append(text)
+        return "".join(texts)
 
     @staticmethod
     def _raise_provider_error(exc: errors.APIError) -> None:
