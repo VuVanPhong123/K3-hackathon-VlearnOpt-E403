@@ -2,7 +2,7 @@
 
 Prototype tối ưu AI Tutor hiện có trên VLearn: học viên đang đọc PDF có thể hỏi theo trang, đoạn bôi đen, vùng hình ảnh hoặc toàn tài liệu; hệ thống ưu tiên evidence thật, citation theo trang và nói rõ khi thiếu căn cứ.
 
-Tên nhóm chính thức: **TODO - cần nhóm xác nhận trước khi nộp**.
+Tên nhóm chính thức: **VlearnOpt**.
 
 ## Thành viên và phân công
 
@@ -123,19 +123,18 @@ Term-search regression ở `eval/term_search_regression.jsonl`. Latest result: `
 - SQLite/local storage phù hợp prototype, chưa phải production deployment.
 - Document search chỉ truy hồi top-k chunks, không khẳng định đã đọc toàn bộ PDF ở mỗi câu hỏi.
 - Validation với người thật và quote nguyên văn chưa có trong repo, đang `BLOCKED_BY_REAL_USER_DATA`.
-- Reflection cá nhân còn template, từng thành viên cần tự hoàn thiện.
+- Reflection cá nhân đã có bản draft theo phân công trong repo; từng thành viên nên đọc lại nhanh trước khi nộp.
 - `demo-slides.pdf` chưa có trong repo; người dùng sẽ tự bổ sung slide, task này không tạo hoặc sửa slide.
-- Tên nhóm chính thức chưa có nguồn xác nhận trong repo.
 - Data pack gốc đã bị xóa khỏi working tree; các evidence còn lại chỉ giữ quote ngắn và mã nguồn tham chiếu.
 
 ## Artifact status
 
 | Artifact | Trạng thái | Ghi chú |
 |---|---|---|
-| `spec.md` | PARTIAL | Đủ spec chính, còn blocked tên nhóm/willing users/validation thật |
+| `spec.md` | PARTIAL | Đủ spec chính, còn blocked willing users/validation thật |
 | `codebase/` | PASS | Chứa source backend/frontend chạy prototype |
 | `evidence/` | PASS | Có mining report với số liệu và quote nguồn ngắn |
 | `eval/` | PASS | Có golden set, runner, latest result và term regression |
 | `validation/` | BLOCKED_BY_REAL_USER_DATA | Có template, chưa có người thử/quote thật |
-| `reflection/` | BLOCKED_BY_REAL_USER_DATA | Có template từng thành viên, mỗi người phải tự điền |
+| `reflection/` | DRAFT_FILLED | Có bản draft từng thành viên theo phân công; cần thành viên xác nhận lần cuối |
 | Slide | MISSING | Người dùng tự bổ sung `demo-slides.pdf`; Codex không tạo/sửa slide trong cleanup này |

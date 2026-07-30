@@ -1,6 +1,6 @@
-# AI SPEC - VLearn Tutor theo ngữ cảnh - Nhóm TODO
+# AI SPEC - VLearn Tutor theo ngữ cảnh - Nhóm VlearnOpt
 
-Tên nhóm chính thức: TODO - chưa có nguồn đáng tin cậy trong repo để tự điền; nhóm cần xác nhận trước khi nộp.
+Tên nhóm chính thức: VlearnOpt.
 Hướng: [x] A - VLearn
 Loại: [x] Tối ưu tính năng có sẵn
 
@@ -153,7 +153,7 @@ Kết quả latest sau implementation từ `eval/results/latest.json`: 43/43 cas
 
 Kết quả term-search regression từ `eval/results/term_search_latest.json`: 14/14 case pass, `failed=[]`. Đây là kiểm thử offline của retrieval/plan/citation, không phải live provider semantic eval.
 
-Offline eval chạy `OrchestrationService`, retrieval và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Trước cleanup cuối, backend unit/integration tests đã chạy để ghi baseline; các test build-only không còn là artifact nộp bài. Live smoke cần ghi riêng khi có API key; không ghi PASS live provider nếu test bị skip.
+Offline eval chạy `OrchestrationService`, retrieval và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Trước cleanup cuối, backend unit/integration tests đã chạy để ghi baseline; các test build-only không còn là artifact nộp bài. Nhóm không ghi PASS live provider trong repo vì buổi pitching dùng demo prototype và kết quả eval offline đã được chốt.
 
 ## §8. Phân Công & Kế Hoạch
 
@@ -166,17 +166,17 @@ Thành viên và phân công:
 | Hà Duy Anh | 2A202601511 | JTBD, problem statement, impact table, pain candidates bị loại. |
 | Nguyễn Quang Vinh | 2A202601517 | Prompt, failure taxonomy, HAX/PAIR và provider behavior. |
 | Hoàng Lê Minh | 2A202601653 | Frontend flow: PDF workspace, chat panel, attachment, reset/streaming UI. |
-| Phạm Sỹ Đức | 2A202601601 | Eval/validation/demo, golden set, latest result và live smoke plan. |
+| Phạm Sỹ Đức | 2A202601601 | Eval/validation/demo, golden set, latest result và demo readiness. |
 
 Willing users: TODO - chưa có tên người dùng ngoài nhóm được xác nhận trong repo. Đây là blocker CP5 và R6, cần người thật ngoài nhóm. Cần tối thiểu 5 người validation, ưu tiên 3 willing users từ CP1 nếu xác nhận được. Không có quote validation thật trong repo nên không đánh dấu R6 PASS.
 
-Việc còn thiếu trước CP5:
+Việc còn thiếu trước khi nộp:
 
-- Live smoke.
-- Validation ít nhất năm người.
-- Dry run.
+- Validation ít nhất năm người ngoài nhóm, có tên/vai trò/quote thật.
+- Bổ sung `demo-slides.pdf` sau khi nhóm tự hoàn thiện slide pitching.
+- Mỗi thành viên đọc lại reflection draft và xác nhận nội dung cá nhân.
 
-Những việc trên đã được ghi trong spec ở CP4, nên khi hoàn thiện sẽ là hoàn thiện scope đã khai, không phải mở feature mới tùy tiện.
+Không cần thêm live provider artifact cho đợt nộp này; nếu có API key trong lúc demo, chỉ dùng qua `.env` local và không commit key/log nhạy cảm.
 
 ## §9. Changelog
 

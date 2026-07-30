@@ -1,10 +1,10 @@
-# Validation Report Template
+# Validation Plan And Report
 
 Trạng thái hiện tại: `BLOCKED_BY_REAL_USER_DATA`.
 
-Repo chưa có log validation thật từ người ngoài nhóm, vì vậy không đánh dấu R6 PASS và không tạo tên/quote giả. Nhóm cần tự chạy phiên test 10 phút/người, ghi nguyên văn quan sát và quote trước khi nộp.
+Repo chưa có log validation thật từ người ngoài nhóm, vì vậy không đánh dấu R6 PASS và không tạo tên/quote giả. Phần dưới đây là protocol đã chuẩn bị để nhóm chạy nhanh trước hoặc trong ngày pitching.
 
-## Cách điền
+## Protocol
 
 1. Chọn tối thiểu 5 người ngoài nhóm; ưu tiên ít nhất 2 willing users đã khai từ CP1 nếu có.
 2. Giao task thật, ví dụ: mở PDF, hỏi theo trang, hỏi theo đoạn bôi đen, hỏi thuật ngữ toàn tài liệu, thử một case thiếu evidence.
@@ -14,6 +14,18 @@ Repo chưa có log validation thật từ người ngoài nhóm, vì vậy khôn
    - Kết quả này bạn có tin không, vì sao?
    - Bạn có dùng thật không, vì sao hoặc vì sao chưa?
 5. Ghi quote nguyên văn, không sửa ý người thử.
+
+## Task Script
+
+Mỗi người test làm 3 trong 5 task sau, tùy thời lượng:
+
+| Task | Mục tiêu quan sát | Kỳ vọng |
+|---|---|---|
+| Hỏi theo trang đang xem | Kiểm tra page attachment và citation | Câu trả lời bám đúng page, có citation `Trang N` |
+| Hỏi theo đoạn bôi đen | Kiểm tra selected text validation | Nếu đoạn khớp PDF thì trả lời theo đoạn; nếu không khớp thì báo lỗi rõ |
+| Khoanh vùng hình/bảng | Kiểm tra visual region | Gửi image context, không trả lời như chỉ có text |
+| Hỏi thuật ngữ toàn tài liệu | Kiểm tra retrieval thuật ngữ | Tìm đúng chunk/page cho term như RAG, encoder, multi-head attention |
+| Hỏi nội dung không có trong tài liệu | Kiểm tra abstention | Không bịa citation, nói chưa đủ bằng chứng |
 
 ## Feedback Log
 
@@ -25,7 +37,7 @@ Repo chưa có log validation thật từ người ngoài nhóm, vì vậy khôn
 
 - Chủ đề feedback lặp lại: TODO - cần dữ liệu thật.
 - Thay đổi đã thực hiện từ feedback: TODO - cần dữ liệu thật.
-- Điểm giữ nguyên và lý do: TODO - cần dữ liệu thật.
-- Backlog: TODO - cần dữ liệu thật.
+- Điểm giữ nguyên và lý do: Không thêm live provider artifact vào repo; pitching dùng demo prototype và eval offline đã chốt, API key nếu dùng sẽ chỉ nằm trong `.env` local.
+- Backlog nếu có thêm thời gian: OCR tốt hơn cho scanned PDF, auth/permission model, giảm bundle size frontend, và validation vòng hai sau khi sửa theo feedback thật.
 - Ngày test: TODO - cần điền ngày thật.
 - Người ghi nhận: TODO - cần điền người thật.
