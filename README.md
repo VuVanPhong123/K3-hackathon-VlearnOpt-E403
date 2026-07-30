@@ -7,6 +7,7 @@
 | Nguyễn Quang Vinh | 2A202601517 | Thiết kế prompt, conditional decision và các kịch bản lỗi/an toàn                |
 | Hoàng Lê Minh     | 2A202601653 | Xây prototype và UI flow gồm happy path, thiếu nguồn và nguồn lệch               |
 | Phạm Sỹ Đức       | 2A202601601 | Golden set, evaluation, tìm willing users, ghi validation và chuẩn bị demo       |
+
 **SPEC → Prototype → Demo.** Đây không phải cuộc thi code — đây là cuộc thi **tư duy sản phẩm AI**.
 
 - Thời lượng: **1,5 ngày** (một ngày build + một buổi demo)
