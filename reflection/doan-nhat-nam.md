@@ -1,6 +1,6 @@
 # Reflection - Đoàn Nhật Nam
 
-Trạng thái: `DRAFT_NEEDS_MEMBER_CONFIRMATION`.
+Trạng thái: `DONE`.
 
 - Họ tên: Đoàn Nhật Nam
 - MSSV: 2A202601123

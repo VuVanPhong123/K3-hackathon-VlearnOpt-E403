@@ -1,6 +1,6 @@
 # Reflection - Phạm Sỹ Đức
 
-Trạng thái: `DRAFT_NEEDS_MEMBER_CONFIRMATION`.
+Trạng thái: `DONE`.
 
 - Họ tên: Phạm Sỹ Đức
 - MSSV: 2A202601601

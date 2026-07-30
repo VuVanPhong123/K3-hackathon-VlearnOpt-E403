@@ -1,6 +1,6 @@
 # Reflection - Hà Duy Anh
 
-Trạng thái: `DRAFT_NEEDS_MEMBER_CONFIRMATION`.
+Trạng thái: `DONE`.
 
 - Họ tên: Hà Duy Anh
 - MSSV: 2A202601511
