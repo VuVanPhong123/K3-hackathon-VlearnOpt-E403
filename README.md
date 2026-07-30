@@ -131,7 +131,7 @@ PDF eval không commit vào repo. Runner dùng `PageExtractionService`, `Section
 - Document search chỉ truy hồi top-k chunks, không khẳng định đã đọc toàn bộ PDF ở mỗi câu hỏi.
 - Prototype đã được thử nghiệm với 7 người vào ngày 30/07/2026. Báo cáo tại `validation/README.md` đã ghi nhận đủ 7 quote nguyên văn, 2 willing user và các chủ đề feedback; 5 người còn lại chỉ test nhanh, không phải willing user.
 - Reflection cá nhân đã được nhóm kiểm tra theo phân công trong repo.
-- `demo-slides.pdf` do người dùng tự bổ sung ngoài phạm vi dọn repo này; task này không tạo hoặc sửa slide.
+- Slide pitching đã có trong repo: `demo-slides.pptx` và bản export `demo-slides.pdf`.
 - Data pack gốc đã bị xóa khỏi working tree; các evidence còn lại chỉ giữ quote ngắn và mã nguồn tham chiếu.
 
 ## Artifact status
@@ -144,4 +144,4 @@ PDF eval không commit vào repo. Runner dùng `PageExtractionService`, `Section
 | `eval/` | PASS | Có golden set, runner, latest result và term regression |
 | `validation/` | DONE | Đã test 7 người ngày 30/07/2026; đã ghi 7 quote nguyên văn, 2 willing user và feedback tổng hợp |
 | `reflection/` | DONE | Reflection cá nhân đã được nhóm kiểm tra theo phân công |
-| Slide | USER_HANDLED | Người dùng tự bổ sung `demo-slides.pdf`; Codex không tạo/sửa slide trong cleanup này |
+| Slide | DONE | Có `demo-slides.pptx` và bản export `demo-slides.pdf` trong repo |

@@ -176,9 +176,9 @@ Thay đổi sau validation: nhóm đã cập nhật giao diện, bổ sung tríc
 
 Quote nguyên văn: đã có đủ 7/7. Willing user: đã xác nhận Lê Tiến Minh và Nguyễn Huy Nghĩa; 5 người còn lại chỉ test nhanh, không phải willing user.
 
-Việc ngoài phạm vi tài liệu repo:
+Trạng thái nộp bài:
 
-- `demo-slides.pdf` do người dùng tự bổ sung sau khi nhóm hoàn thiện slide pitching.
+- Slide pitching đã có trong repo: `demo-slides.pptx` và bản export `demo-slides.pdf`.
 - Reflection cá nhân đã được nhóm kiểm tra theo phân công.
 
 Không cần thêm live provider artifact cho đợt nộp này; nếu có API key trong lúc demo, chỉ dùng qua `.env` local và không commit key/log nhạy cảm.
