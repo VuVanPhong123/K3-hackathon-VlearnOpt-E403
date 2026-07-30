@@ -7,11 +7,15 @@ import pytest
 from fastapi import HTTPException
 
 from app.config import settings
+from app.repositories.chunk_repository import ChunkRepository
+from app.repositories.database import Database
+from app.repositories.document_repository import DocumentRepository
 from app.schemas import (
     BBox,
     ChatContextV2,
     ChatHistoryItem,
     ChatRequestV2,
+    DocumentMetadata,
     PageContextResponse,
     TextSelection,
     VisualRegion,
@@ -515,6 +519,59 @@ async def test_document_term_query_uses_retrieval_variants_and_real_evidence() -
     assert response.citations[0].page_number == 3
     assert "An encoder converts input tokens" in prompt
     assert "RAG retrieves document evidence" not in prompt
+
+
+@pytest.mark.asyncio
+async def test_document_search_lazy_indexes_uploaded_pdf_before_retrieval(tmp_path: Path) -> None:
+    db = Database(tmp_path / "lazy-index.db")
+    document_repository = DocumentRepository(db)
+    chunk_repository = ChunkRepository(db)
+    pdf_path = create_fixture_pdf(tmp_path / "attention.pdf")
+    document_repository.upsert_document(
+        DocumentMetadata(
+            id="doc-1",
+            original_filename="Attention Is All You Need - 2017 (1706.03762).pdf",
+            stored_filename=pdf_path.name,
+            checksum_sha256="sha",
+            version=1,
+            page_count=9,
+            size_bytes=pdf_path.stat().st_size,
+            uploaded_at="now",
+            status="UPLOADED",
+            chunk_count=0,
+        )
+    )
+
+    class RuntimeDocumentService:
+        repository = document_repository
+
+        def get_metadata(self, document_id: str):
+            return document_repository.get_document(document_id)
+
+        def get_file_path(self, document_id: str) -> Path:
+            return pdf_path
+
+    embedding = EmbeddingService(HashEmbeddingProvider())
+    retrieval = RetrievalService(chunk_repository, embedding)
+    provider = FakeProvider()
+    response = await build_service(
+        provider,
+        document_service=RuntimeDocumentService(),
+        retrieval_service=retrieval,
+        page_service=FakePageContextService(),
+        tmp_path=tmp_path,
+    ).chat(
+        ChatRequestV2(
+            message="encoder là gì",
+            document_id="doc-1",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert document_repository.get_document("doc-1").status == "READY"
+    assert len(chunk_repository.list_chunks("doc-1")) >= 8
+    assert response.citations[0].page_number == 3
+    assert "Encoder" in provider.calls[0]["messages"][-1]["content"]
 
 
 @pytest.mark.asyncio

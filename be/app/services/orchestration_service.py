@@ -22,6 +22,7 @@ from app.services.conversation_memory_service import ConversationMemoryService
 from app.services.conversation_service import ConversationService
 from app.services.document_service import DocumentService
 from app.services.interaction_resolver import InteractionResolver
+from app.services.ingestion_service import IngestionService
 from app.services.page_context_service import PageContextService
 from app.services.providers.base import (
     ProviderConfigurationError,
@@ -64,12 +65,23 @@ class OrchestrationService:
         page_context_service: PageContextService | None = None,
         visual_context_service: VisualContextService | None = None,
         retrieval_service: RetrievalService | None = None,
+        ingestion_service: IngestionService | None = None,
         conversation_repository: ConversationRepository | None = None,
     ) -> None:
         self.document_service = document_service or DocumentService()
         self.page_context_service = page_context_service or PageContextService(self.document_service)
         self.visual_context_service = visual_context_service or VisualContextService(self.document_service)
         self.retrieval_service = retrieval_service or RetrievalService()
+        chunk_repository = getattr(self.retrieval_service, "chunk_repository", None)
+        embedding_service = getattr(self.retrieval_service, "embedding_service", None)
+        document_repository = getattr(self.document_service, "repository", None)
+        self.ingestion_service = ingestion_service
+        if self.ingestion_service is None and chunk_repository is not None and embedding_service is not None and document_repository is not None:
+            self.ingestion_service = IngestionService(
+                document_repository,
+                chunk_repository,
+                embedding_service,
+            )
         self.answer_service = answer_service or AnswerService()
         self.interaction_resolver = InteractionResolver(self.document_service)
         self.conversation_repository = conversation_repository or ConversationRepository()
@@ -374,6 +386,7 @@ class OrchestrationService:
     ) -> ChatExecutionPlan:
         document_id = request.document_id
         assert document_id is not None
+        self._ensure_document_indexed(document_id)
         caption_page = self._find_caption_page(document_id, exact_caption) if exact_caption else None
         results = self.retrieval_service.search(document_id, request.message, top_k=4)
 
@@ -434,6 +447,24 @@ class OrchestrationService:
             conversation_document_id=document_id,
             document_version=document_version,
         )
+
+    def _ensure_document_indexed(self, document_id: str) -> None:
+        metadata = self.document_service.get_metadata(document_id)
+        chunk_count = int(getattr(metadata, "chunk_count", 0) or 0)
+        status = getattr(metadata, "status", "")
+        if chunk_count > 0 and status == "READY":
+            return
+        if not hasattr(self.document_service, "get_file_path"):
+            return
+        if not hasattr(self.ingestion_service, "process_document"):
+            return
+        try:
+            pdf_path = self.document_service.get_file_path(document_id)
+        except HTTPException:
+            raise
+        except Exception:
+            return
+        self.ingestion_service.process_document(document_id, pdf_path)
 
     def _save_success(self, plan: ChatExecutionPlan, answer: str, trace: TraceInfo) -> None:
         self.conversation_repository.ensure_conversation(
