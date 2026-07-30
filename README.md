@@ -1,3 +1,20 @@
+# Day 05 Lab — Hackathon VlearnOpt
+
+## Team Members
+
+| Member | MSSV | Main Responsibility |
+|---|---|---|
+| Vũ Văn Phong      | 2A202601647 | Điều phối nhóm, tổng hợp Canvas và `spec.md`, kiểm tra tiến độ checkpoint        |
+| Đoàn Nhật Nam     | 2A202601123 | Mining CSV, thống kê số liệu, lưu quote và evidence có `conversation_id/turn_id` |
+| Hà Duy Anh        | 2A202601511 | JTBD, problem statement, bảng impact và các pain candidate bị loại               |
+| Nguyễn Quang Vinh | 2A202601517 | Thiết kế prompt, conditional decision và các kịch bản lỗi/an toàn                |
+| Hoàng Lê Minh     | 2A202601653 | Xây prototype và UI flow gồm happy path, thiếu nguồn và nguồn lệch               |
+| Phạm Sỹ Đức       | 2A202601601 | Golden set, evaluation, tìm willing users, ghi validation và chuẩn bị demo       |
+
+
+
+
+
 # Mini Hackathon AI — Batch 03
 
 **SPEC → Prototype → Demo.** Đây không phải cuộc thi code — đây là cuộc thi **tư duy sản phẩm AI**.
