@@ -13,7 +13,8 @@ def normalize_text(value: str) -> str:
 
 def strip_accents(value: str) -> str:
     decomposed = unicodedata.normalize("NFD", value)
-    return "".join(char for char in decomposed if unicodedata.category(char) != "Mn")
+    stripped = "".join(char for char in decomposed if unicodedata.category(char) != "Mn")
+    return stripped.replace("đ", "d").replace("Đ", "D")
 
 
 def search_normalize(value: str) -> str:

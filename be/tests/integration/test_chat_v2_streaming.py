@@ -190,6 +190,28 @@ async def test_stream_page_chat_includes_citation_in_done(tmp_path: Path) -> Non
 
 
 @pytest.mark.asyncio
+async def test_stream_document_search_still_emits_done_without_evidence(tmp_path: Path) -> None:
+    repository = RecordingConversationRepository()
+    service = build_service(StreamingProvider(chunks=["Không có ", "bằng chứng."]), repository, tmp_path)
+
+    events = [
+        event
+        async for event in service.stream(
+            ChatRequestV2(
+                message="xyzabc là gì",
+                document_id="doc-1",
+                context=ChatContextV2(),
+            )
+        )
+    ]
+
+    assert [event["event"] for event in events] == ["meta", "delta", "delta", "done"]
+    assert events[0]["data"]["mode"] == "DOCUMENT_SEARCH_CHAT"
+    assert events[-1]["data"]["citations"] == []
+    assert repository.messages[-1]["content"] == "Không có bằng chứng."
+
+
+@pytest.mark.asyncio
 async def test_stream_error_after_partial_delta_does_not_save_assistant(tmp_path: Path) -> None:
     repository = RecordingConversationRepository()
     service = build_service(

@@ -1,125 +1,76 @@
-# Mini Hackathon AI — Batch 03
-| Thành viên        | MSSV        | Công việc chính                                                                  |
-| ----------------- | ----------- | -------------------------------------------------------------------------------- |
-| Vũ Văn Phong      | 2A202601647 | Điều phối nhóm, tổng hợp Canvas và `spec.md`, kiểm tra tiến độ checkpoint        |
-| Đoàn Nhật Nam     | 2A202601123 | Mining CSV, thống kê số liệu, lưu quote và evidence có `conversation_id/turn_id` |
-| Hà Duy Anh        | 2A202601511 | JTBD, problem statement, bảng impact và các pain candidate bị loại               |
-| Nguyễn Quang Vinh | 2A202601517 | Thiết kế prompt, conditional decision và các kịch bản lỗi/an toàn                |
-| Hoàng Lê Minh     | 2A202601653 | Xây prototype và UI flow gồm happy path, thiếu nguồn và nguồn lệch               |
-| Phạm Sỹ Đức       | 2A202601601 | Golden set, evaluation, tìm willing users, ghi validation và chuẩn bị demo       |
+# VLearn Tutor theo ngữ cảnh
 
-**SPEC → Prototype → Demo.** Đây không phải cuộc thi code — đây là cuộc thi **tư duy sản phẩm AI**.
+Prototype tối ưu AI Tutor hiện có trên VLearn: học viên đang đọc PDF có thể hỏi theo trang, đoạn bôi đen, vùng hình ảnh hoặc toàn tài liệu; hệ thống ưu tiên evidence thật, citation theo trang và nói rõ khi thiếu căn cứ.
 
-- Thời lượng: **1,5 ngày** (một ngày build + một buổi demo)
-- Nhóm: **4-5 người** · zone tối đa 5 nhóm · thi theo lớp
+Tên nhóm chính thức: **TODO - cần nhóm xác nhận trước khi nộp**.
 
-## Bắt đầu từ đâu?
+## Mục tiêu lab
 
-1. Đọc **`01-de-bai.md`** để chọn hướng và hiểu tiêu chí.
-2. Mở **`02-guide.md`** — hướng dẫn từng giai đoạn, đứng ở đâu đọc mục đó.
-3. Viết spec theo **`03-template-ai-spec.md`** — deliverable trung tâm của cả sự kiện.
-4. Đọc **`04-rubric.md`** ngay từ đầu — biết trước bài được chấm theo tiêu chí nào.
+- Chọn một pain cụ thể có bằng chứng từ data pack VLearn.
+- Viết spec sản phẩm AI theo `03-template-ai-spec.md`.
+- Build prototype working cho lát cắt đã chọn.
+- Đo bằng golden set và regression, không chỉnh số liệu để làm đẹp kết quả.
+- Validation/reflection phải dùng dữ liệu người thật; repo hiện chỉ có template vì chưa có log thật.
 
-| File / thư mục | Nội dung |
-|---|---|
-| `01-de-bai.md` | Đề bài 3 hướng · 5 tiêu chí nghiệm thu · ràng buộc chung |
-| `02-guide.md` | Hướng dẫn 5 giai đoạn: khám phá → spec → build → đo & validate → demo |
-| `03-template-ai-spec.md` | Template AI Spec (nộp 23:59 ngày 1) |
-| `04-rubric.md` | Rubric 100 điểm (25 nộp checkpoint + 75 chấm bài) + checklist xác minh 6 mốc |
-| `data/` | Dữ liệu thật đã ẩn danh: chatlog VLearn tutor + 6 transcript bài giảng bản sạch — dùng để tìm bằng chứng và xây golden set |
-| `tham-khao/` | JTBD Playbook (PDF) + worksheet JTBD đầy đủ — đọc khi muốn đào sâu |
+## Thành viên và phân công
 
-## Lịch — 6 mốc
-
-| Mốc | Khoá 3 | Khoá 4 |
+| Thành viên | MSSV | Phân công |
 |---|---|---|
-| Khai mạc + phát đề | 09:00 ngày 1 | 14:00 ngày 1 |
-| CP1 · Chốt Canvas | 10:00 ngày 1 | 15:00 ngày 1 |
-| CP2 · Show được thứ bấm được | 12:00 ngày 1 | 17:00 ngày 1 |
-| CP3 · AI chạy thật + đo lượt đầu | 16:00 ngày 1 | 10:30 ngày 2 |
-| CP4 · Chốt tiến độ — spec nộp hạn cứng **23:59 ngày 1** | 17:30 ngày 1 | 12:00 ngày 2 |
-| CP5 · Xác minh + validation + dry run | 09:00 ngày 2 | 14:00 ngày 2 |
-| CP6 · Demo | 10:00 ngày 2 | 15:00 ngày 2 |
+| Vũ Văn Phong | 2A202601647 | Spec owner, điều phối checkpoint, tổng hợp changelog |
+| Đoàn Nhật Nam | 2A202601123 | Mining CSV, thống kê số liệu, quote và evidence có `conversation_id/turn_id` |
+| Hà Duy Anh | 2A202601511 | JTBD, problem statement, impact table, pain candidates bị loại |
+| Nguyễn Quang Vinh | 2A202601517 | Prompt, failure taxonomy, HAX/PAIR và provider behavior |
+| Hoàng Lê Minh | 2A202601653 | Prototype/frontend flow: PDF workspace, chat panel, attachment, reset/streaming UI |
+| Phạm Sỹ Đức | 2A202601601 | Golden set, evaluation, validation plan và demo preparation |
 
-Mỗi mốc cần show gì và được xác minh thế nào: xem bảng trong `04-rubric.md`.
+## Problem và lát cắt
 
-## Nộp bài
+Pain đã chọn: khi học viên hỏi về trang/đoạn/vùng đang xem, tutor đôi khi không dùng đúng context hoặc citation, khiến học viên phải cung cấp lại thông tin và khó kiểm chứng câu trả lời.
 
-Một repo nhóm, cấu trúc như sau. Spec chốt lúc 23:59 ngày 1; bản hoàn chỉnh trước CP6.
+Lát cắt một câu: với học viên hỏi về một trang, đoạn văn hoặc vùng hình ảnh trong PDF, hệ thống quyết định context đó có đủ căn cứ để trả lời hay phải báo thiếu thông tin, để học viên nhận lời giải thích có thể kiểm chứng theo đúng trang.
 
-```
-repo/
-├── README.md          ← thành viên (mã HV + tên) + phân công có tên từng phần
-├── spec.md            ← AI Spec theo 03-template-ai-spec.md
-├── demo-slides.pdf    ← slide 6 trang theo 02-guide.md §5.1
-├── codebase/          ← prototype (ghi rõ phần nào mock)
-├── eval/              ← golden set + bảng kết quả các lượt chạy
-├── validation/        ← feedback log từ vòng user test
-└── reflection/        ← mỗi người 1 file
+## Kiến trúc ngắn gọn
+
+- `fe/`: React Vite frontend, PDF workspace, page attachment, text selection, visual region, chat streaming.
+- `be/`: FastAPI backend, document upload, page extraction, chunking, embedding, retrieval, answer orchestration.
+- Storage local: SQLite ở `app/storage/index/vlearn.db`, PDF/runtime cache trong `app/storage/...`.
+- Provider: OpenAI/Gemini qua env; tests và eval offline dùng provider giả.
+
+Active chat path:
+
+```text
+Frontend
+-> POST /api/v2/chat hoặc /api/v2/chat/stream
+-> InteractionResolver
+-> OrchestrationService
+-> RetrievalService / PageContextService / VisualContextService
+-> AnswerService
+-> ProviderGateway
 ```
 
-## Chấm điểm
+## Các flow chính
 
-Tổng **100 điểm = 25 điểm nộp checkpoint + 75 điểm chấm bài nộp**. Chi tiết từng ý điểm: `04-rubric.md`.
+- General chat khi không có document hoặc user cho phép kiến thức chung.
+- Page chat khi user gắn trang, hỏi trang cụ thể hoặc hỏi "trang này".
+- Text selection chat khi đoạn bôi đen khớp nội dung trang.
+- Visual region chat khi user khoanh vùng ảnh/bảng/biểu đồ.
+- Document search khi user hỏi toàn tài liệu, gồm truy hồi thuật ngữ.
+- Document visual search khi câu hỏi toàn tài liệu có tín hiệu hình/bảng/figure.
+- Streaming SSE qua `/api/v2/chat/stream` với event `meta`, `delta`, `done`, `error`.
+- Conversation memory dùng recent window + rolling digest.
 
-**25 điểm nộp — mỗi checkpoint 5 điểm (CP1-CP5):** nộp đúng hạn → 5 điểm · nộp muộn → 0 điểm cho mốc đó. Mỗi thành viên nộp riêng, cả nhóm dùng chung một link repo.
+## Cơ chế retrieval
 
-**75 điểm chấm — trên artifact trong repo, mỗi con điểm trỏ về một file:**
+- Lexical: BM25 trên token đã normalize; BM25 score 0 không còn được xem là hit.
+- Dense: embedding query/chunk, mặc định HuggingFace nếu có thể tải model, fallback hash embedding để test offline ổn định.
+- Hybrid: merge lexical và dense bằng reciprocal-rank style score, lọc theo `retrieval_min_score`.
+- Term extraction: nhận diện câu định nghĩa/giải thích tiếng Việt và tiếng Anh, tách term trung tâm như `encoder`, `RAG`, `multi head attention`, `chuỗi cung ứng`.
+- Query variants: giữ query gốc, term trích ra, bản normalize/bỏ dấu khi khác, biến thể hyphen như `multi-head attention`, và candidate typo nếu đủ chắc; giới hạn tối đa 5 variant.
+- Typo-tolerant search: RapidFuzz so với vocabulary động lấy từ heading/text/chunk của tài liệu hiện tại. Không dùng dictionary hardcode theo domain.
+- Guardrail: không sửa term quá ngắn, không sửa nếu exact phrase đã có, không sửa prefix/truncated mơ hồ, không sửa khi similarity thấp hoặc nhiều candidate gần ngang nhau.
+- Evidence/citation: merge theo `chunk_id`, boost exact phrase trong heading/text, ưu tiên page khác nhau và chỉ citation các chunk thật sự đưa vào prompt.
 
-| Khối | Điểm | Chấm trên file nào |
-|---|---|---|
-| R1 · Bằng chứng & impact | 15 | `spec.md` §1-§2 + log khảo sát/mining |
-| R2 · Lát cắt & thiết kế | 15 | `spec.md` §4 |
-| R3 · Chỗ khó & kịch bản rủi ro | 11 | `spec.md` §5-§6 |
-| R4 · Kiểm thử | 15 | `spec.md` §7 + `eval/` |
-| R5 · Prototype chạy được | 8 | `codebase/` + demo |
-| R6 · Validation với user | 8 | `validation/` |
-| R7 · Quy trình & repo | 3 | cấu trúc repo |
-
-Ba điều nên biết trước khi làm:
-
-- Điểm dựa trên **chuỗi quyết định và bằng chứng**, không dựa trên mức độ hoành tráng của sản phẩm.
-- Kết quả đo **ghi nhận trung thực** — kể cả khi không đạt mục tiêu nhóm tự đặt — vẫn được tính đủ điểm. Số liệu bị chỉnh sửa hoặc che giấu sẽ không được tính.
-- Reflection cá nhân chấm riêng theo rubric của khoá. Điểm vòng demo, chấm chéo trong zone và thưởng thêm (nếu có) theo thể lệ công bố lúc khai mạc.
-
-## Luật chung
-
-1. Prototype có 3 mức **Sketch / Mock / Working** — mức nào cũng bắt buộc **≥1 lời gọi AI chạy thật**.
-2. **Vibe-coding rule:** dùng AI để build thoải mái, nhưng không giải thích được phần có tên mình thì phần đó 0 điểm (kiểm tra tại CP5).
-3. **Quality bar** chốt tại spec.md 23:59 ngày 1 và giữ nguyên sau đó.
-4. Chỉ dùng dữ liệu trong `data/` hoặc dữ liệu giả tự sinh — không dùng dữ liệu thật của người thật. Không commit API key.
-5. Tuân thủ **quy định bảo mật dữ liệu** bên dưới — đây là điều kiện để được cấp data.
-
-## Bảo mật dữ liệu được cung cấp
-
-Dữ liệu trong `data/` là dữ liệu thật của khoá học (đã ẩn danh), cấp riêng cho hackathon này. Khi nhận data, nhóm cam kết:
-
-1. **Chỉ dùng trong phạm vi hackathon** — cho việc tìm bằng chứng, xây golden set và build prototype. Không dùng cho mục đích khác.
-2. **Không chia sẻ ra ngoài khoá học** — không đăng lên mạng xã hội, không gửi cho người ngoài, không đưa vào bất kỳ dataset hay repo công khai nào.
-3. **Không commit data pack vào repo nộp bài** — repo nhóm chỉ chứa trích dẫn ngắn để minh hoạ (vài dòng); golden set trích từ data ghi rõ mã đoạn/mã hội thoại thay vì dán nguyên văn dài.
-4. **Cẩn trọng khi đưa data vào công cụ ngoài** — chỉ đưa phần tối thiểu cần cho việc đang làm; lưu ý API/công cụ free tier có thể dùng dữ liệu để huấn luyện (xem `02-guide.md` §3.4).
-5. **Không cố suy ngược danh tính** từ dữ liệu đã ẩn danh ([học viên], mã U/C/T/M).
-6. Sau sự kiện, **xoá các bản sao data pack** khỏi máy cá nhân và các công cụ đã upload nếu ban tổ chức yêu cầu.
-
-Vi phạm được xử lý theo quy định của khoá và có thể ảnh hưởng trực tiếp đến điểm của nhóm.
-
-## Checkpoint 2 Prototype
-
-Prototype CP2 gồm:
-
-- `fe/`: React Vite frontend, render PDF, annotation local-only, kéo một trang PDF vào khung chat.
-- `be/`: FastAPI backend, upload/lưu PDF local, extract text đúng trang, gọi OpenAI primary và Gemini fallback khi có API key.
-
-Không commit `.env`, API key, `.venv`, `node_modules`, PDF upload runtime hoặc metadata runtime.
-
-## Checkpoint 4/5 Update
-
-- `spec.md` và `eval/results/latest.json` được track để nộp CP4; các kết quả eval runtime khác vẫn bị ignore.
-- Chat v2 giữ `POST /api/v2/chat` cho backward compatibility và thêm `POST /api/v2/chat/stream` cho SSE streaming.
-- Conversation context dùng rolling digest + recent window + character budget. Default: `CHAT_RECENT_MESSAGE_LIMIT=12`, `CHAT_SUMMARY_TRIGGER_MESSAGES=16`, `CHAT_MAX_HISTORY_CHARS=24000`, `CHAT_SUMMARY_MAX_CHARS=4000`.
-- Frontend có nút `Cuộc trò chuyện mới`; reset chỉ xóa conversation chat/server state, không xóa PDF hay annotation local.
-
-### Backend - Windows PowerShell
+## Chạy backend
 
 ```powershell
 cd be
@@ -131,7 +82,7 @@ Copy-Item .env.example .env
 uvicorn app.main:app --reload --port 8000
 ```
 
-Frontend ở terminal khác:
+## Chạy frontend
 
 ```powershell
 cd fe
@@ -140,21 +91,55 @@ Copy-Item .env.example .env
 npm run dev
 ```
 
-Mở `http://localhost:5173`. Swagger của backend ở `http://localhost:8000/docs`.
+Mở `http://localhost:5173`. Swagger backend ở `http://localhost:8000/docs`.
 
-## Kiểm tra
+## Env an toàn
+
+Không commit `.env`, API key, `.venv`, `node_modules`, PDF upload runtime, SQLite runtime ngoài artifact được chủ đích track, cache hoặc model cache.
+
+Các biến chính: `OPENAI_API_KEY`, `OPENAI_MODEL`, `GEMINI_API_KEY`, `GEMINI_MODEL`, `PRIMARY_TEXT_PROVIDER`, `FALLBACK_TEXT_PROVIDER`, `VISION_PRIMARY_PROVIDER`, `VISION_FALLBACK_PROVIDER`, `ENABLE_GEMINI_FALLBACK`.
+
+## Tests và eval
 
 ```powershell
-cd be
-python -m compileall app
-pytest -q
-
-cd ..\fe
-npm install
-npm run build
-npm test -- --run
+$env:PYTHONPATH=".;be"
+python -m compileall be/app
+pytest -q be/tests/unit/test_query_planner.py be/tests/integration/test_document_search.py be/tests/integration/test_chat_v2_mvp.py be/tests/integration/test_chat_v2_streaming.py
+pytest -q be/tests
+python -X utf8 eval/run_eval.py
+python -X utf8 eval/run_term_search_regression.py
 ```
 
-Live provider test chỉ chạy khi `.env` có ít nhất một API key. Không commit `.env`, API key, `.venv`, `node_modules`, PDF runtime, SQLite runtime hoặc model cache.
+Golden eval hiện có 43 case trong `eval/golden_set.jsonl`. Latest tracked result: `eval/results/latest.json`, 43/43 pass, quality bar passed.
 
-Model trong `OPENAI_VISION_MODEL` hoặc `GEMINI_VISION_MODEL` phải hỗ trợ image input. Nếu để rỗng, backend dùng model chữ tương ứng.
+Term-search regression mới ở `eval/term_search_regression.jsonl`. Latest result: `eval/results/term_search_latest.json`, 14/14 pass.
+
+Live provider tests trong `be/tests/live/` chỉ chạy khi có API key thật; không tính là PASS nếu bị skip hoặc chưa chạy.
+
+## Phần thật và phần fake
+
+- Thật trong prototype: upload PDF, extract text, chunking, embedding/retrieval, render page/crop, routing, citation, provider gateway, streaming, conversation state.
+- AI thật khi có env key: text/multimodal provider qua OpenAI hoặc Gemini.
+- Fake trong tests/eval offline: provider giả trả text cố định để kiểm contract, routing, prompt context, fallback và citation; không dùng để kết luận chất lượng semantic của model thật.
+
+## Limitation
+
+- Chưa có authentication/permission model.
+- Chưa OCR đầy đủ cho scanned PDF; visual flow dựa vào ảnh trang/crop và text extraction hiện có.
+- SQLite/local storage phù hợp prototype, chưa phải production deployment.
+- Document search chỉ truy hồi top-k chunks, không khẳng định đã đọc toàn bộ PDF ở mỗi câu hỏi.
+- Validation với người thật và quote nguyên văn chưa có trong repo, đang blocked bởi dữ liệu người thật.
+- Tên nhóm chính thức chưa có nguồn xác nhận trong repo.
+
+## Artifact
+
+| Artifact | Trạng thái | Ghi chú |
+|---|---|---|
+| `spec.md` | PARTIAL | Đủ spec chính, còn blocked tên nhóm/willing users/validation thật |
+| `cp1-canvas.md` | PARTIAL | Đã điền phân công, willing users còn blocked |
+| `evidence/` | PASS | Có mining report với số liệu và quote nguồn |
+| `eval/` | PASS | Có golden set, runner, latest result và term regression |
+| `validation/` | BLOCKED_BY_REAL_USER_DATA | Có template, chưa có người thử/quote thật |
+| `reflection/` | BLOCKED_BY_REAL_USER_DATA | Có template từng thành viên, mỗi người phải tự điền |
+| `lab-audit.md` | PASS | Audit rubric/artifact hiện tại |
+| Slide | Ngoài phạm vi task này | Người dùng tự làm slide; Codex không tạo/sửa slide |

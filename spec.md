@@ -1,4 +1,6 @@
 # AI SPEC - VLearn Tutor theo ngữ cảnh - Nhóm TODO
+
+Tên nhóm chính thức: TODO - chưa có nguồn đáng tin cậy trong repo để tự điền; nhóm cần xác nhận trước khi nộp.
 Hướng: [x] A - VLearn
 Loại: [x] Tối ưu tính năng có sẵn
 
@@ -54,9 +56,10 @@ Không có số liệu mới được tạo cho mục này; đây là tổng h�
 
 - Lát cắt một câu: Với học viên hỏi về một trang, đoạn văn hoặc vùng hình ảnh trong PDF, hệ thống quyết định ngữ cảnh đó có đủ căn cứ để trả lời hay phải báo thiếu thông tin, để học viên nhận lời giải thích có thể kiểm chứng theo đúng trang.
 - Quyết định AI trung tâm: AI quyết định nội dung trong trang, đoạn văn hoặc vùng hình ảnh được chọn có đủ căn cứ để trả lời hay phải thông báo chưa đủ thông tin.
-- Mức prototype: [x] Working. Flow thật: upload PDF, extract page text, build retrieval index, render page/crop image, call model provider, return answer with citation. Citation click, drag page, text selection, visual region, streaming UI và reset conversation đã có. Limitations: chưa authentication, chưa OCR đầy đủ cho scanned PDF, dùng SQLite/local storage, offline eval không tự chấm toàn bộ semantic correctness của model thật.
+- Mức prototype: [x] Working. Flow thật: upload PDF, extract page text, build retrieval index, render page/crop image, call model provider, return answer with citation. Citation click, drag page, text selection, visual region, streaming UI, reset conversation và truy hồi thuật ngữ toàn tài liệu đã có. Limitations: chưa authentication, chưa OCR đầy đủ cho scanned PDF, dùng SQLite/local storage, offline eval không tự chấm toàn bộ semantic correctness của model thật.
 - Model: Text primary theo env/source là OpenAI qua `OPENAI_MODEL`, default `gpt-5-mini`. Vision primary là Gemini qua `GEMINI_VISION_MODEL` hoặc `GEMINI_MODEL`, default `gemini-3.5-flash-lite`. Infrastructure fallback OpenAI <-> Gemini theo `PRIMARY_TEXT_PROVIDER`, `FALLBACK_TEXT_PROVIDER`, `VISION_PRIMARY_PROVIDER`, `VISION_FALLBACK_PROVIDER` và `ENABLE_GEMINI_FALLBACK`.
 - Automation: Conditional automation. Đủ context thì trả lời có citation. Không đủ context thì nói rõ hoặc hỏi lại. Cost-of-error: trả lời sai hoặc cite sai có thể làm học viên học sai nội dung bài học, nên không đoán khi thiếu căn cứ.
+- Retrieval thuật ngữ: `RetrievalService` dùng `QueryPlanner.plan_for_retrieval` để nhận diện câu định nghĩa/giải thích, tách term trung tâm, sinh tối đa 5 query variants, sửa typo bằng vocabulary động từ heading/text/chunk trong tài liệu, merge lexical/dense theo `chunk_id`, boost exact phrase ở heading/text và chỉ citation chunk thật sự đưa vào prompt. Không hardcode `encoder`, tên tài liệu hay số trang.
 
 Non-goals:
 
@@ -94,6 +97,9 @@ Không thêm golden-set case mới trong CP4. Các kịch bản dưới đây d�
 | Sai gây hậu quả thật | Citation không đúng selected page | User hỏi trang cụ thể | Citation phải đúng page đã dùng trong context | Citation sang page khác | Học viên học sai source | `page_real_C0021_T0769`, `page_real_C0266_T1084` |
 | Sai gây hậu quả thật | Fallback provider sai thời điểm | Primary lỗi tạm thời trước khi có answer | Fallback chỉ với temporary/rate/timeout/5xx trước delta đầu | Fallback sau khi đã gửi partial delta hoặc fallback với bad request | Kết quả không nhất quán | `fallback_text_temporary`, `fallback_vision_temporary` |
 | Sai gây hậu quả thật | Lịch sử chat quá dài/rò context | History dài hơn giới hạn | Chỉ dùng recent window theo config, không đưa lượt cũ nhất | Gửi vô hạn hoặc leak welcome/local UI | Tăng token, nhiễu context | `history_limit_general` |
+| Mơ hồ/confidence thấp | Hỏi định nghĩa thuật ngữ có typo nhỏ | User hỏi `encodr là gì` khi document có `encoder` rõ ràng | Sửa typo bằng candidate lấy từ chính document, vẫn giữ query gốc trong plan | Hardcode thuật ngữ hoặc tự sửa sang từ không có trong document | Không tìm thấy evidence hoặc cite sai | `term_encoder_typo`, `test_document_term_typo_is_corrected_from_document_vocabulary` |
+| Không có căn cứ | Hỏi thuật ngữ không tồn tại | User hỏi `xyzabc là gì` | Không tạo citation, prompt báo không tìm thấy bằng chứng phù hợp | Trả kiến thức chung trong document-only hoặc cite giả | Học viên tin nhầm tài liệu có nội dung đó | `term_nonexistent`, `test_document_term_no_evidence_does_not_create_fake_citation` |
+| Mơ hồ/confidence thấp | Typo/prefix mơ hồ | Document có `encoder` và `encoding`, user hỏi `encod là gì` | Không âm thầm chọn một candidate; không trả citation tùy tiện | Tự chọn `encoder` chỉ vì phổ biến hơn | Sai ý người dùng | `term_ambiguous_prefix`, `test_ambiguous_prefix_typo_is_not_silently_rewritten` |
 
 ## §6. Bốn Đường Đi Của Trải Nghiệm
 
@@ -101,6 +107,7 @@ Không thêm golden-set case mới trong CP4. Các kịch bản dưới đây d�
 - Low-confidence: User hỏi nội dung có thể cần tìm trong toàn tài liệu. Backend retrieval các page liên quan; nếu evidence yếu, prompt yêu cầu nói rõ không đủ thông tin. Case: `search_grounded_abstention`.
 - Failure/no evidence: Trang ngoài range, thiếu document, selection không khớp hoặc provider chưa có key. Hệ thống trả lỗi rõ ràng, không gọi model khi validation fail. Case: `page_out_of_range`, `page_missing_document`, `selection_forged`, `provider_credentials_missing`.
 - Correction: User xóa attachment, chọn lại page/text/region hoặc tạo chat mới. Nút tạo chat mới abort stream đang chạy, xóa conversation server theo best effort, reset messages/attachment và focus textarea.
+- Term search: User hỏi `encoder là gì`, `RAG nghĩa là gì`, `multi head attention hoạt động thế nào` hoặc có typo nhỏ như `overfiting`. Backend tách term, tạo variants, sửa typo có guardrail nếu document vocabulary đủ chắc, rồi đưa 2-4 chunk evidence vào prompt kèm citation thật.
 - Ngoài phạm vi: Khi user ép document search mà không có document, hệ thống không giả vờ có tài liệu và xử lý như general chat. Case: `forced_search_without_document`.
 - Visual/table/figure: Page chat và visual region gửi image bytes cho vision provider; table/figure/chart có citation page. Case: `page_visual_question`, `search_table_comparison`, `visual_real_C0547_T0135`.
 - Đổi tài liệu: Khi `currentDocument.id` thay đổi, frontend abort stream cũ, xóa conversation server cũ theo best effort, clear attachment/history và mở chat mới; không xóa PDF hay annotation.
@@ -109,6 +116,8 @@ Không thêm golden-set case mới trong CP4. Các kịch bản dưới đây d�
 ## §7. Kiểm Thử
 
 Golden set hiện có 43 case, giữ nguyên tổng số case. Trong đó 10 case được chuyển thể từ chatlog VLearn đã ẩn danh và 33 case tổng hợp. Không thêm golden case mới; chỉ cập nhật case history hiện có từ `max_history_count=8` sang `12` để khớp default mới.
+
+Regression bổ sung sau bug truy hồi thuật ngữ: `eval/term_search_regression.jsonl` có 14 case mới, tách riêng với golden set CP4. Bộ này kiểm tra uppercase/lowercase, tiếng Việt có dấu/không dấu, cụm nhiều từ, hyphen, typo một từ, typo cụm từ, no-evidence và prefix mơ hồ. Runner: `python -X utf8 eval/run_term_search_regression.py`.
 
 Chiều chất lượng và định nghĩa pass/fail:
 
@@ -142,11 +151,13 @@ Quality bar trong `eval/run_eval.py`:
 
 Kết quả latest sau implementation từ `eval/results/latest.json`: 43/43 case pass, `quality_bar_passed=true`, `failed_cases=[]`.
 
+Kết quả term-search regression từ `eval/results/term_search_latest.json`: 14/14 case pass, `failed=[]`. Đây là kiểm thử offline của retrieval/plan/citation, không phải live provider semantic eval.
+
 Offline eval chạy `OrchestrationService`, retrieval và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Backend unit/integration tests bổ sung streaming và conversation memory bằng fake streaming providers. Live smoke cần ghi riêng khi có API key; không ghi PASS live provider nếu test bị skip.
 
 ## §8. Phân Công & Kế Hoạch
 
-Thanh viên và phân công:
+Thành viên và phân công:
 
 | Thành viên | MSSV | Phân công |
 |---|---|---|
@@ -157,7 +168,7 @@ Thanh viên và phân công:
 | Hoàng Lê Minh | 2A202601653 | Frontend flow: PDF workspace, chat panel, attachment, reset/streaming UI. |
 | Phạm Sỹ Đức | 2A202601601 | Eval/validation/demo, golden set, latest result và live smoke plan. |
 
-Willing users: TODO - chưa có tên người dùng ngoài nhóm được xác nhận trong repo. Đây là blocker CP5. Cần tối thiểu 5 người validation, ưu tiên 3 willing users từ CP1 nếu xác nhận được.
+Willing users: TODO - chưa có tên người dùng ngoài nhóm được xác nhận trong repo. Đây là blocker CP5 và R6, cần người thật ngoài nhóm. Cần tối thiểu 5 người validation, ưu tiên 3 willing users từ CP1 nếu xác nhận được. Không có quote validation thật trong repo nên không đánh dấu R6 PASS.
 
 Việc còn thiếu trước CP5:
 
@@ -176,3 +187,4 @@ Những việc trên đã được ghi trong spec ở CP4, nên khi hoàn thiệ
 | CP3 | Mở rộng multimodal, text selection, visual region, retrieval và eval offline 43 case. | Bao phủ page, selection, region, document search, provider fallback và UTF-8. |
 | CP4 | Track `eval/results/latest.json`, chốt quality bar và spec gần cuối; ghi kế hoạch hoàn thiện context/streaming/reset. | Artifact CP4 cần được commit/push trước khi thêm streaming; latest result 43/43 pass. |
 | Sau CP4 | Thêm `/api/v2/chat/stream`, provider streaming, fallback rule trước delta đầu, rolling conversation digest + recent window 12 + character budget, nút `Cuộc trò chuyện mới`, document-switch cleanup và tests fake streaming provider. | Hoàn thiện các việc CP4 đã ghi là cần làm trước CP5 mà không thêm golden case mới. |
+| Sau phát hiện bug thuật ngữ | Sửa query planning cho câu hỏi định nghĩa/giải thích thuật ngữ, thêm query variants, exact phrase boost, fuzzy correction có guardrail và regression 14 case. | Bug nằm trong primary slice document retrieval/context grounding: term có trong tài liệu nhưng query bị nhiễu bởi từ hội thoại hoặc typo nên evidence/citation không ổn định. |

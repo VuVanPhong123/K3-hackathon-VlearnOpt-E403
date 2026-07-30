@@ -40,9 +40,9 @@ Lý do: khi có nguồn rõ ràng, hệ thống có thể tự trả lời kèm 
 
 ## 8. Willing Users
 
-- [TODO - tên người thử 1]
-- [TODO - tên người thử 2]
-- [TODO - tên người thử 3]
+Trạng thái: `BLOCKED_BY_REAL_USER_DATA`.
+
+Repo chưa có tên người thật ngoài nhóm đồng ý thử prototype, nên không tự điền tên giả. Nhóm cần bổ sung tối thiểu 3 willing users thật cho tiêu chí nghiệm thu CP1 và tối thiểu 5 người validation thật trước CP5 nếu rubric yêu cầu.
 
 Script hỏi người thật:
 
@@ -52,11 +52,12 @@ Script hỏi người thật:
 
 | Vai trò | Người phụ trách | Deliverable |
 |---|---|---|
-| Evidence/mining | `[TODO]` | Mining log + số liệu |
-| Product/JTBD | `[TODO]` | Canvas + pain statement |
-| Prompt/evaluation | `[TODO]` | Failure taxonomy ban đầu |
-| Prototype | `[TODO]` | Flow bấm được ở CP2 |
-| Validation/demo | `[TODO]` | Willing users + test plan |
+| Điều phối/spec | Vũ Văn Phong | Canvas, `spec.md`, checkpoint/changelog |
+| Evidence/mining | Đoàn Nhật Nam | Mining log + số liệu + quote có nguồn |
+| Product/JTBD | Hà Duy Anh | Job executor, core job, pain statement, impact |
+| Prompt/evaluation | Nguyễn Quang Vinh | Failure taxonomy ban đầu, prompt và guardrail |
+| Prototype | Hoàng Lê Minh | Flow bấm được ở CP2/CP3 |
+| Validation/demo | Phạm Sỹ Đức | Willing users + test plan + eval report |
 
 ## 10. Assumption Nguy Hiểm Nhất
 
@@ -64,7 +65,6 @@ Assumption cần kiểm chứng: học viên thật thấy việc phải cung c�
 
 ## 11. Thông Tin Còn Thiếu Trước Khi Gặp TA
 
-- Tên thành viên phụ trách từng vai trò.
 - Tối thiểu ba willing users thật ngoài nhóm.
 - Xác nhận với team kỹ thuật về ý nghĩa `day_code=New learning material` và mapping trang/citation.
 - Khảo sát/phỏng vấn nhanh để kiểm chứng mức độ đau và willingness, không chỉ dựa vào chatlog.

@@ -17,6 +17,7 @@ from app.schemas import (
     VisualRegion,
 )
 from app.services.answer_service import AnswerService
+from app.services.embedding_service import EmbeddingService, HashEmbeddingProvider
 from app.services.orchestration_service import OrchestrationService
 from app.services.page_context_service import PageContextService
 from app.services.provider_gateway import ProviderGateway
@@ -25,7 +26,7 @@ from app.services.providers.base import (
     ProviderResult,
     ProviderTemporaryError,
 )
-from app.services.retrieval_service import RetrievalResult
+from app.services.retrieval_service import RetrievalResult, RetrievalService
 from tests.fixtures import create_fixture_pdf
 
 
@@ -133,6 +134,23 @@ class FakeRetrievalService:
         return self.results
 
 
+class InMemoryChunkRepository:
+    def __init__(self, chunks: list[dict]) -> None:
+        self.chunks = chunks
+
+    def list_chunks(self, document_id: str) -> list[dict]:
+        return self.chunks if document_id == "doc-1" else []
+
+
+def build_term_retrieval(chunks: list[dict]) -> RetrievalService:
+    provider = HashEmbeddingProvider()
+    embedded = []
+    vectors = provider.embed_passages([chunk["text"] for chunk in chunks])
+    for chunk, vector in zip(chunks, vectors):
+        embedded.append({**chunk, "embedding": vector})
+    return RetrievalService(InMemoryChunkRepository(embedded), EmbeddingService(provider))
+
+
 def build_service(
     provider: FakeProvider,
     *,
@@ -187,7 +205,7 @@ async def test_general_chat_calls_provider_without_document_or_citation() -> Non
     assert response.trace.intent == "GENERAL_CHAT"
     assert document_service.calls == 0
     assert len(provider.calls) == 1
-    assert len(provider.calls[0]["messages"]) == 9
+    assert len(provider.calls[0]["messages"]) == 11
 
 
 @pytest.mark.asyncio
@@ -457,6 +475,141 @@ async def test_document_text_search_uses_one_retrieval_and_real_citation() -> No
     assert retrieval.calls == [("doc-1", "Residual connection có tác dụng gì?", 4)]
     assert "Bằng chứng về cơ chế residual" in provider.calls[0]["messages"][-1]["content"]
     assert response.citations[0].page_number == 7
+
+
+@pytest.mark.asyncio
+async def test_document_term_query_uses_retrieval_variants_and_real_evidence() -> None:
+    chunks = [
+        {
+            "chunk_id": "chunk-encoder",
+            "document_id": "doc-1",
+            "document_version": 1,
+            "page_number": 3,
+            "heading": "Encoder",
+            "text": "An encoder converts input tokens into contextual representations.",
+        },
+        {
+            "chunk_id": "chunk-rag",
+            "document_id": "doc-1",
+            "document_version": 1,
+            "page_number": 1,
+            "heading": "RAG",
+            "text": "RAG retrieves document evidence before generating answers with citations.",
+        },
+    ]
+    provider = FakeProvider()
+    response = await build_service(
+        provider,
+        document_service=FakeDocumentService(page_count=8),
+        retrieval_service=build_term_retrieval(chunks),
+    ).chat(
+        ChatRequestV2(
+            message="ENCODER LÀ GÌ",
+            document_id="doc-1",
+            context=ChatContextV2(active_page=1),
+        )
+    )
+
+    prompt = provider.calls[0]["messages"][-1]["content"]
+    assert response.trace.intent == "DOCUMENT_SEARCH_CHAT"
+    assert response.citations[0].page_number == 3
+    assert "An encoder converts input tokens" in prompt
+    assert "RAG retrieves document evidence" not in prompt
+
+
+@pytest.mark.asyncio
+async def test_document_term_typo_is_corrected_from_document_vocabulary() -> None:
+    chunks = [
+        {
+            "chunk_id": "chunk-overfitting",
+            "document_id": "doc-1",
+            "document_version": 1,
+            "page_number": 4,
+            "heading": "Overfitting",
+            "text": "Overfitting happens when a model fits training data too closely.",
+        }
+    ]
+    provider = FakeProvider()
+    response = await build_service(
+        provider,
+        document_service=FakeDocumentService(page_count=8),
+        retrieval_service=build_term_retrieval(chunks),
+    ).chat(
+        ChatRequestV2(
+            message="overfiting nghĩa là gì",
+            document_id="doc-1",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert response.citations[0].page_number == 4
+    assert "Overfitting happens" in provider.calls[0]["messages"][-1]["content"]
+
+
+@pytest.mark.asyncio
+async def test_document_term_no_evidence_does_not_create_fake_citation() -> None:
+    chunks = [
+        {
+            "chunk_id": "chunk-rag",
+            "document_id": "doc-1",
+            "document_version": 1,
+            "page_number": 1,
+            "heading": "RAG",
+            "text": "RAG retrieves document evidence before generating answers with citations.",
+        }
+    ]
+    provider = FakeProvider()
+    response = await build_service(
+        provider,
+        retrieval_service=build_term_retrieval(chunks),
+    ).chat(
+        ChatRequestV2(
+            message="xyzabc là gì",
+            document_id="doc-1",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert response.citations == []
+    assert response.confidence == 0.25
+    assert "Không tìm thấy bằng chứng phù hợp trong tài liệu." in provider.calls[0]["messages"][-1]["content"]
+
+
+@pytest.mark.asyncio
+async def test_ambiguous_prefix_typo_is_not_silently_rewritten() -> None:
+    chunks = [
+        {
+            "chunk_id": "chunk-encoder",
+            "document_id": "doc-1",
+            "document_version": 1,
+            "page_number": 3,
+            "heading": "Encoder",
+            "text": "Encoder maps input tokens.",
+        },
+        {
+            "chunk_id": "chunk-encoding",
+            "document_id": "doc-1",
+            "document_version": 1,
+            "page_number": 4,
+            "heading": "Encoding",
+            "text": "Encoding creates token representations.",
+        },
+    ]
+    provider = FakeProvider()
+    response = await build_service(
+        provider,
+        document_service=FakeDocumentService(page_count=8),
+        retrieval_service=build_term_retrieval(chunks),
+    ).chat(
+        ChatRequestV2(
+            message="encod là gì",
+            document_id="doc-1",
+            context=ChatContextV2(),
+        )
+    )
+
+    assert response.citations == []
+    assert "Không tìm thấy bằng chứng phù hợp trong tài liệu." in provider.calls[0]["messages"][-1]["content"]
 
 
 @pytest.mark.asyncio
