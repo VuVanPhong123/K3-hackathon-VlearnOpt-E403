@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 from collections.abc import AsyncIterator
 
 from google import genai
@@ -14,6 +15,8 @@ from app.services.providers.base import (
     ProviderResult,
     ProviderTemporaryError,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class GeminiProvider:
@@ -91,6 +94,7 @@ class GeminiProvider:
     ) -> AsyncIterator[str]:
         prompt = "\n\n".join(f"{item['role']}: {item['content']}" for item in messages)
         yielded = False
+        stream_failed_before_delta = False
         try:
             stream = await asyncio.wait_for(
                 self.client.aio.models.generate_content_stream(
@@ -111,6 +115,15 @@ class GeminiProvider:
             self._raise_provider_error(exc)
         except (TimeoutError, asyncio.TimeoutError) as exc:
             raise ProviderTemporaryError(str(exc)) from exc
+        except Exception as exc:
+            if yielded:
+                raise ProviderTemporaryError(str(exc)) from exc
+            stream_failed_before_delta = True
+            logger.warning("Gemini text stream failed before first delta; falling back to non-stream call.", exc_info=True)
+
+        if stream_failed_before_delta:
+            result = await self.generate(system_prompt=system_prompt, messages=messages)
+            yield result.text
 
     async def stream_generate_multimodal(
         self,
@@ -127,6 +140,7 @@ class GeminiProvider:
         )
         prompt = f"{history_prompt}\n\nuser: {text_prompt}" if history_prompt else text_prompt
         yielded = False
+        stream_failed_before_delta = False
         try:
             stream = await asyncio.wait_for(
                 self.client.aio.models.generate_content_stream(
@@ -150,6 +164,21 @@ class GeminiProvider:
             self._raise_provider_error(exc)
         except (TimeoutError, asyncio.TimeoutError) as exc:
             raise ProviderTemporaryError(str(exc)) from exc
+        except Exception as exc:
+            if yielded:
+                raise ProviderTemporaryError(str(exc)) from exc
+            stream_failed_before_delta = True
+            logger.warning("Gemini multimodal stream failed before first delta; falling back to non-stream call.", exc_info=True)
+
+        if stream_failed_before_delta:
+            result = await self.generate_multimodal(
+                system_prompt=system_prompt,
+                text_prompt=text_prompt,
+                image_bytes=image_bytes,
+                mime_type=mime_type,
+                history=history,
+            )
+            yield result.text
 
     @staticmethod
     def _raise_provider_error(exc: errors.APIError) -> None:
