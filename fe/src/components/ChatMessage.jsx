@@ -1,3 +1,5 @@
+import MessageContent from "./MessageContent";
+
 function providerLabel(provider, fallbackUsed) {
   if (provider === "openai") return "OpenAI";
   if (provider === "gemini") return fallbackUsed ? "Gemini dự phòng" : "Gemini";
@@ -23,10 +25,7 @@ export default function ChatMessage({
             {message.attachment.type === "visual_region" && " - Vùng hình ảnh"}
           </div>
         )}
-        <p>
-          {message.content}
-          {message.streaming && <span className="stream-cursor" aria-hidden="true">|</span>}
-        </p>
+        <MessageContent content={message.content} streaming={message.streaming} />
         {message.statusText && !message.content && (
           <p className="message-status">{message.statusText}</p>
         )}

@@ -35,4 +35,22 @@ describe("ChatMessage", () => {
     );
     expect(screen.getByText("Gemini dự phòng")).toBeInTheDocument();
   });
+
+  it("render Markdown, code, bảng và công thức", () => {
+    const { container } = render(
+      <ChatMessage
+        message={{
+          role: "assistant",
+          content:
+            "## Ý chính\n\n- Mục **quan trọng**\n\n`inline`\n\n```js\nconst x = 1;\n```\n\n| A | B |\n|---|---|\n| 1 | 2 |\n\n$$x^2 + y^2$$",
+        }}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "Ý chính" })).toBeInTheDocument();
+    expect(screen.getByText("quan trọng")).toBeInTheDocument();
+    expect(container.querySelector(".code-block")).toHaveTextContent("const x = 1;");
+    expect(screen.getByRole("table")).toBeInTheDocument();
+    expect(container.querySelector(".katex")).toBeInTheDocument();
+  });
 });
