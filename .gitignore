@@ -22,6 +22,22 @@ be/app/storage/documents/*
 !be/app/storage/documents/.gitkeep
 be/app/storage/metadata/*
 !be/app/storage/metadata/.gitkeep
+be/app/storage/index/*
+!be/app/storage/index/.gitkeep
+be/app/storage/cache/*
+!be/app/storage/cache/.gitkeep
+be/app/storage/model-cache/*
+!be/app/storage/model-cache/.gitkeep
+be/app/storage/page-cache/*
+!be/app/storage/page-cache/.gitkeep
+be/app/storage/**/*.db
+be/app/storage/**/*.sqlite
+be/app/storage/**/*.npz
+be/app/storage/**/*.png
+be/app/storage/**/*.jpg
+be/app/storage/**/*.jpeg
 
 # Misc
 job.txt
+eval/results/*.json
+!eval/results/.gitkeep

@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from "react";
 
 import ChatPanel from "./components/ChatPanel";
 import PdfWorkspace from "./components/PdfWorkspace";
-import { healthCheck, listDocuments, uploadDocument } from "./services/api";
+import { getDocumentStatus, healthCheck, listDocuments, uploadDocument } from "./services/api";
 
 export default function App() {
   const [documents, setDocuments] = useState([]);
   const [currentDocument, setCurrentDocument] = useState(null);
+  const [documentStatus, setDocumentStatus] = useState(null);
+  const [activePage, setActivePage] = useState(1);
+  const [contextAttachment, setContextAttachment] = useState(null);
+  const [jumpToPageRequest, setJumpToPageRequest] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
@@ -18,40 +22,65 @@ export default function App() {
       setDocuments(items);
       setCurrentDocument((current) => current || items[0] || null);
     } catch {
-      setError("Backend chưa sẵn sàng. Hãy chạy API ở cổng 8000.");
+      setError("Backend is not ready. Start the API on port 8000.");
     }
   }
 
   useEffect(() => {
-    healthCheck().catch(() => {
-      setError("Backend chưa sẵn sàng. Hãy chạy API ở cổng 8000.");
-    });
+    healthCheck().catch(() => setError("Backend is not ready. Start the API on port 8000."));
     loadDocuments();
   }, []);
+
+  useEffect(() => {
+    setContextAttachment(null);
+    setActivePage(1);
+  }, [currentDocument?.id]);
+
+  useEffect(() => {
+    if (!currentDocument?.id) {
+      setDocumentStatus(null);
+      return undefined;
+    }
+    let cancelled = false;
+    async function poll() {
+      try {
+        const next = await getDocumentStatus(currentDocument.id);
+        if (!cancelled) setDocumentStatus(next);
+      } catch {
+        if (!cancelled) setDocumentStatus(null);
+      }
+    }
+    poll();
+    const timer = window.setInterval(poll, 2500);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [currentDocument?.id]);
 
   async function handleSelectFile(event) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
     if (file.type && file.type !== "application/pdf") {
-      setError("Chỉ hỗ trợ file PDF.");
+      setError("Only PDF files are supported.");
       return;
     }
     if (!file.name.toLowerCase().endsWith(".pdf")) {
-      setError("Chỉ hỗ trợ file PDF.");
+      setError("Only PDF files are supported.");
       return;
     }
     setUploading(true);
     setError("");
-    setStatus("Đang tải tài liệu lên...");
+    setStatus("Uploading document...");
     try {
       const metadata = await uploadDocument(file);
       setCurrentDocument(metadata);
       const items = await listDocuments();
       setDocuments(items);
-      setStatus("Đã tải tài liệu. Bạn có thể kéo một trang vào Tutor.");
+      setStatus("Uploaded. Indexing runs in the background; wait for READY for document-wide search.");
     } catch (err) {
-      setError(err.message || "Không thể tải PDF. Hãy thử lại.");
+      setError(err.message || "Could not upload PDF. Try again.");
       setStatus("");
     } finally {
       setUploading(false);
@@ -60,27 +89,27 @@ export default function App() {
 
   return (
     <main className="app-shell">
-      <input
-        ref={uploadInputRef}
-        type="file"
-        accept=".pdf,application/pdf"
-        onChange={handleSelectFile}
-        hidden
-      />
+      <input ref={uploadInputRef} type="file" accept=".pdf,application/pdf" onChange={handleSelectFile} hidden />
       <section className="main-area">
         <div className="workspace-header">
           <div>
             <h1>VLearn Tutor</h1>
-            <p>Kéo đúng một trang PDF vào khung chat để hỏi theo ngữ cảnh.</p>
+            <p>Ask from a page, selected text, visual region, or the whole indexed PDF.</p>
+            {documentStatus && (
+              <p className="doc-status">
+                {documentStatus.status} {documentStatus.stage ? `- ${documentStatus.stage}` : ""} {documentStatus.progress ?? 0}%
+              </p>
+            )}
           </div>
           {documents.length > 0 && (
             <label className="document-picker">
-              <span>Tài liệu</span>
+              <span>Document</span>
               <select
                 value={currentDocument?.id || ""}
                 onChange={(event) => {
                   const next = documents.find((item) => item.id === event.target.value);
                   setCurrentDocument(next || null);
+                  setContextAttachment(null);
                 }}
               >
                 {documents.map((item) => (
@@ -99,9 +128,19 @@ export default function App() {
           onSelectFile={handleSelectFile}
           uploading={uploading}
           uploadInputRef={uploadInputRef}
+          onActivePageChange={setActivePage}
+          onContextAttachment={setContextAttachment}
+          jumpToPageRequest={jumpToPageRequest}
         />
       </section>
-      <ChatPanel currentDocument={currentDocument} />
+      <ChatPanel
+        currentDocument={currentDocument}
+        activePage={activePage}
+        contextAttachment={contextAttachment}
+        setContextAttachment={setContextAttachment}
+        documentStatus={documentStatus}
+        onCitationClick={(pageNumber) => setJumpToPageRequest({ pageNumber, nonce: Date.now() })}
+      />
     </main>
   );
 }

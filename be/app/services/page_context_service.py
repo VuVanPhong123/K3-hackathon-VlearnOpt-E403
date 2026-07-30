@@ -3,6 +3,7 @@ from __future__ import annotations
 import fitz
 from fastapi import HTTPException
 
+from app.repositories.document_repository import DocumentRepository
 from app.schemas import DocumentMetadata, PageContextResponse
 from app.services.document_service import DocumentService
 
@@ -10,11 +11,23 @@ from app.services.document_service import DocumentService
 class PageContextService:
     def __init__(self, document_service: DocumentService | None = None) -> None:
         self.document_service = document_service or DocumentService()
+        self.repository = DocumentRepository()
 
     def get_page_text(self, document_id: str, page_number: int) -> PageContextResponse:
         metadata: DocumentMetadata = self.document_service.get_metadata(document_id)
         if page_number < 1 or page_number > metadata.page_count:
-            raise HTTPException(status_code=400, detail="Trang PDF không hợp lệ.")
+            raise HTTPException(status_code=400, detail="Invalid PDF page.")
+
+        indexed_page = self.repository.get_page(document_id, page_number)
+        if indexed_page:
+            return PageContextResponse(
+                document_id=document_id,
+                page_number=page_number,
+                text=indexed_page["raw_text"],
+                has_text=indexed_page["has_text"],
+                blocks=indexed_page["blocks"],
+                requires_vision=indexed_page["requires_vision"],
+            )
 
         path = self.document_service.get_file_path(document_id)
         try:
@@ -24,11 +37,13 @@ class PageContextService:
         except HTTPException:
             raise
         except Exception as exc:
-            raise HTTPException(status_code=500, detail="Không thể đọc nội dung trang PDF.") from exc
+            raise HTTPException(status_code=500, detail="Could not read PDF page text.") from exc
 
         return PageContextResponse(
             document_id=document_id,
             page_number=page_number,
             text=text,
             has_text=bool(text),
+            blocks=[],
+            requires_vision=not bool(text),
         )

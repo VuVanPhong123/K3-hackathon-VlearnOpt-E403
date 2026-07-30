@@ -152,6 +152,64 @@ Frontend chạy ở `http://localhost:5173`.
 
 ### API Key
 
+## Checkpoint 3 Platform Notes
+
+The prototype now includes a local CP3 foundation:
+
+```text
+Upload -> checksum/version -> BackgroundTasks ingestion
+  -> PyMuPDF pages + blocks + bounding boxes
+  -> deterministic section detection
+  -> structured chunks
+  -> lexical + dense retrieval
+  -> cached hierarchical summaries
+  -> READY
+
+User request -> context resolver -> intent router -> planner when needed
+  -> exact context / retrieval / summary / visual
+  -> evidence pack -> answer composer -> grounding verifier
+  -> citations + structured trace
+```
+
+Duplicate upload policy: when a PDF has the same SHA-256 checksum as an existing document, the backend returns the existing document instead of indexing the same bytes again. Version remains `1` in this local prototype; explicit replacement/versioning is backlog.
+
+New APIs: `GET /api/documents/{id}/status`, `POST /api/documents/{id}/reindex`, `GET /api/documents/{id}/search`, `GET /api/documents/{id}/summary`, `POST /api/v2/chat`, `GET /api/conversations/{id}`, `DELETE /api/conversations/{id}`.
+
+Limitations: scanned PDFs do not have production OCR yet; low-text pages are marked `requires_vision=true`. Visual region support can render/crop and use page text when available, but handwriting/OCR is backlog. FastAPI `BackgroundTasks` is local-only and not a production worker. SQLite/local embeddings are not for multi-instance scale. Auth is not implemented.
+
+Run backend checks:
+
+```powershell
+cd be
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+Copy-Item .env.example .env
+python -m compileall app
+pytest -q
+uvicorn app.main:app --reload --port 8000
+```
+
+Run frontend checks:
+
+```powershell
+cd fe
+npm install
+npm run build
+npm test -- --run
+```
+
+Run eval:
+
+```bash
+python eval/run_eval.py
+```
+
+The golden set has 31 cases, including 10 chatlog-derived cases identified by anonymized `conversation_id`/`turn_id`. First Hugging Face model load can take time and disk space. If the model is unavailable during automated tests, embeddings fall back to deterministic hash vectors so local tests still run.
+
+### API Key
+
 Copy `.env.example` thành `.env` trong `be/`, rồi điền ít nhất một key:
 
 - `OPENAI_API_KEY`: provider chính.

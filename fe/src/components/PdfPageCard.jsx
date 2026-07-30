@@ -18,6 +18,21 @@ function pointsToPath(points) {
   return `M ${first.x * 100} ${first.y * 100} ${rest.map((point) => `L ${point.x * 100} ${point.y * 100}`).join(" ")}`;
 }
 
+function pointsToBBox(points) {
+  const xs = points.map((point) => point.x);
+  const ys = points.map((point) => point.y);
+  const minX = Math.min(...xs);
+  const minY = Math.min(...ys);
+  const maxX = Math.max(...xs);
+  const maxY = Math.max(...ys);
+  return {
+    x: Math.max(0, minX - 0.02),
+    y: Math.max(0, minY - 0.02),
+    width: Math.min(1, Math.max(0.02, maxX - minX + 0.04)),
+    height: Math.min(1, Math.max(0.02, maxY - minY + 0.04)),
+  };
+}
+
 export default function PdfPageCard({
   document,
   pageNumber,
@@ -28,6 +43,7 @@ export default function PdfPageCard({
   getStrokes,
   addStroke,
   eraseNearPoint,
+  onContextAttachment,
 }) {
   const overlayRef = useRef(null);
   const [draft, setDraft] = useState(null);
@@ -40,6 +56,7 @@ export default function PdfPageCard({
       return;
     }
     const payload = {
+      type: "page",
       documentId: document.id,
       pageNumber,
       filename: document.original_filename,
@@ -76,36 +93,51 @@ export default function PdfPageCard({
       return;
     }
     if (!draft) return;
-    setDraft((current) => ({
-      ...current,
-      points: [...current.points, point],
-    }));
+    setDraft((current) => ({ ...current, points: [...current.points, point] }));
   }
 
   function endDraw() {
     if (draft?.points?.length > 1) {
       addStroke(pageNumber, draft);
+      onContextAttachment?.({
+        type: "visual_region",
+        documentId: document.id,
+        filename: document.original_filename,
+        pageNumber,
+        bbox: pointsToBBox(draft.points),
+      });
     }
     setDraft(null);
   }
 
+  function handleSelectionCapture() {
+    const selection = window.getSelection?.();
+    const selectedText = selection?.toString?.().trim();
+    if (!selectedText) return;
+    onContextAttachment?.({
+      type: "text_selection",
+      documentId: document.id,
+      filename: document.original_filename,
+      pageNumber,
+      selectedText: selectedText.slice(0, 6000),
+      boundingBoxes: [{ x: 0.05, y: 0.05, width: 0.9, height: 0.08 }],
+    });
+  }
+
   return (
-    <article
-      className="page-card"
-      data-page-number={pageNumber}
-    >
+    <article className="page-card" data-page-number={pageNumber}>
       <div className="page-card-header">
-        <span>Trang {pageNumber}</span>
+        <span>Page {pageNumber}</span>
         <span className="drag-handle" draggable={true} onDragStart={handleDragStart}>
-          <GripVertical size={16} /> Kéo trang này vào Tutor
+          <GripVertical size={16} /> Drag to Tutor
         </span>
       </div>
-      <div className="page-shell" style={{ width }}>
+      <div className="page-shell" style={{ width }} onMouseUp={handleSelectionCapture}>
         <Page
           pageNumber={pageNumber}
           width={width}
-          loading={<div className="page-placeholder">Đang tải trang {pageNumber}...</div>}
-          error={<div className="page-placeholder error">Không thể hiển thị trang này.</div>}
+          loading={<div className="page-placeholder">Loading page {pageNumber}...</div>}
+          error={<div className="page-placeholder error">Could not display this page.</div>}
         />
         <svg
           ref={overlayRef}

@@ -95,6 +95,10 @@ button:disabled {
   color: var(--muted);
 }
 
+.doc-status {
+  font-weight: 650;
+}
+
 .document-picker {
   display: grid;
   gap: 4px;
@@ -448,6 +452,43 @@ button:disabled {
   font-size: 12px;
 }
 
+.low-confidence {
+  display: block;
+  margin-top: 8px;
+  color: var(--danger);
+  font-size: 12px;
+}
+
+.citation-row,
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.citation-row button,
+.quick-actions button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--navy);
+  min-height: 30px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.debug-panel {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.debug-panel pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
 .drop-hint {
   position: absolute;
   left: 18px;
@@ -494,6 +535,14 @@ button:disabled {
 
 .replace-note {
   margin: -4px 0 0;
+}
+
+.mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .composer textarea {
