@@ -1,627 +1,41 @@
 {
+  "document": {
+    "filename": "d2-slide-hackathon.pdf",
+    "sha256": "5f729b2788a8f6d56a2252f96e96efec8e8cf7d66a20b39d470bca38f0754c5d",
+    "size_bytes": 2435727,
+    "page_count": 29
+  },
+  "generated_at": "2026-07-30T15:28:06.962076+00:00",
   "cases": 14,
   "passed": 14,
   "failed": [],
   "results": [
     {
-      "case_id": "term_encoder_vi_filler",
-      "query": "encoder là gì thế",
-      "expected_pages": [
-        1
-      ],
-      "actual_pages": [
-        1,
-        9
-      ],
-      "expected_selected_spelling_candidate": null,
-      "actual_selected_spelling_candidate": null,
-      "query_plan": {
-        "original_query": "encoder là gì thế",
-        "is_term_query": true,
-        "extracted_term": "encoder",
-        "normalized_term": "encoder",
-        "query_variants": [
-          "encoder là gì thế",
-          "encoder"
+      "case_id": "term_double_diamond_vi_filler",
+      "query": "mô hình double diamond là gì thế",
+      "expectation": {
+        "expected_top_page_any_of": [
+          3
         ],
-        "spelling_candidates": [],
-        "selected_spelling_candidate": null,
-        "ambiguous_spelling_candidates": [],
-        "exact_phrase_match": true
+        "must_include_any_page": [
+          3
+        ],
+        "expect_no_spelling_candidate": true
       },
-      "top_results": [
-        {
-          "chunk_id": "term-fixture-p1",
-          "page_number": 1,
-          "heading": "Encoder",
-          "score": 1.0,
-          "debug": {
-            "original_query": "encoder là gì thế",
-            "is_term_query": true,
-            "extracted_term": "encoder",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "encoder là gì thế",
-              "encoder"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p1",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 2,
-            "bm25_score": 1.0986122886681096,
-            "dense_rank": 1,
-            "dense_score": 0.3333333333333333,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "encoder",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        },
-        {
-          "chunk_id": "term-fixture-p9",
-          "page_number": 9,
-          "heading": "Encoder and encoding",
-          "score": 1.0,
-          "debug": {
-            "original_query": "encoder là gì thế",
-            "is_term_query": true,
-            "extracted_term": "encoder",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "encoder là gì thế",
-              "encoder"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p9",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 1,
-            "bm25_score": 1.1454725284691192,
-            "dense_rank": 2,
-            "dense_score": 0.31622776601683794,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "encoder",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        }
-      ],
-      "passed": true
-    },
-    {
-      "case_id": "term_encoder_uppercase",
-      "query": "ENCODER LÀ GÌ",
-      "expected_pages": [
-        1
-      ],
-      "actual_pages": [
-        1,
-        9
-      ],
-      "expected_selected_spelling_candidate": null,
-      "actual_selected_spelling_candidate": null,
-      "query_plan": {
-        "original_query": "ENCODER LÀ GÌ",
-        "is_term_query": true,
-        "extracted_term": "ENCODER",
-        "normalized_term": "encoder",
-        "query_variants": [
-          "ENCODER LÀ GÌ",
-          "ENCODER"
-        ],
-        "spelling_candidates": [],
-        "selected_spelling_candidate": null,
-        "ambiguous_spelling_candidates": [],
-        "exact_phrase_match": true
-      },
-      "top_results": [
-        {
-          "chunk_id": "term-fixture-p1",
-          "page_number": 1,
-          "heading": "Encoder",
-          "score": 1.0,
-          "debug": {
-            "original_query": "ENCODER LÀ GÌ",
-            "is_term_query": true,
-            "extracted_term": "ENCODER",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "ENCODER LÀ GÌ",
-              "ENCODER"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p1",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 2,
-            "bm25_score": 1.0986122886681096,
-            "dense_rank": 1,
-            "dense_score": 0.3333333333333333,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "ENCODER",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        },
-        {
-          "chunk_id": "term-fixture-p9",
-          "page_number": 9,
-          "heading": "Encoder and encoding",
-          "score": 1.0,
-          "debug": {
-            "original_query": "ENCODER LÀ GÌ",
-            "is_term_query": true,
-            "extracted_term": "ENCODER",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "ENCODER LÀ GÌ",
-              "ENCODER"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p9",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 1,
-            "bm25_score": 1.1454725284691192,
-            "dense_rank": 2,
-            "dense_score": 0.31622776601683794,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "ENCODER",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        }
-      ],
-      "passed": true
-    },
-    {
-      "case_id": "term_encoder_no_accent",
-      "query": "encoder la gi",
-      "expected_pages": [
-        1
-      ],
-      "actual_pages": [
-        1,
-        9
-      ],
-      "expected_selected_spelling_candidate": null,
-      "actual_selected_spelling_candidate": null,
-      "query_plan": {
-        "original_query": "encoder la gi",
-        "is_term_query": true,
-        "extracted_term": "encoder",
-        "normalized_term": "encoder",
-        "query_variants": [
-          "encoder la gi",
-          "encoder"
-        ],
-        "spelling_candidates": [],
-        "selected_spelling_candidate": null,
-        "ambiguous_spelling_candidates": [],
-        "exact_phrase_match": true
-      },
-      "top_results": [
-        {
-          "chunk_id": "term-fixture-p1",
-          "page_number": 1,
-          "heading": "Encoder",
-          "score": 1.0,
-          "debug": {
-            "original_query": "encoder la gi",
-            "is_term_query": true,
-            "extracted_term": "encoder",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "encoder la gi",
-              "encoder"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p1",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 2,
-            "bm25_score": 1.0986122886681096,
-            "dense_rank": 1,
-            "dense_score": 0.3333333333333333,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "encoder",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        },
-        {
-          "chunk_id": "term-fixture-p9",
-          "page_number": 9,
-          "heading": "Encoder and encoding",
-          "score": 1.0,
-          "debug": {
-            "original_query": "encoder la gi",
-            "is_term_query": true,
-            "extracted_term": "encoder",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "encoder la gi",
-              "encoder"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p9",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 1,
-            "bm25_score": 1.1454725284691192,
-            "dense_rank": 2,
-            "dense_score": 0.31622776601683794,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "encoder",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        }
-      ],
-      "passed": true
-    },
-    {
-      "case_id": "term_encoder_prefix_explain",
-      "query": "giải thích encoder",
-      "expected_pages": [
-        1
-      ],
-      "actual_pages": [
-        1,
-        9
-      ],
-      "expected_selected_spelling_candidate": null,
-      "actual_selected_spelling_candidate": null,
-      "query_plan": {
-        "original_query": "giải thích encoder",
-        "is_term_query": true,
-        "extracted_term": "encoder",
-        "normalized_term": "encoder",
-        "query_variants": [
-          "giải thích encoder",
-          "encoder"
-        ],
-        "spelling_candidates": [],
-        "selected_spelling_candidate": null,
-        "ambiguous_spelling_candidates": [],
-        "exact_phrase_match": true
-      },
-      "top_results": [
-        {
-          "chunk_id": "term-fixture-p1",
-          "page_number": 1,
-          "heading": "Encoder",
-          "score": 1.0,
-          "debug": {
-            "original_query": "giải thích encoder",
-            "is_term_query": true,
-            "extracted_term": "encoder",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "giải thích encoder",
-              "encoder"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p1",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 2,
-            "bm25_score": 1.0986122886681096,
-            "dense_rank": 1,
-            "dense_score": 0.3333333333333333,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "encoder",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        },
-        {
-          "chunk_id": "term-fixture-p9",
-          "page_number": 9,
-          "heading": "Encoder and encoding",
-          "score": 1.0,
-          "debug": {
-            "original_query": "giải thích encoder",
-            "is_term_query": true,
-            "extracted_term": "encoder",
-            "normalized_term": "encoder",
-            "query_variants": [
-              "giải thích encoder",
-              "encoder"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p9",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 1,
-            "bm25_score": 1.1454725284691192,
-            "dense_rank": 2,
-            "dense_score": 0.31622776601683794,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "encoder",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        }
-      ],
-      "passed": true
-    },
-    {
-      "case_id": "term_encoder_typo",
-      "query": "encodr là gì",
-      "expected_pages": [
-        1
-      ],
-      "actual_pages": [
-        1,
-        9
-      ],
-      "expected_selected_spelling_candidate": "Encoder",
-      "actual_selected_spelling_candidate": "Encoder",
-      "query_plan": {
-        "original_query": "encodr là gì",
-        "is_term_query": true,
-        "extracted_term": "encodr",
-        "normalized_term": "encodr",
-        "query_variants": [
-          "encodr là gì",
-          "encodr",
-          "Encoder"
-        ],
-        "spelling_candidates": [
-          {
-            "term": "encodr",
-            "candidate": "Encoder",
-            "score": 92.31
-          }
-        ],
-        "selected_spelling_candidate": "Encoder",
-        "ambiguous_spelling_candidates": [],
-        "exact_phrase_match": false
-      },
-      "top_results": [
-        {
-          "chunk_id": "term-fixture-p1",
-          "page_number": 1,
-          "heading": "Encoder",
-          "score": 1.0,
-          "debug": {
-            "original_query": "encodr là gì",
-            "is_term_query": true,
-            "extracted_term": "encodr",
-            "normalized_term": "encodr",
-            "query_variants": [
-              "encodr là gì",
-              "encodr",
-              "Encoder"
-            ],
-            "spelling_candidates": [
-              {
-                "term": "encodr",
-                "candidate": "Encoder",
-                "score": 92.31
-              }
-            ],
-            "selected_spelling_candidate": "Encoder",
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": false,
-            "chunk_id": "term-fixture-p1",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 2,
-            "bm25_score": 1.0986122886681096,
-            "dense_rank": 1,
-            "dense_score": 0.3333333333333333,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "Encoder",
-            "query_variant_kind": "spelling_candidate",
-            "variant_weight": 0.9,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        },
-        {
-          "chunk_id": "term-fixture-p9",
-          "page_number": 9,
-          "heading": "Encoder and encoding",
-          "score": 1.0,
-          "debug": {
-            "original_query": "encodr là gì",
-            "is_term_query": true,
-            "extracted_term": "encodr",
-            "normalized_term": "encodr",
-            "query_variants": [
-              "encodr là gì",
-              "encodr",
-              "Encoder"
-            ],
-            "spelling_candidates": [
-              {
-                "term": "encodr",
-                "candidate": "Encoder",
-                "score": 92.31
-              }
-            ],
-            "selected_spelling_candidate": "Encoder",
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": false,
-            "chunk_id": "term-fixture-p9",
-            "query_tokens": [
-              "encoder"
-            ],
-            "bm25_rank": 1,
-            "bm25_score": 1.1454725284691192,
-            "dense_rank": 2,
-            "dense_score": 0.31622776601683794,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9252247488101534,
-            "query_variant": "Encoder",
-            "query_variant_kind": "spelling_candidate",
-            "variant_weight": 0.9,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        }
-      ],
-      "passed": true
-    },
-    {
-      "case_id": "term_multi_head_how",
-      "query": "multi head attention hoạt động thế nào",
-      "expected_pages": [
-        2
-      ],
-      "actual_pages": [
-        2
-      ],
-      "expected_selected_spelling_candidate": null,
-      "actual_selected_spelling_candidate": null,
-      "query_plan": {
-        "original_query": "multi head attention hoạt động thế nào",
-        "is_term_query": true,
-        "extracted_term": "multi head attention",
-        "normalized_term": "multi head attention",
-        "query_variants": [
-          "multi head attention hoạt động thế nào",
-          "multi head attention",
-          "multi-head attention"
-        ],
-        "spelling_candidates": [],
-        "selected_spelling_candidate": null,
-        "ambiguous_spelling_candidates": [],
-        "exact_phrase_match": true
-      },
-      "top_results": [
-        {
-          "chunk_id": "term-fixture-p2",
-          "page_number": 2,
-          "heading": "Multi-head attention",
-          "score": 1.0,
-          "debug": {
-            "original_query": "multi head attention hoạt động thế nào",
-            "is_term_query": true,
-            "extracted_term": "multi head attention",
-            "normalized_term": "multi head attention",
-            "query_variants": [
-              "multi head attention hoạt động thế nào",
-              "multi head attention",
-              "multi-head attention"
-            ],
-            "spelling_candidates": [],
-            "selected_spelling_candidate": null,
-            "ambiguous_spelling_candidates": [],
-            "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p2",
-            "query_tokens": [
-              "attention",
-              "head",
-              "multi"
-            ],
-            "bm25_rank": 1,
-            "bm25_score": 5.947203618473507,
-            "dense_rank": 1,
-            "dense_score": 0.3651483716701108,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9278688524590164,
-            "query_variant": "multi head attention",
-            "query_variant_kind": "extracted_term",
-            "variant_weight": 1.12,
-            "boosted_score": 1.0,
-            "heading_match": true,
-            "phrase_match": true
-          }
-        }
-      ],
-      "passed": true
-    },
-    {
-      "case_id": "term_rag_vi",
-      "query": "RAG nghĩa là gì",
-      "expected_pages": [
-        3
-      ],
       "actual_pages": [
         3
       ],
-      "expected_selected_spelling_candidate": null,
       "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
       "query_plan": {
-        "original_query": "RAG nghĩa là gì",
+        "original_query": "mô hình double diamond là gì thế",
         "is_term_query": true,
-        "extracted_term": "RAG",
-        "normalized_term": "rag",
+        "extracted_term": "mô hình double diamond",
+        "normalized_term": "mo hinh double diamond",
         "query_variants": [
-          "RAG nghĩa là gì",
-          "RAG"
+          "mô hình double diamond là gì thế",
+          "mô hình double diamond",
+          "mo hinh double diamond"
         ],
         "spelling_candidates": [],
         "selected_spelling_candidate": null,
@@ -630,38 +44,43 @@
       },
       "top_results": [
         {
-          "chunk_id": "term-fixture-p3",
+          "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
           "page_number": 3,
-          "heading": "RAG overview",
+          "heading": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề",
           "score": 1.0,
+          "snippet": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề\nDiscover: Mở rộng — khảo sát vấn đề căn bản.\nDefine: Thu hẹp — xác định đúng bài toán gốc.\nD I A M O N D  2  —  T Ì M  Đ Ú N G  G I ẢI  P H Á P\nDevelop: Mở rộng — nhiều giải pháp tiềm năng.\nDeliver: Thu hẹp — chọn và triển khai.\n\"Kỹ sư và doanh nhân được đào tạo để giải vấn đề. Nhà thiết kế được đào\ntạo để khám phá vấn đề thật.\"\nGiải pháp xuất sắc cho sai vấn đề có thể còn tệ hơn không có giải pháp.\nTìm đúng vấn đề trước khi tìm giải pháp\n— Mô hình D",
           "debug": {
-            "original_query": "RAG nghĩa là gì",
+            "original_query": "mô hình double diamond là gì thế",
             "is_term_query": true,
-            "extracted_term": "RAG",
-            "normalized_term": "rag",
+            "extracted_term": "mô hình double diamond",
+            "normalized_term": "mo hinh double diamond",
             "query_variants": [
-              "RAG nghĩa là gì",
-              "RAG"
+              "mô hình double diamond là gì thế",
+              "mô hình double diamond",
+              "mo hinh double diamond"
             ],
             "spelling_candidates": [],
             "selected_spelling_candidate": null,
             "ambiguous_spelling_candidates": [],
             "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p3",
+            "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
             "query_tokens": [
-              "rag"
+              "diamond",
+              "double",
+              "hinh",
+              "mo"
             ],
             "bm25_rank": 1,
-            "bm25_score": 1.8085887781297794,
+            "bm25_score": 9.595334921068911,
             "dense_rank": 1,
-            "dense_score": 0.2886751345948129,
+            "dense_score": 0.3598336931672065,
             "lexical_overlap": 1.0,
             "fused_score": 0.9278688524590164,
-            "query_variant": "RAG",
+            "query_variant": "mô hình double diamond",
             "query_variant_kind": "extracted_term",
             "variant_weight": 1.12,
             "boosted_score": 1.0,
-            "heading_match": true,
+            "heading_match": false,
             "phrase_match": true
           }
         }
@@ -669,25 +88,31 @@
       "passed": true
     },
     {
-      "case_id": "term_prompt_injection_vi",
-      "query": "prompt injection là gì",
-      "expected_pages": [
-        4
-      ],
+      "case_id": "term_double_diamond_uppercase",
+      "query": "MÔ HÌNH DOUBLE DIAMOND LÀ GÌ",
+      "expectation": {
+        "expected_top_page_any_of": [
+          3
+        ],
+        "must_include_any_page": [
+          3
+        ],
+        "expect_no_spelling_candidate": true
+      },
       "actual_pages": [
-        4
+        3
       ],
-      "expected_selected_spelling_candidate": null,
       "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
       "query_plan": {
-        "original_query": "prompt injection là gì",
+        "original_query": "MÔ HÌNH DOUBLE DIAMOND LÀ GÌ",
         "is_term_query": true,
-        "extracted_term": "prompt injection",
-        "normalized_term": "prompt injection",
+        "extracted_term": "MÔ HÌNH DOUBLE DIAMOND",
+        "normalized_term": "mo hinh double diamond",
         "query_variants": [
-          "prompt injection là gì",
-          "prompt injection",
-          "prompt-injection"
+          "MÔ HÌNH DOUBLE DIAMOND LÀ GÌ",
+          "MÔ HÌNH DOUBLE DIAMOND",
+          "mo hinh double diamond"
         ],
         "spelling_candidates": [],
         "selected_spelling_candidate": null,
@@ -696,40 +121,43 @@
       },
       "top_results": [
         {
-          "chunk_id": "term-fixture-p4",
-          "page_number": 4,
-          "heading": "Prompt injection",
+          "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
+          "page_number": 3,
+          "heading": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề",
           "score": 1.0,
+          "snippet": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề\nDiscover: Mở rộng — khảo sát vấn đề căn bản.\nDefine: Thu hẹp — xác định đúng bài toán gốc.\nD I A M O N D  2  —  T Ì M  Đ Ú N G  G I ẢI  P H Á P\nDevelop: Mở rộng — nhiều giải pháp tiềm năng.\nDeliver: Thu hẹp — chọn và triển khai.\n\"Kỹ sư và doanh nhân được đào tạo để giải vấn đề. Nhà thiết kế được đào\ntạo để khám phá vấn đề thật.\"\nGiải pháp xuất sắc cho sai vấn đề có thể còn tệ hơn không có giải pháp.\nTìm đúng vấn đề trước khi tìm giải pháp\n— Mô hình D",
           "debug": {
-            "original_query": "prompt injection là gì",
+            "original_query": "MÔ HÌNH DOUBLE DIAMOND LÀ GÌ",
             "is_term_query": true,
-            "extracted_term": "prompt injection",
-            "normalized_term": "prompt injection",
+            "extracted_term": "MÔ HÌNH DOUBLE DIAMOND",
+            "normalized_term": "mo hinh double diamond",
             "query_variants": [
-              "prompt injection là gì",
-              "prompt injection",
-              "prompt-injection"
+              "MÔ HÌNH DOUBLE DIAMOND LÀ GÌ",
+              "MÔ HÌNH DOUBLE DIAMOND",
+              "mo hinh double diamond"
             ],
             "spelling_candidates": [],
             "selected_spelling_candidate": null,
             "ambiguous_spelling_candidates": [],
             "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p4",
+            "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
             "query_tokens": [
-              "injection",
-              "prompt"
+              "diamond",
+              "double",
+              "hinh",
+              "mo"
             ],
             "bm25_rank": 1,
-            "bm25_score": 3.332857923016449,
+            "bm25_score": 9.595334921068911,
             "dense_rank": 1,
-            "dense_score": 0.447213595499958,
+            "dense_score": 0.3598336931672065,
             "lexical_overlap": 1.0,
             "fused_score": 0.9278688524590164,
-            "query_variant": "prompt injection",
+            "query_variant": "MÔ HÌNH DOUBLE DIAMOND",
             "query_variant_kind": "extracted_term",
             "variant_weight": 1.12,
             "boosted_score": 1.0,
-            "heading_match": true,
+            "heading_match": false,
             "phrase_match": true
           }
         }
@@ -737,25 +165,31 @@
       "passed": true
     },
     {
-      "case_id": "term_context_window_use",
-      "query": "context window dùng để làm gì",
-      "expected_pages": [
-        5
-      ],
+      "case_id": "term_double_diamond_no_accent",
+      "query": "mo hinh double diamond la gi",
+      "expectation": {
+        "expected_top_page_any_of": [
+          3
+        ],
+        "must_include_any_page": [
+          3
+        ],
+        "expect_no_spelling_candidate": true
+      },
       "actual_pages": [
-        5
+        3
       ],
-      "expected_selected_spelling_candidate": null,
       "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
       "query_plan": {
-        "original_query": "context window dùng để làm gì",
+        "original_query": "mo hinh double diamond la gi",
         "is_term_query": true,
-        "extracted_term": "context window",
-        "normalized_term": "context window",
+        "extracted_term": "mo hinh double diamond",
+        "normalized_term": "mo hinh double diamond",
         "query_variants": [
-          "context window dùng để làm gì",
-          "context window",
-          "context-window"
+          "mo hinh double diamond la gi",
+          "mo hinh double diamond",
+          "mo-hinh double diamond"
         ],
         "spelling_candidates": [],
         "selected_spelling_candidate": null,
@@ -764,40 +198,43 @@
       },
       "top_results": [
         {
-          "chunk_id": "term-fixture-p5",
-          "page_number": 5,
-          "heading": "Context window",
+          "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
+          "page_number": 3,
+          "heading": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề",
           "score": 1.0,
+          "snippet": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề\nDiscover: Mở rộng — khảo sát vấn đề căn bản.\nDefine: Thu hẹp — xác định đúng bài toán gốc.\nD I A M O N D  2  —  T Ì M  Đ Ú N G  G I ẢI  P H Á P\nDevelop: Mở rộng — nhiều giải pháp tiềm năng.\nDeliver: Thu hẹp — chọn và triển khai.\n\"Kỹ sư và doanh nhân được đào tạo để giải vấn đề. Nhà thiết kế được đào\ntạo để khám phá vấn đề thật.\"\nGiải pháp xuất sắc cho sai vấn đề có thể còn tệ hơn không có giải pháp.\nTìm đúng vấn đề trước khi tìm giải pháp\n— Mô hình D",
           "debug": {
-            "original_query": "context window dùng để làm gì",
+            "original_query": "mo hinh double diamond la gi",
             "is_term_query": true,
-            "extracted_term": "context window",
-            "normalized_term": "context window",
+            "extracted_term": "mo hinh double diamond",
+            "normalized_term": "mo hinh double diamond",
             "query_variants": [
-              "context window dùng để làm gì",
-              "context window",
-              "context-window"
+              "mo hinh double diamond la gi",
+              "mo hinh double diamond",
+              "mo-hinh double diamond"
             ],
             "spelling_candidates": [],
             "selected_spelling_candidate": null,
             "ambiguous_spelling_candidates": [],
             "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p5",
+            "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
             "query_tokens": [
-              "context",
-              "window"
+              "diamond",
+              "double",
+              "hinh",
+              "mo"
             ],
             "bm25_rank": 1,
-            "bm25_score": 3.0899775885456147,
+            "bm25_score": 9.595334921068911,
             "dense_rank": 2,
-            "dense_score": 0.18898223650461363,
+            "dense_score": 0.33866700533384136,
             "lexical_overlap": 1.0,
             "fused_score": 0.9252247488101534,
-            "query_variant": "context window",
+            "query_variant": "mo hinh double diamond",
             "query_variant_kind": "extracted_term",
             "variant_weight": 1.12,
             "boosted_score": 1.0,
-            "heading_match": true,
+            "heading_match": false,
             "phrase_match": true
           }
         }
@@ -805,25 +242,31 @@
       "passed": true
     },
     {
-      "case_id": "term_vietnamese_no_accent",
-      "query": "chuoi cung ung la gi",
-      "expected_pages": [
-        6
-      ],
+      "case_id": "term_double_diamond_prefix_explain",
+      "query": "giải thích mô hình double diamond",
+      "expectation": {
+        "expected_top_page_any_of": [
+          3
+        ],
+        "must_include_any_page": [
+          3
+        ],
+        "expect_no_spelling_candidate": true
+      },
       "actual_pages": [
-        6
+        3
       ],
-      "expected_selected_spelling_candidate": null,
       "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
       "query_plan": {
-        "original_query": "chuoi cung ung la gi",
+        "original_query": "giải thích mô hình double diamond",
         "is_term_query": true,
-        "extracted_term": "chuoi cung ung",
-        "normalized_term": "chuoi cung ung",
+        "extracted_term": "mô hình double diamond",
+        "normalized_term": "mo hinh double diamond",
         "query_variants": [
-          "chuoi cung ung la gi",
-          "chuoi cung ung",
-          "chuoi-cung ung"
+          "giải thích mô hình double diamond",
+          "mô hình double diamond",
+          "mo hinh double diamond"
         ],
         "spelling_candidates": [],
         "selected_spelling_candidate": null,
@@ -832,43 +275,45 @@
       },
       "top_results": [
         {
-          "chunk_id": "term-fixture-p6",
-          "page_number": 6,
-          "heading": "Chuỗi cung ứng",
+          "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
+          "page_number": 3,
+          "heading": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề",
           "score": 1.0,
+          "snippet": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề\nDiscover: Mở rộng — khảo sát vấn đề căn bản.\nDefine: Thu hẹp — xác định đúng bài toán gốc.\nD I A M O N D  2  —  T Ì M  Đ Ú N G  G I ẢI  P H Á P\nDevelop: Mở rộng — nhiều giải pháp tiềm năng.\nDeliver: Thu hẹp — chọn và triển khai.\n\"Kỹ sư và doanh nhân được đào tạo để giải vấn đề. Nhà thiết kế được đào\ntạo để khám phá vấn đề thật.\"\nGiải pháp xuất sắc cho sai vấn đề có thể còn tệ hơn không có giải pháp.\nTìm đúng vấn đề trước khi tìm giải pháp\n— Mô hình D",
           "debug": {
-            "original_query": "chuoi cung ung la gi",
+            "original_query": "giải thích mô hình double diamond",
             "is_term_query": true,
-            "extracted_term": "chuoi cung ung",
-            "normalized_term": "chuoi cung ung",
+            "extracted_term": "mô hình double diamond",
+            "normalized_term": "mo hinh double diamond",
             "query_variants": [
-              "chuoi cung ung la gi",
-              "chuoi cung ung",
-              "chuoi-cung ung"
+              "giải thích mô hình double diamond",
+              "mô hình double diamond",
+              "mo hinh double diamond"
             ],
             "spelling_candidates": [],
             "selected_spelling_candidate": null,
             "ambiguous_spelling_candidates": [],
             "exact_phrase_match": true,
-            "chunk_id": "term-fixture-p6",
+            "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
             "query_tokens": [
-              "chuoi",
-              "cung",
-              "gi",
-              "la",
-              "ung"
+              "diamond",
+              "double",
+              "giai",
+              "hinh",
+              "mo",
+              "thich"
             ],
             "bm25_rank": 1,
-            "bm25_score": 4.472018345922462,
-            "dense_rank": 5,
-            "dense_score": 0.0,
-            "lexical_overlap": 0.6,
-            "fused_score": 0.717780580075662,
-            "query_variant": "chuoi cung ung la gi",
+            "bm25_score": 10.56606425726219,
+            "dense_rank": 1,
+            "dense_score": 0.38021562140115606,
+            "lexical_overlap": 0.8333333333333334,
+            "fused_score": 0.8445355191256831,
+            "query_variant": "giải thích mô hình double diamond",
             "query_variant_kind": "original",
             "variant_weight": 0.92,
             "boosted_score": 1.0,
-            "heading_match": true,
+            "heading_match": false,
             "phrase_match": true
           }
         }
@@ -876,78 +321,135 @@
       "passed": true
     },
     {
-      "case_id": "term_overfitting_typo",
-      "query": "overfiting nghĩa là gì",
-      "expected_pages": [
-        7
-      ],
+      "case_id": "term_double_diamond_typo",
+      "query": "double diamnd là gì",
+      "expectation": {
+        "expected_top_page_any_of": [
+          3
+        ],
+        "must_include_any_page": [
+          3
+        ],
+        "expected_selected_spelling_candidate_normalized": "double diamond"
+      },
       "actual_pages": [
-        7
+        3,
+        2
       ],
-      "expected_selected_spelling_candidate": "Overfitting",
-      "actual_selected_spelling_candidate": "Overfitting",
+      "actual_selected_spelling_candidate": "Double Diamond",
+      "actual_selected_spelling_candidate_normalized": "double diamond",
       "query_plan": {
-        "original_query": "overfiting nghĩa là gì",
+        "original_query": "double diamnd là gì",
         "is_term_query": true,
-        "extracted_term": "overfiting",
-        "normalized_term": "overfiting",
+        "extracted_term": "double diamnd",
+        "normalized_term": "double diamnd",
         "query_variants": [
-          "overfiting nghĩa là gì",
-          "overfiting",
-          "Overfitting"
+          "double diamnd là gì",
+          "double diamnd",
+          "double-diamnd",
+          "Double Diamond"
         ],
         "spelling_candidates": [
           {
-            "term": "overfiting",
-            "candidate": "Overfitting",
-            "score": 95.24
+            "term": "double diamnd",
+            "candidate": "Double Diamond",
+            "score": 96.3
           }
         ],
-        "selected_spelling_candidate": "Overfitting",
+        "selected_spelling_candidate": "Double Diamond",
         "ambiguous_spelling_candidates": [],
         "exact_phrase_match": false
       },
       "top_results": [
         {
-          "chunk_id": "term-fixture-p7",
-          "page_number": 7,
-          "heading": "Overfitting",
+          "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
+          "page_number": 3,
+          "heading": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề",
           "score": 1.0,
+          "snippet": "D I A M O N D  1  —  T Ì M  Đ Ú N G  VẤN  Đ Ề\nDiscover: Mở rộng — khảo sát vấn đề căn bản.\nDefine: Thu hẹp — xác định đúng bài toán gốc.\nD I A M O N D  2  —  T Ì M  Đ Ú N G  G I ẢI  P H Á P\nDevelop: Mở rộng — nhiều giải pháp tiềm năng.\nDeliver: Thu hẹp — chọn và triển khai.\n\"Kỹ sư và doanh nhân được đào tạo để giải vấn đề. Nhà thiết kế được đào\ntạo để khám phá vấn đề thật.\"\nGiải pháp xuất sắc cho sai vấn đề có thể còn tệ hơn không có giải pháp.\nTìm đúng vấn đề trước khi tìm giải pháp\n— Mô hình D",
           "debug": {
-            "original_query": "overfiting nghĩa là gì",
+            "original_query": "double diamnd là gì",
             "is_term_query": true,
-            "extracted_term": "overfiting",
-            "normalized_term": "overfiting",
+            "extracted_term": "double diamnd",
+            "normalized_term": "double diamnd",
             "query_variants": [
-              "overfiting nghĩa là gì",
-              "overfiting",
-              "Overfitting"
+              "double diamnd là gì",
+              "double diamnd",
+              "double-diamnd",
+              "Double Diamond"
             ],
             "spelling_candidates": [
               {
-                "term": "overfiting",
-                "candidate": "Overfitting",
-                "score": 95.24
+                "term": "double diamnd",
+                "candidate": "Double Diamond",
+                "score": 96.3
               }
             ],
-            "selected_spelling_candidate": "Overfitting",
+            "selected_spelling_candidate": "Double Diamond",
             "ambiguous_spelling_candidates": [],
             "exact_phrase_match": false,
-            "chunk_id": "term-fixture-p7",
+            "chunk_id": "d2-slide-hackathon-v1-p0003-c0003",
             "query_tokens": [
-              "overfitting"
+              "diamnd",
+              "double"
             ],
             "bm25_rank": 1,
-            "bm25_score": 1.8085887781297794,
+            "bm25_score": 4.128640658408685,
             "dense_rank": 1,
-            "dense_score": 0.31622776601683794,
-            "lexical_overlap": 1.0,
-            "fused_score": 0.9278688524590164,
-            "query_variant": "Overfitting",
-            "query_variant_kind": "spelling_candidate",
-            "variant_weight": 0.9,
+            "dense_score": 0.38914482105801235,
+            "lexical_overlap": 0.5,
+            "fused_score": 0.6778688524590165,
+            "query_variant": "double diamnd",
+            "query_variant_kind": "extracted_term",
+            "variant_weight": 1.12,
             "boosted_score": 1.0,
-            "heading_match": true,
+            "heading_match": false,
+            "phrase_match": true
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0002-c0002",
+          "page_number": 2,
+          "heading": "S Á N G",
+          "score": 0.9308911290322581,
+          "snippet": "S Á N G\nKHUNG LÝ THUYẾT (4H)\n· Problem Discovery (Double Diamond, HCD)\n· Problem Statement & định lượng hóa\n· PAIR ① AI có thêm giá trị?\n· PAIR ② Automate/Augment →\nRule/Workflow/Agent\n· PAIR ③ Reward function & success criteria\n· Khi AI sai & UX/HITL\n· PS hoàn chỉnh → Go/Not Yet/No-Go\nC H I ỀU\nTHỰC HÀNH LAB (4H)\n· Cá nhân: Tìm 5 bài toán & điền 3 Problem\nCards\n· Nhóm: Phản biện chéo, chốt 1 bài toán\n· Nhóm: Xác thực dữ liệu & vẽ quy trình\n· Nhóm: Xác định giải pháp & ra quyết định\n· Cá nhân: Vi",
+          "debug": {
+            "original_query": "double diamnd là gì",
+            "is_term_query": true,
+            "extracted_term": "double diamnd",
+            "normalized_term": "double diamnd",
+            "query_variants": [
+              "double diamnd là gì",
+              "double diamnd",
+              "double-diamnd",
+              "Double Diamond"
+            ],
+            "spelling_candidates": [
+              {
+                "term": "double diamnd",
+                "candidate": "Double Diamond",
+                "score": 96.3
+              }
+            ],
+            "selected_spelling_candidate": "Double Diamond",
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0002-c0002",
+            "query_tokens": [
+              "diamnd",
+              "double"
+            ],
+            "bm25_rank": 2,
+            "bm25_score": 2.5308962001751807,
+            "dense_rank": 4,
+            "dense_score": 0.11785113019775792,
+            "lexical_overlap": 0.5,
+            "fused_score": 0.6675403225806452,
+            "query_variant": "double-diamnd",
+            "query_variant_kind": "hyphen_variant",
+            "variant_weight": 1.02,
+            "boosted_score": 0.9308911290322581,
+            "heading_match": false,
             "phrase_match": true
           }
         }
@@ -955,94 +457,990 @@
       "passed": true
     },
     {
-      "case_id": "term_reinforcement_phrase_typo",
-      "query": "reinforcemnt learning là gì",
-      "expected_pages": [
-        8
-      ],
+      "case_id": "term_human_in_the_loop_hyphen",
+      "query": "human in the loop là gì",
+      "expectation": {
+        "expected_top_page_any_of": [
+          7
+        ],
+        "must_include_any_page": [
+          7
+        ],
+        "expect_no_spelling_candidate": true
+      },
       "actual_pages": [
-        8
+        7
       ],
-      "expected_selected_spelling_candidate": "Reinforcement learning",
-      "actual_selected_spelling_candidate": "Reinforcement learning",
+      "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
       "query_plan": {
-        "original_query": "reinforcemnt learning là gì",
+        "original_query": "human in the loop là gì",
         "is_term_query": true,
-        "extracted_term": "reinforcemnt learning",
-        "normalized_term": "reinforcemnt learning",
+        "extracted_term": "human in the loop",
+        "normalized_term": "human in the loop",
         "query_variants": [
-          "reinforcemnt learning là gì",
-          "reinforcemnt learning",
-          "reinforcemnt-learning",
-          "Reinforcement learning"
+          "human in the loop là gì",
+          "human in the loop",
+          "human-in the loop"
         ],
-        "spelling_candidates": [
-          {
-            "term": "reinforcemnt learning",
-            "candidate": "Reinforcement learning",
-            "score": 97.67
+        "spelling_candidates": [],
+        "selected_spelling_candidate": null,
+        "ambiguous_spelling_candidates": [],
+        "exact_phrase_match": true
+      },
+      "top_results": [
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0007-c0007",
+          "page_number": 7,
+          "heading": "R E P E T I T I V E",
+          "score": 1.0,
+          "snippet": "Ưu tiên giải pháp (Solution-first)\nXây dựng chatbot/agent trước khi làm rõ quy trình vận hành và điểm\nnghẽn thực tế.\nMơ hồ hiện trạng (No baseline)\nKhông lượng hóa tổn thất hiện tại, dẫn đến mất căn cứ đánh giá hiệu\nquả cải tiến.\nBỏ qua đánh giá (No evaluation)\nKhông thiết lập kịch bản kiểm thử, chỉ số đo lường hoặc phương án đối\nchứng.\nMập mờ ranh giới (No boundary)\nKhông rõ phạm vi tự chủ của AI và thời điểm cần con người phê duyệt\n(Human-in-the-loop).\nNếu phát hiện mắc các sai lầm trên, hãy q",
+          "debug": {
+            "original_query": "human in the loop là gì",
+            "is_term_query": true,
+            "extracted_term": "human in the loop",
+            "normalized_term": "human in the loop",
+            "query_variants": [
+              "human in the loop là gì",
+              "human in the loop",
+              "human-in the loop"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": true,
+            "chunk_id": "d2-slide-hackathon-v1-p0007-c0007",
+            "query_tokens": [
+              "human",
+              "in",
+              "loop",
+              "the"
+            ],
+            "bm25_rank": 1,
+            "bm25_score": 6.96434723753002,
+            "dense_rank": 18,
+            "dense_score": -0.0351798772365146,
+            "lexical_overlap": 1.0,
+            "fused_score": 0.8921395544346364,
+            "query_variant": "human in the loop",
+            "query_variant_kind": "extracted_term",
+            "variant_weight": 1.12,
+            "boosted_score": 1.0,
+            "heading_match": false,
+            "phrase_match": true
           }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "term_hitl_acronym",
+      "query": "rủi ro HITL Problem Statement",
+      "expectation": {
+        "expected_top_page_any_of": [
+          27
         ],
-        "selected_spelling_candidate": "Reinforcement learning",
+        "must_include_any_page": [
+          27,
+          26
+        ],
+        "expect_no_spelling_candidate": true
+      },
+      "actual_pages": [
+        27,
+        2,
+        26,
+        28
+      ],
+      "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
+      "query_plan": {
+        "original_query": "rủi ro HITL Problem Statement",
+        "is_term_query": false,
+        "extracted_term": null,
+        "normalized_term": null,
+        "query_variants": [
+          "rủi ro HITL Problem Statement"
+        ],
+        "spelling_candidates": [],
+        "selected_spelling_candidate": null,
         "ambiguous_spelling_candidates": [],
         "exact_phrase_match": false
       },
       "top_results": [
         {
-          "chunk_id": "term-fixture-p8",
-          "page_number": 8,
-          "heading": "Reinforcement learning",
-          "score": 1.0,
+          "chunk_id": "d2-slide-hackathon-v1-p0027-c0027",
+          "page_number": 27,
+          "heading": "6  Y ẾU  TỐ B À I  TOÁ N  C ỐT  L Õ I",
+          "score": 0.922664584959667,
+          "snippet": "6  Y ẾU  TỐ B À I  TOÁ N  C ỐT  L Õ I\nActor\nđối tượng ảnh hưởng\nĐối tượng trực tiếp chịu ảnh hưởng bởi vấn đề.\nWorkflow\nquy trình hiện tại\nQuy trình vận hành hiện tại gồm các bước cụ thể nào?\nBottleneck\nnút thắt\nKhâu nào gặp tình trạng chậm trễ, sai sót, lặp lại?\nImpact\ntác động\nTổn thất lượng hóa bằng thời gian, chi phí, SLA hoặc chất lượng.\nSuccess Metric\nchỉ số thành công\nChỉ số đo lường cụ thể để xác định sự cải thiện.\nBoundary\nranh giới\nAI không được làm gì; khâu nào bắt buộc có con người.\n",
           "debug": {
-            "original_query": "reinforcemnt learning là gì",
-            "is_term_query": true,
-            "extracted_term": "reinforcemnt learning",
-            "normalized_term": "reinforcemnt learning",
+            "original_query": "rủi ro HITL Problem Statement",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
             "query_variants": [
-              "reinforcemnt learning là gì",
-              "reinforcemnt learning",
-              "reinforcemnt-learning",
-              "Reinforcement learning"
+              "rủi ro HITL Problem Statement"
             ],
-            "spelling_candidates": [
-              {
-                "term": "reinforcemnt learning",
-                "candidate": "Reinforcement learning",
-                "score": 97.67
-              }
-            ],
-            "selected_spelling_candidate": "Reinforcement learning",
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
             "ambiguous_spelling_candidates": [],
             "exact_phrase_match": false,
-            "chunk_id": "term-fixture-p8",
+            "chunk_id": "d2-slide-hackathon-v1-p0027-c0027",
             "query_tokens": [
-              "learning",
-              "reinforcemnt"
+              "hitl",
+              "problem",
+              "ro",
+              "rui",
+              "statement"
             ],
             "bm25_rank": 1,
-            "bm25_score": 2.1806413267736193,
-            "dense_rank": 2,
-            "dense_score": 0.288675134594813,
-            "lexical_overlap": 0.5,
-            "fused_score": 0.6752247488101535,
-            "query_variant": "reinforcemnt learning",
+            "bm25_score": 4.212717821092045,
+            "dense_rank": 3,
+            "dense_score": 0.14103014841668057,
+            "lexical_overlap": 1.0,
+            "fused_score": 0.922664584959667,
+            "query_variant": "rủi ro HITL Problem Statement",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.922664584959667,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0002-c0002",
+          "page_number": 2,
+          "heading": "S Á N G",
+          "score": 0.8201844262295083,
+          "snippet": "S Á N G\nKHUNG LÝ THUYẾT (4H)\n· Problem Discovery (Double Diamond, HCD)\n· Problem Statement & định lượng hóa\n· PAIR ① AI có thêm giá trị?\n· PAIR ② Automate/Augment →\nRule/Workflow/Agent\n· PAIR ③ Reward function & success criteria\n· Khi AI sai & UX/HITL\n· PS hoàn chỉnh → Go/Not Yet/No-Go\nC H I ỀU\nTHỰC HÀNH LAB (4H)\n· Cá nhân: Tìm 5 bài toán & điền 3 Problem\nCards\n· Nhóm: Phản biện chéo, chốt 1 bài toán\n· Nhóm: Xác thực dữ liệu & vẽ quy trình\n· Nhóm: Xác định giải pháp & ra quyết định\n· Cá nhân: Vi",
+          "debug": {
+            "original_query": "rủi ro HITL Problem Statement",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "rủi ro HITL Problem Statement"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0002-c0002",
+            "query_tokens": [
+              "hitl",
+              "problem",
+              "ro",
+              "rui",
+              "statement"
+            ],
+            "bm25_rank": 4,
+            "bm25_score": 3.20035032876006,
+            "dense_rank": 1,
+            "dense_score": 0.17568209223157663,
+            "lexical_overlap": 0.8,
+            "fused_score": 0.8201844262295083,
+            "query_variant": "rủi ro HITL Problem Statement",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.8201844262295083,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0026-c0026",
+          "page_number": 26,
+          "heading": "0 1  ·  I N P U T",
+          "score": 0.8175403225806452,
+          "snippet": "0 1  ·  I N P U T\nProblem Statement\n9 trường đã hoàn chỉnh — từ Actor,\nWorkflow, Bottleneck đến Boundary & HITL.\n0 2  ·  T E S T  C A S E S\nKịch bản kiểm thử\nDữ liệu thực tế và các trường hợp biên (edge\ncases).\n0 3  ·  S U C C E S S\nChỉ số hiệu năng\nĐạt yêu cầu (pass) / Không đạt (fail) /\nChuyển tiếp kiểm duyệt thủ công (HITL).\nTÁC  V Ụ Đ Ơ N  L Ẻ\nHệ thống có phân loại chính xác các\ncâu hỏi đầu vào không?\nH I ỆU  N Ă N G  Q U Y  T R Ì N H\nNhóm học viên có hoàn thành bài lab\nnhanh hơn và ít kẹt h",
+          "debug": {
+            "original_query": "rủi ro HITL Problem Statement",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "rủi ro HITL Problem Statement"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0026-c0026",
+            "query_tokens": [
+              "hitl",
+              "problem",
+              "ro",
+              "rui",
+              "statement"
+            ],
+            "bm25_rank": 2,
+            "bm25_score": 3.9255186286230686,
+            "dense_rank": 4,
+            "dense_score": 0.1222201265590066,
+            "lexical_overlap": 0.8,
+            "fused_score": 0.8175403225806452,
+            "query_variant": "rủi ro HITL Problem Statement",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.8175403225806452,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0028-c0028",
+          "page_number": 28,
+          "heading": "Đ Ủ Đ I ỀU  K I ỆN",
+          "score": 0.8102453102453102,
+          "snippet": "✓ Go\nthực hiện\nĐ Ủ Đ I ỀU  K I ỆN\n— Bài toán rõ ràng\n— Chỉ số đo lường khả thi\n— Điểm can thiệp AI phù hợp\n— Kiểm soát được rủi ro\n⏸ Not Yet\ntạm hoãn\nC Ó  T R I ỂN  VỌN G\n— Cần bổ sung dữ liệu thực tế\n— Chuẩn hóa quy trình\n— Thiết lập chỉ số\n— Xác định ranh giới\n✕ No-Go\nkhông triển khai\nK H Ô N G  P H Ù  H ỢP\n— AI không mang giá trị vượt trội\n— Rủi ro vận hành quá cao\n— Giải pháp không dùng AI tối ưu hơn\nKhung ra quyết định: Go / Not Yet / No-Go\n— Lập luận dựa trên tính khả thi của Problem State",
+          "debug": {
+            "original_query": "rủi ro HITL Problem Statement",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "rủi ro HITL Problem Statement"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0028-c0028",
+            "query_tokens": [
+              "hitl",
+              "problem",
+              "ro",
+              "rui",
+              "statement"
+            ],
+            "bm25_rank": 3,
+            "bm25_score": 3.208357693857958,
+            "dense_rank": 6,
+            "dense_score": 0.021491713855208948,
+            "lexical_overlap": 0.8,
+            "fused_score": 0.8102453102453102,
+            "query_variant": "rủi ro HITL Problem Statement",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.8102453102453102,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "term_prompt_chaining",
+      "query": "prompt chaining là gì",
+      "expectation": {
+        "expected_top_page_any_of": [
+          20
+        ],
+        "must_include_any_page": [
+          20
+        ],
+        "expect_no_spelling_candidate": true
+      },
+      "actual_pages": [
+        20,
+        21
+      ],
+      "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
+      "query_plan": {
+        "original_query": "prompt chaining là gì",
+        "is_term_query": true,
+        "extracted_term": "prompt chaining",
+        "normalized_term": "prompt chaining",
+        "query_variants": [
+          "prompt chaining là gì",
+          "prompt chaining",
+          "prompt-chaining"
+        ],
+        "spelling_candidates": [],
+        "selected_spelling_candidate": null,
+        "ambiguous_spelling_candidates": [],
+        "exact_phrase_match": true
+      },
+      "top_results": [
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0020-c0020",
+          "page_number": 20,
+          "heading": "1. Prompt Chaining",
+          "score": 1.0,
+          "snippet": "1. Prompt Chaining\nIn\n→\nLLM Call 1\n→\nGate\n→\nLLM Call 2\n→\nLLM Call 3\n→\nOut\n┖ - - Gate fail → Exit\nChia task thành chuỗi bước tuần tự, có gate kiểm tra giữa các bước. VD: Viết outline\n→ check → viết bài.\nÝ nghĩa quyết định: đổi độ trễ lấy độ chính xác.\n2. Routing\nIn\n→\nRouter\n→\nLLM Call 1\nLLM Call 2\nLLM Call 3\n→\nOut\nPhân loại input → đưa vào nhánh chuyên biệt, tối ưu từng loại riêng. VD: CS query →\nFAQ / refund / kỹ thuật.\nÝ nghĩa quyết định: câu dễ đi model rẻ, câu khó đi model mạnh.\n3. Paralleliz",
+          "debug": {
+            "original_query": "prompt chaining là gì",
+            "is_term_query": true,
+            "extracted_term": "prompt chaining",
+            "normalized_term": "prompt chaining",
+            "query_variants": [
+              "prompt chaining là gì",
+              "prompt chaining",
+              "prompt-chaining"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": true,
+            "chunk_id": "d2-slide-hackathon-v1-p0020-c0020",
+            "query_tokens": [
+              "chaining",
+              "prompt"
+            ],
+            "bm25_rank": 1,
+            "bm25_score": 5.224401035203634,
+            "dense_rank": null,
+            "dense_score": 0.0,
+            "lexical_overlap": 1.0,
+            "fused_score": 0.7639344262295082,
+            "query_variant": "prompt chaining",
             "query_variant_kind": "extracted_term",
             "variant_weight": 1.12,
             "boosted_score": 1.0,
             "heading_match": true,
             "phrase_match": true
           }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0021-c0021",
+          "page_number": 21,
+          "heading": "1. Prompt Chaining",
+          "score": 0.6922941176470587,
+          "snippet": "Cây quyết định: Lựa chọn cấp độ giải pháp\n— Từ bài toán cốt lõi đến lựa chọn Rule, Workflow hay Agent\nĐi từ trên xuống — mỗi nhánh \"KHÔNG\" là một lần tránh được độ phức tạp không cần thiết.\nNGUỒN  Anthropic — Building effective agents · Google — Rules of ML\nWORKFLOW · DECISION TREE\nDAY 02 · 55 / 83\nAI IN ACTION - HACKATHON",
+          "debug": {
+            "original_query": "prompt chaining là gì",
+            "is_term_query": true,
+            "extracted_term": "prompt chaining",
+            "normalized_term": "prompt chaining",
+            "query_variants": [
+              "prompt chaining là gì",
+              "prompt chaining",
+              "prompt-chaining"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": true,
+            "chunk_id": "d2-slide-hackathon-v1-p0021-c0021",
+            "query_tokens": [
+              "chaining",
+              "gi",
+              "la",
+              "prompt"
+            ],
+            "bm25_rank": 8,
+            "bm25_score": 0.48111460661887073,
+            "dense_rank": null,
+            "dense_score": 0.0,
+            "lexical_overlap": 0.25,
+            "fused_score": 0.3720588235294117,
+            "query_variant": "prompt chaining là gì",
+            "query_variant_kind": "original",
+            "variant_weight": 0.92,
+            "boosted_score": 0.6922941176470587,
+            "heading_match": true,
+            "phrase_match": true
+          }
         }
       ],
       "passed": true
     },
     {
-      "case_id": "term_nonexistent",
-      "query": "xyzabc là gì",
-      "expected_pages": [],
-      "actual_pages": [],
-      "expected_selected_spelling_candidate": null,
+      "case_id": "term_nut_that_tac_dong_no_accent",
+      "query": "nut that tac dong problem card",
+      "expectation": {
+        "expected_top_page_any_of": [
+          9
+        ],
+        "must_include_any_page": [
+          9,
+          27
+        ],
+        "expect_no_spelling_candidate": true
+      },
+      "actual_pages": [
+        9,
+        10,
+        29,
+        27
+      ],
       "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
+      "query_plan": {
+        "original_query": "nut that tac dong problem card",
+        "is_term_query": false,
+        "extracted_term": null,
+        "normalized_term": null,
+        "query_variants": [
+          "nut that tac dong problem card"
+        ],
+        "spelling_candidates": [],
+        "selected_spelling_candidate": null,
+        "ambiguous_spelling_candidates": [],
+        "exact_phrase_match": false
+      },
+      "top_results": [
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0009-c0009",
+          "page_number": 9,
+          "heading": "P A I R  ·  C H Ư Ơ N G  1  —  R E F R A M E  C Â U  H ỎI",
+          "score": 0.9278688524590164,
+          "snippet": "Bài toán (1 câu)  problem\nVấn đề cụ thể cần giải quyết (không bao gồm giải pháp).\nĐối tượng ảnh hưởng  actor\nCá nhân hoặc bộ phận chịu tác động trực tiếp từ vấn đề.\nQuy trình hiện tại  workflow\nCác bước vận hành thủ công hoặc tự động hiện tại (gồm 3–7 bước).\nNút thắt & Tác động  bottleneck + impact\nKhâu gây chậm trễ, sai sót hoặc lặp lại; hệ quả hay tổn thất cụ thể.\nChỉ số đo thành công  success metric\nChỉ số định lượng cụ thể dùng để chứng minh hiệu quả cải tiến.\nĐịnh hướng giải pháp  direction",
+          "debug": {
+            "original_query": "nut that tac dong problem card",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "nut that tac dong problem card"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0009-c0009",
+            "query_tokens": [
+              "card",
+              "dong",
+              "nut",
+              "problem",
+              "tac",
+              "that"
+            ],
+            "bm25_rank": 1,
+            "bm25_score": 7.988200345567815,
+            "dense_rank": 1,
+            "dense_score": 0.07039848816958984,
+            "lexical_overlap": 1.0,
+            "fused_score": 0.9278688524590164,
+            "query_variant": "nut that tac dong problem card",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.9278688524590164,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0010-c0010",
+          "page_number": 10,
+          "heading": "P A I R  ·  C H Ư Ơ N G  1  —  R E F R A M E  C Â U  H ỎI",
+          "score": 0.7345108695652175,
+          "snippet": "0 1\nQuy trình hiện tại như thế nào?\nCông cụ, các bước, cơ chế bàn giao thông tin?\n0 2\nNút thắt nằm ở đâu?\nBước nào chậm, dễ sai sót, lặp lại?\n0 3\nHao phí hiện tại là bao nhiêu?\nThời gian, chi phí nhân sự, SLA, cơ hội bỏ lỡ?\n0 4\nTiêu chí thành công đo bằng gì?\nHiệu quả cải tiến định lượng cụ thể?\n0 5\nHậu quả khi xảy ra sai sót?\nPhạm vi tự quyết của AI; điểm cần con người phê duyệt?\n0 6\nCó giải pháp phi AI đơn giản hơn?\nQuy tắc, checklist, quy trình hay tài liệu hướng dẫn?\nCâu hỏi khai thác bài to",
+          "debug": {
+            "original_query": "nut that tac dong problem card",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "nut that tac dong problem card"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0010-c0010",
+            "query_tokens": [
+              "card",
+              "dong",
+              "nut",
+              "problem",
+              "tac",
+              "that"
+            ],
+            "bm25_rank": 4,
+            "bm25_score": 2.711515723416326,
+            "dense_rank": 9,
+            "dense_score": -0.07071067811865475,
+            "lexical_overlap": 0.6666666666666666,
+            "fused_score": 0.7345108695652175,
+            "query_variant": "nut that tac dong problem card",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.7345108695652175,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0029-c0029",
+          "page_number": 29,
+          "heading": "Đ Ủ Đ I ỀU  K I ỆN",
+          "score": 0.7341022161917685,
+          "snippet": "01\nBrief mơ hồ không thay thế Problem Statement.\nMột bản tóm tắt mơ hồ không thể thay thế cho một Problem Statement hoàn chỉnh.\n02\nMô hình hóa workflow trước khi tích hợp AI.\nBắt buộc phải mô hình hóa quy trình trước khi xem xét tích hợp giải pháp AI.\n03\nPain point phải được lượng hóa.\nMọi điểm đau cần được lượng hóa bằng baseline và chỉ số đo lường cụ thể.\n04\nPhức tạp không đồng nghĩa với hiệu quả.\nRule, Workflow và Agent là ba cấp độ khác nhau; độ phức tạp kỹ thuật không đồng nghĩa với hiệu qu",
+          "debug": {
+            "original_query": "nut that tac dong problem card",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "nut that tac dong problem card"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0029-c0029",
+            "query_tokens": [
+              "card",
+              "dong",
+              "nut",
+              "problem",
+              "tac",
+              "that"
+            ],
+            "bm25_rank": 7,
+            "bm25_score": 1.6974198118168993,
+            "dense_rank": 6,
+            "dense_score": -0.018306300648455315,
+            "lexical_overlap": 0.6666666666666666,
+            "fused_score": 0.7341022161917685,
+            "query_variant": "nut that tac dong problem card",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.7341022161917685,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0027-c0027",
+          "page_number": 27,
+          "heading": "6  Y ẾU  TỐ B À I  TOÁ N  C ỐT  L Õ I",
+          "score": 0.6753968253968254,
+          "snippet": "6  Y ẾU  TỐ B À I  TOÁ N  C ỐT  L Õ I\nActor\nđối tượng ảnh hưởng\nĐối tượng trực tiếp chịu ảnh hưởng bởi vấn đề.\nWorkflow\nquy trình hiện tại\nQuy trình vận hành hiện tại gồm các bước cụ thể nào?\nBottleneck\nnút thắt\nKhâu nào gặp tình trạng chậm trễ, sai sót, lặp lại?\nImpact\ntác động\nTổn thất lượng hóa bằng thời gian, chi phí, SLA hoặc chất lượng.\nSuccess Metric\nchỉ số thành công\nChỉ số đo lường cụ thể để xác định sự cải thiện.\nBoundary\nranh giới\nAI không được làm gì; khâu nào bắt buộc có con người.\n",
+          "debug": {
+            "original_query": "nut that tac dong problem card",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "nut that tac dong problem card"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0027-c0027",
+            "query_tokens": [
+              "card",
+              "dong",
+              "nut",
+              "problem",
+              "tac",
+              "that"
+            ],
+            "bm25_rank": 3,
+            "bm25_score": 3.528440753500889,
+            "dense_rank": null,
+            "dense_score": 0.0,
+            "lexical_overlap": 0.8333333333333334,
+            "fused_score": 0.6753968253968254,
+            "query_variant": "nut that tac dong problem card",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.6753968253968254,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "term_go_not_yet_no_go",
+      "query": "khung quyết định go not yet no go",
+      "expectation": {
+        "expected_top_page_any_of": [
+          28
+        ],
+        "must_include_any_page": [
+          28
+        ],
+        "expect_no_spelling_candidate": true
+      },
+      "actual_pages": [
+        28,
+        2,
+        29,
+        9
+      ],
+      "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
+      "query_plan": {
+        "original_query": "khung quyết định go not yet no go",
+        "is_term_query": false,
+        "extracted_term": null,
+        "normalized_term": null,
+        "query_variants": [
+          "khung quyết định go not yet no go"
+        ],
+        "spelling_candidates": [],
+        "selected_spelling_candidate": null,
+        "ambiguous_spelling_candidates": [],
+        "exact_phrase_match": false
+      },
+      "top_results": [
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0028-c0028",
+          "page_number": 28,
+          "heading": "Đ Ủ Đ I ỀU  K I ỆN",
+          "score": 0.9278688524590164,
+          "snippet": "✓ Go\nthực hiện\nĐ Ủ Đ I ỀU  K I ỆN\n— Bài toán rõ ràng\n— Chỉ số đo lường khả thi\n— Điểm can thiệp AI phù hợp\n— Kiểm soát được rủi ro\n⏸ Not Yet\ntạm hoãn\nC Ó  T R I ỂN  VỌN G\n— Cần bổ sung dữ liệu thực tế\n— Chuẩn hóa quy trình\n— Thiết lập chỉ số\n— Xác định ranh giới\n✕ No-Go\nkhông triển khai\nK H Ô N G  P H Ù  H ỢP\n— AI không mang giá trị vượt trội\n— Rủi ro vận hành quá cao\n— Giải pháp không dùng AI tối ưu hơn\nKhung ra quyết định: Go / Not Yet / No-Go\n— Lập luận dựa trên tính khả thi của Problem State",
+          "debug": {
+            "original_query": "khung quyết định go not yet no go",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "khung quyết định go not yet no go"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0028-c0028",
+            "query_tokens": [
+              "dinh",
+              "go",
+              "khung",
+              "no",
+              "not",
+              "quyet",
+              "yet"
+            ],
+            "bm25_rank": 1,
+            "bm25_score": 17.275484658131816,
+            "dense_rank": 1,
+            "dense_score": 0.33433260533946074,
+            "lexical_overlap": 1.0,
+            "fused_score": 0.9278688524590164,
+            "query_variant": "khung quyết định go not yet no go",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.9278688524590164,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0002-c0002",
+          "page_number": 2,
+          "heading": "S Á N G",
+          "score": 0.9105440539239287,
+          "snippet": "S Á N G\nKHUNG LÝ THUYẾT (4H)\n· Problem Discovery (Double Diamond, HCD)\n· Problem Statement & định lượng hóa\n· PAIR ① AI có thêm giá trị?\n· PAIR ② Automate/Augment →\nRule/Workflow/Agent\n· PAIR ③ Reward function & success criteria\n· Khi AI sai & UX/HITL\n· PS hoàn chỉnh → Go/Not Yet/No-Go\nC H I ỀU\nTHỰC HÀNH LAB (4H)\n· Cá nhân: Tìm 5 bài toán & điền 3 Problem\nCards\n· Nhóm: Phản biện chéo, chốt 1 bài toán\n· Nhóm: Xác thực dữ liệu & vẽ quy trình\n· Nhóm: Xác định giải pháp & ra quyết định\n· Cá nhân: Vi",
+          "debug": {
+            "original_query": "khung quyết định go not yet no go",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "khung quyết định go not yet no go"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0002-c0002",
+            "query_tokens": [
+              "dinh",
+              "go",
+              "khung",
+              "no",
+              "not",
+              "quyet",
+              "yet"
+            ],
+            "bm25_rank": 2,
+            "bm25_score": 12.442921194220792,
+            "dense_rank": 7,
+            "dense_score": 0.17391639824998364,
+            "lexical_overlap": 1.0,
+            "fused_score": 0.9105440539239287,
+            "query_variant": "khung quyết định go not yet no go",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.9105440539239287,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0029-c0029",
+          "page_number": 29,
+          "heading": "Đ Ủ Đ I ỀU  K I ỆN",
+          "score": 0.8218077299412916,
+          "snippet": "01\nBrief mơ hồ không thay thế Problem Statement.\nMột bản tóm tắt mơ hồ không thể thay thế cho một Problem Statement hoàn chỉnh.\n02\nMô hình hóa workflow trước khi tích hợp AI.\nBắt buộc phải mô hình hóa quy trình trước khi xem xét tích hợp giải pháp AI.\n03\nPain point phải được lượng hóa.\nMọi điểm đau cần được lượng hóa bằng baseline và chỉ số đo lường cụ thể.\n04\nPhức tạp không đồng nghĩa với hiệu quả.\nRule, Workflow và Agent là ba cấp độ khác nhau; độ phức tạp kỹ thuật không đồng nghĩa với hiệu qu",
+          "debug": {
+            "original_query": "khung quyết định go not yet no go",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "khung quyết định go not yet no go"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0029-c0029",
+            "query_tokens": [
+              "dinh",
+              "go",
+              "khung",
+              "no",
+              "not",
+              "quyet",
+              "yet"
+            ],
+            "bm25_rank": 4,
+            "bm25_score": 9.147138120836221,
+            "dense_rank": 13,
+            "dense_score": 0.11461557146618478,
+            "lexical_overlap": 0.8571428571428571,
+            "fused_score": 0.8218077299412916,
+            "query_variant": "khung quyết định go not yet no go",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.8218077299412916,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        },
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0009-c0009",
+          "page_number": 9,
+          "heading": "P A I R  ·  C H Ư Ơ N G  1  —  R E F R A M E  C Â U  H ỎI",
+          "score": 0.7008507621410848,
+          "snippet": "Bài toán (1 câu)  problem\nVấn đề cụ thể cần giải quyết (không bao gồm giải pháp).\nĐối tượng ảnh hưởng  actor\nCá nhân hoặc bộ phận chịu tác động trực tiếp từ vấn đề.\nQuy trình hiện tại  workflow\nCác bước vận hành thủ công hoặc tự động hiện tại (gồm 3–7 bước).\nNút thắt & Tác động  bottleneck + impact\nKhâu gây chậm trễ, sai sót hoặc lặp lại; hệ quả hay tổn thất cụ thể.\nChỉ số đo thành công  success metric\nChỉ số định lượng cụ thể dùng để chứng minh hiệu quả cải tiến.\nĐịnh hướng giải pháp  direction",
+          "debug": {
+            "original_query": "khung quyết định go not yet no go",
+            "is_term_query": false,
+            "extracted_term": null,
+            "normalized_term": null,
+            "query_variants": [
+              "khung quyết định go not yet no go"
+            ],
+            "spelling_candidates": [],
+            "selected_spelling_candidate": null,
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0009-c0009",
+            "query_tokens": [
+              "dinh",
+              "go",
+              "khung",
+              "no",
+              "not",
+              "quyet",
+              "yet"
+            ],
+            "bm25_rank": 5,
+            "bm25_score": 4.676922442870897,
+            "dense_rank": 2,
+            "dense_score": 0.2728540621047238,
+            "lexical_overlap": 0.5714285714285714,
+            "fused_score": 0.7008507621410848,
+            "query_variant": "khung quyết định go not yet no go",
+            "query_variant_kind": "original",
+            "variant_weight": 1.0,
+            "boosted_score": 0.7008507621410848,
+            "heading_match": false,
+            "phrase_match": false
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "term_parallelization_typo",
+      "query": "paralelization là gì",
+      "expectation": {
+        "expected_top_page_any_of": [
+          20
+        ],
+        "must_include_any_page": [
+          20
+        ],
+        "expected_selected_spelling_candidate_normalized": "parallelization"
+      },
+      "actual_pages": [
+        20
+      ],
+      "actual_selected_spelling_candidate": "Parallelization",
+      "actual_selected_spelling_candidate_normalized": "parallelization",
+      "query_plan": {
+        "original_query": "paralelization là gì",
+        "is_term_query": true,
+        "extracted_term": "paralelization",
+        "normalized_term": "paralelization",
+        "query_variants": [
+          "paralelization là gì",
+          "paralelization",
+          "Parallelization"
+        ],
+        "spelling_candidates": [
+          {
+            "term": "paralelization",
+            "candidate": "Parallelization",
+            "score": 96.55
+          }
+        ],
+        "selected_spelling_candidate": "Parallelization",
+        "ambiguous_spelling_candidates": [],
+        "exact_phrase_match": false
+      },
+      "top_results": [
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0020-c0020",
+          "page_number": 20,
+          "heading": "1. Prompt Chaining",
+          "score": 0.9861197944702718,
+          "snippet": "1. Prompt Chaining\nIn\n→\nLLM Call 1\n→\nGate\n→\nLLM Call 2\n→\nLLM Call 3\n→\nOut\n┖ - - Gate fail → Exit\nChia task thành chuỗi bước tuần tự, có gate kiểm tra giữa các bước. VD: Viết outline\n→ check → viết bài.\nÝ nghĩa quyết định: đổi độ trễ lấy độ chính xác.\n2. Routing\nIn\n→\nRouter\n→\nLLM Call 1\nLLM Call 2\nLLM Call 3\n→\nOut\nPhân loại input → đưa vào nhánh chuyên biệt, tối ưu từng loại riêng. VD: CS query →\nFAQ / refund / kỹ thuật.\nÝ nghĩa quyết định: câu dễ đi model rẻ, câu khó đi model mạnh.\n3. Paralleliz",
+          "debug": {
+            "original_query": "paralelization là gì",
+            "is_term_query": true,
+            "extracted_term": "paralelization",
+            "normalized_term": "paralelization",
+            "query_variants": [
+              "paralelization là gì",
+              "paralelization",
+              "Parallelization"
+            ],
+            "spelling_candidates": [
+              {
+                "term": "paralelization",
+                "candidate": "Parallelization",
+                "score": 96.55
+              }
+            ],
+            "selected_spelling_candidate": "Parallelization",
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0020-c0020",
+            "query_tokens": [
+              "parallelization"
+            ],
+            "bm25_rank": 1,
+            "bm25_score": 2.612200517601817,
+            "dense_rank": 7,
+            "dense_score": 0.03734568434866356,
+            "lexical_overlap": 1.0,
+            "fused_score": 0.9131881575727918,
+            "query_variant": "Parallelization",
+            "query_variant_kind": "spelling_candidate",
+            "variant_weight": 0.9,
+            "boosted_score": 0.9861197944702718,
+            "heading_match": false,
+            "phrase_match": true
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "term_automation_augmentation_typo",
+      "query": "automtion vs augmentation là gì",
+      "expectation": {
+        "expected_top_page_any_of": [
+          17
+        ],
+        "must_include_any_page": [
+          17
+        ],
+        "expected_selected_spelling_candidate_normalized": "automation vs augmentation"
+      },
+      "actual_pages": [
+        17
+      ],
+      "actual_selected_spelling_candidate": "Automation vs Augmentation",
+      "actual_selected_spelling_candidate_normalized": "automation vs augmentation",
+      "query_plan": {
+        "original_query": "automtion vs augmentation là gì",
+        "is_term_query": true,
+        "extracted_term": "automtion vs augmentation",
+        "normalized_term": "automtion vs augmentation",
+        "query_variants": [
+          "automtion vs augmentation là gì",
+          "automtion vs augmentation",
+          "automtion-vs augmentation",
+          "Automation vs Augmentation"
+        ],
+        "spelling_candidates": [
+          {
+            "term": "automtion vs augmentation",
+            "candidate": "Automation vs Augmentation",
+            "score": 98.04
+          }
+        ],
+        "selected_spelling_candidate": "Automation vs Augmentation",
+        "ambiguous_spelling_candidates": [],
+        "exact_phrase_match": false
+      },
+      "top_results": [
+        {
+          "chunk_id": "d2-slide-hackathon-v1-p0017-c0017",
+          "page_number": 17,
+          "heading": "A U TO M AT E",
+          "score": 1.0,
+          "snippet": "A U TO M AT E\nAI làm thay\nChọn khi:\n· Việc khó, nhàm chán, nguy hiểm hoặc cần scale\n· Người dùng thiếu kiến thức / khả năng tự làm\n· Có \"đáp án đúng\" mà mọi người cùng đồng thuận\nĐo thành công bằng: hiệu quả tăng · an toàn hơn · giảm việc tẻ nhạt.\nquyết định theo\ntừng tác vụ\nA U G M E N T\nAI hỗ trợ con người\nChọn khi:\n· Người dùng thích tự làm việc đó\n· Stakes cao: tiền bạc, pháp lý, sức khỏe\n· Kết quả cần trách nhiệm cá nhân / social capital\n· Sở thích khó diễn đạt thành lời\nĐo bằng: mức độ thí",
+          "debug": {
+            "original_query": "automtion vs augmentation là gì",
+            "is_term_query": true,
+            "extracted_term": "automtion vs augmentation",
+            "normalized_term": "automtion vs augmentation",
+            "query_variants": [
+              "automtion vs augmentation là gì",
+              "automtion vs augmentation",
+              "automtion-vs augmentation",
+              "Automation vs Augmentation"
+            ],
+            "spelling_candidates": [
+              {
+                "term": "automtion vs augmentation",
+                "candidate": "Automation vs Augmentation",
+                "score": 98.04
+              }
+            ],
+            "selected_spelling_candidate": "Automation vs Augmentation",
+            "ambiguous_spelling_candidates": [],
+            "exact_phrase_match": false,
+            "chunk_id": "d2-slide-hackathon-v1-p0017-c0017",
+            "query_tokens": [
+              "augmentation",
+              "automtion",
+              "vs"
+            ],
+            "bm25_rank": 1,
+            "bm25_score": 7.2078497818210145,
+            "dense_rank": 2,
+            "dense_score": 0.057591228372090686,
+            "lexical_overlap": 0.6666666666666666,
+            "fused_score": 0.7585580821434867,
+            "query_variant": "automtion vs augmentation",
+            "query_variant_kind": "extracted_term",
+            "variant_weight": 1.12,
+            "boosted_score": 1.0,
+            "heading_match": false,
+            "phrase_match": true
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "term_nonexistent_xyzabc",
+      "query": "xyzabc là gì",
+      "expectation": {
+        "expect_no_results": true,
+        "expect_no_spelling_candidate": true
+      },
+      "actual_pages": [],
+      "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
       "query_plan": {
         "original_query": "xyzabc là gì",
         "is_term_query": true,
@@ -1061,20 +1459,22 @@
       "passed": true
     },
     {
-      "case_id": "term_ambiguous_prefix",
-      "query": "encod là gì",
-      "expected_pages": [],
+      "case_id": "term_ambiguous_prefix_automa",
+      "query": "automa là gì",
+      "expectation": {
+        "expect_no_spelling_candidate": true
+      },
       "actual_pages": [],
-      "expected_selected_spelling_candidate": null,
       "actual_selected_spelling_candidate": null,
+      "actual_selected_spelling_candidate_normalized": null,
       "query_plan": {
-        "original_query": "encod là gì",
+        "original_query": "automa là gì",
         "is_term_query": true,
-        "extracted_term": "encod",
-        "normalized_term": "encod",
+        "extracted_term": "automa",
+        "normalized_term": "automa",
         "query_variants": [
-          "encod là gì",
-          "encod"
+          "automa là gì",
+          "automa"
         ],
         "spelling_candidates": [],
         "selected_spelling_candidate": null,

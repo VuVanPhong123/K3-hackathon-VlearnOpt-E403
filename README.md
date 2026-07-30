@@ -57,6 +57,7 @@ repo/
 ├── eval/
 │   ├── golden_set.jsonl
 │   ├── term_search_regression.jsonl
+│   ├── pdf_eval_fixture.py
 │   ├── run_eval.py
 │   ├── run_term_search_regression.py
 │   └── results/
@@ -101,14 +102,20 @@ Các biến chính: `OPENAI_API_KEY`, `OPENAI_MODEL`, `GEMINI_API_KEY`, `GEMINI_
 
 ```powershell
 $env:PYTHONPATH=".;codebase/backend"
-python -m compileall codebase/backend/app
-python -X utf8 eval/run_eval.py
-python -X utf8 eval/run_term_search_regression.py
+python -m compileall codebase/backend/app eval
+python -X utf8 eval/run_eval.py --document "path/to/d2-slide-hackathon.pdf"
+python -X utf8 eval/run_term_search_regression.py --document "path/to/d2-slide-hackathon.pdf"
 ```
 
-Golden eval có 43 case trong `eval/golden_set.jsonl`. Latest tracked result: `eval/results/latest.json`, 43/43 pass, quality bar passed.
+Golden eval có 43 case trong `eval/golden_set.jsonl`. Latest tracked result: `eval/results/latest.json`, 43/43 pass, quality bar passed trên PDF thật `d2-slide-hackathon.pdf`:
+
+- sha256: `5f729b2788a8f6d56a2252f96e96efec8e8cf7d66a20b39d470bca38f0754c5d`
+- size: `2,435,727` bytes
+- physical pages: `29`
 
 Term-search regression ở `eval/term_search_regression.jsonl`. Latest result: `eval/results/term_search_latest.json`, 14/14 pass.
+
+PDF eval không commit vào repo. Runner dùng `PageExtractionService`, `SectionService`, `ChunkingService`, `RetrievalService`, hash embedding và PyMuPDF render thật; nếu không truyền được PDF hoặc không có `eval/fixtures/d2-slide-hackathon.pdf`, runner fail rõ, không fallback sang fixture text giả.
 
 ## Phần thật và phần fake
 

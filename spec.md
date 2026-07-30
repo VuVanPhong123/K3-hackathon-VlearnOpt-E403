@@ -59,7 +59,7 @@ Không có số liệu mới được tạo cho mục này; đây là tổng h�
 - Mức prototype: [x] Working. Flow thật: upload PDF, extract page text, build retrieval index, render page/crop image, call model provider, return answer with citation. Citation click, drag page, text selection, visual region, streaming UI, reset conversation và truy hồi thuật ngữ toàn tài liệu đã có. Limitations: chưa authentication, chưa OCR đầy đủ cho scanned PDF, dùng SQLite/local storage, offline eval không tự chấm toàn bộ semantic correctness của model thật.
 - Model: Text primary theo env/source là OpenAI qua `OPENAI_MODEL`, default `gpt-5-mini`. Vision primary là Gemini qua `GEMINI_VISION_MODEL` hoặc `GEMINI_MODEL`, default `gemini-3.5-flash-lite`. Infrastructure fallback OpenAI <-> Gemini theo `PRIMARY_TEXT_PROVIDER`, `FALLBACK_TEXT_PROVIDER`, `VISION_PRIMARY_PROVIDER`, `VISION_FALLBACK_PROVIDER` và `ENABLE_GEMINI_FALLBACK`.
 - Automation: Conditional automation. Đủ context thì trả lời có citation. Không đủ context thì nói rõ hoặc hỏi lại. Cost-of-error: trả lời sai hoặc cite sai có thể làm học viên học sai nội dung bài học, nên không đoán khi thiếu căn cứ.
-- Retrieval thuật ngữ: `RetrievalService` dùng `QueryPlanner.plan_for_retrieval` để nhận diện câu định nghĩa/giải thích, tách term trung tâm, sinh tối đa 5 query variants, sửa typo bằng vocabulary động từ heading/text/chunk trong tài liệu, merge lexical/dense theo `chunk_id`, boost exact phrase ở heading/text và chỉ citation chunk thật sự đưa vào prompt. Không hardcode `encoder`, tên tài liệu hay số trang.
+- Retrieval thuật ngữ: `RetrievalService` dùng `QueryPlanner.plan_for_retrieval` để nhận diện câu định nghĩa/giải thích, tách term trung tâm, sinh tối đa 5 query variants, sửa typo bằng vocabulary động từ heading/text/chunk trong tài liệu, merge lexical/dense theo `chunk_id`, boost exact phrase ở heading/text và chỉ citation chunk thật sự đưa vào prompt. Không hardcode thuật ngữ, tên tài liệu hay số trang.
 
 Non-goals:
 
@@ -90,34 +90,34 @@ Không thêm golden-set case mới trong CP4. Các kịch bản dưới đây d�
 | Không có căn cứ | Trang không tồn tại | User hỏi trang 99 | HTTP 400 nói tài liệu không có trang 99 | Gọi provider và đoán nội dung | Học sai/cite sai | `page_out_of_range` |
 | Không có căn cứ | Không có document khi cần page | User gắn page nhưng thiếu `document_id` | HTTP 400 yêu cầu có PDF | Trả lời bằng trí nhớ chung | Mất grounding | `page_missing_document` |
 | Không có căn cứ | Selection bị forge | Selected text không khớp page text | Từ chối với lỗi không khớp nội dung trang PDF | Chấp nhận selected text giả | Học viên tin vào context sai | `selection_forged` |
-| Mơ hồ/confidence thấp | Câu hỏi visual cần đúng trang | User hỏi biểu đồ/hình trên page | Dùng image render/crop và page text, citation đúng trang | Chỉ trả lời text chung | Bỏ sót thông tin visual | `visual_region_standard`, `page_visual_question` |
-| Mơ hồ/confidence thấp | Câu hỏi không gắn page nhưng có document | User hỏi RAG/multi-head | Retrieval chọn page liên quan, citation | Lấy active page bất kỳ | Citation lệch nguồn | `search_rag`, `search_multi_head` |
+| Mơ hồ/confidence thấp | Câu hỏi visual cần đúng trang | User hỏi sơ đồ/cây quyết định trên page | Dùng image render/crop và page text, citation đúng trang | Chỉ trả lời text chung | Bỏ sót thông tin visual | `visual_region_decision_tree`, `page_visual_ai_architecture` |
+| Mơ hồ/confidence thấp | Câu hỏi không gắn page nhưng có document | User hỏi Double Diamond hoặc Automation vs Augmentation | Retrieval chọn page liên quan, citation | Lấy active page bất kỳ | Citation lệch nguồn | `search_double_diamond`, `search_automation_augmentation` |
 | Ngoài phạm vi/không được phép | General chat bị ép search nhưng không document | `interaction_mode=document_search` không có PDF | Rơi về general chat an toàn | Báo đã search tài liệu không tồn tại | Gây hiểu nhầm | `forced_search_without_document` |
 | Ngoài phạm vi/không được phép | Provider request/config sai | Provider báo bad request/model/key invalid | Không fallback, báo lỗi cấu hình rõ | Fallback để che lỗi config | Khó debug và sai provider | `provider_text_request_error` |
 | Sai gây hậu quả thật | Citation không đúng selected page | User hỏi trang cụ thể | Citation phải đúng page đã dùng trong context | Citation sang page khác | Học viên học sai source | `page_real_C0021_T0769`, `page_real_C0266_T1084` |
 | Sai gây hậu quả thật | Fallback provider sai thời điểm | Primary lỗi tạm thời trước khi có answer | Fallback chỉ với temporary/rate/timeout/5xx trước delta đầu | Fallback sau khi đã gửi partial delta hoặc fallback với bad request | Kết quả không nhất quán | `fallback_text_temporary`, `fallback_vision_temporary` |
 | Sai gây hậu quả thật | Lịch sử chat quá dài/rò context | History dài hơn giới hạn | Chỉ dùng recent window theo config, không đưa lượt cũ nhất | Gửi vô hạn hoặc leak welcome/local UI | Tăng token, nhiễu context | `history_limit_general` |
-| Mơ hồ/confidence thấp | Hỏi định nghĩa thuật ngữ có typo nhỏ | User hỏi `encodr là gì` khi document có `encoder` rõ ràng | Sửa typo bằng candidate lấy từ chính document, vẫn giữ query gốc trong plan | Hardcode thuật ngữ hoặc tự sửa sang từ không có trong document | Không tìm thấy evidence hoặc cite sai | `term_encoder_typo`, `test_document_term_typo_is_corrected_from_document_vocabulary` |
+| Mơ hồ/confidence thấp | Hỏi định nghĩa thuật ngữ có typo nhỏ | User hỏi `double diamnd là gì` khi document có `Double Diamond` rõ ràng | Sửa typo bằng candidate lấy từ chính document, vẫn giữ query gốc trong plan | Hardcode thuật ngữ hoặc tự sửa sang từ không có trong document | Không tìm thấy evidence hoặc cite sai | `term_double_diamond_typo`, `term_parallelization_typo` |
 | Không có căn cứ | Hỏi thuật ngữ không tồn tại | User hỏi `xyzabc là gì` | Không tạo citation, prompt báo không tìm thấy bằng chứng phù hợp | Trả kiến thức chung trong document-only hoặc cite giả | Học viên tin nhầm tài liệu có nội dung đó | `term_nonexistent`, `test_document_term_no_evidence_does_not_create_fake_citation` |
-| Mơ hồ/confidence thấp | Typo/prefix mơ hồ | Document có `encoder` và `encoding`, user hỏi `encod là gì` | Không âm thầm chọn một candidate; không trả citation tùy tiện | Tự chọn `encoder` chỉ vì phổ biến hơn | Sai ý người dùng | `term_ambiguous_prefix`, `test_ambiguous_prefix_typo_is_not_silently_rewritten` |
+| Mơ hồ/confidence thấp | Typo/prefix mơ hồ | Document có nhiều cụm bắt đầu bằng `automa`, user hỏi `automa là gì` | Không âm thầm chọn một candidate; không trả citation tùy tiện | Tự chọn `Automation` chỉ vì phổ biến hơn | Sai ý người dùng | `term_ambiguous_prefix_automa` |
 
 ## §6. Bốn Đường Đi Của Trải Nghiệm
 
-- Happy path: User mở PDF, kéo một trang hoặc chọn text/region, hỏi. Backend validate document/page/selection, tạo context, gọi provider text hoặc multimodal, lưu conversation và trả answer kèm citation. Case: `page_attached_standard`, `selection_valid`, `visual_region_standard`.
-- Low-confidence: User hỏi nội dung có thể cần tìm trong toàn tài liệu. Backend retrieval các page liên quan; nếu evidence yếu, prompt yêu cầu nói rõ không đủ thông tin. Case: `search_grounded_abstention`.
+- Happy path: User mở PDF, kéo một trang hoặc chọn text/region, hỏi. Backend validate document/page/selection, tạo context, gọi provider text hoặc multimodal, lưu conversation và trả answer kèm citation. Case: `page_attached_reward_function`, `selection_valid`, `visual_region_decision_tree`.
+- Low-confidence: User hỏi nội dung có thể cần tìm trong toàn tài liệu. Backend retrieval các page liên quan; nếu evidence yếu, prompt yêu cầu nói rõ không đủ thông tin. Case: `search_demo_to_production`.
 - Failure/no evidence: Trang ngoài range, thiếu document, selection không khớp hoặc provider chưa có key. Hệ thống trả lỗi rõ ràng, không gọi model khi validation fail. Case: `page_out_of_range`, `page_missing_document`, `selection_forged`, `provider_credentials_missing`.
 - Correction: User xóa attachment, chọn lại page/text/region hoặc tạo chat mới. Nút tạo chat mới abort stream đang chạy, xóa conversation server theo best effort, reset messages/attachment và focus textarea.
-- Term search: User hỏi `encoder là gì`, `RAG nghĩa là gì`, `multi head attention hoạt động thế nào` hoặc có typo nhỏ như `overfiting`. Backend tách term, tạo variants, sửa typo có guardrail nếu document vocabulary đủ chắc, rồi đưa 2-4 chunk evidence vào prompt kèm citation thật.
+- Term search: User hỏi `mô hình double diamond là gì`, `prompt chaining là gì`, `HITL`, `Go / Not Yet / No-Go` hoặc có typo nhỏ như `paralelization`. Backend tách term, tạo variants, sửa typo có guardrail nếu document vocabulary đủ chắc, rồi đưa 2-4 chunk evidence vào prompt kèm citation thật.
 - Ngoài phạm vi: Khi user ép document search mà không có document, hệ thống không giả vờ có tài liệu và xử lý như general chat. Case: `forced_search_without_document`.
-- Visual/table/figure: Page chat và visual region gửi image bytes cho vision provider; table/figure/chart có citation page. Case: `page_visual_question`, `search_table_comparison`, `visual_real_C0547_T0135`.
+- Visual/table/figure: Page chat và visual region gửi image bytes cho vision provider; table/figure/chart có citation page. Case: `page_visual_ai_architecture`, `search_problem_statement_table`, `visual_real_C0547_T0135`.
 - Đổi tài liệu: Khi `currentDocument.id` thay đổi, frontend abort stream cũ, xóa conversation server cũ theo best effort, clear attachment/history và mở chat mới; không xóa PDF hay annotation.
 - Tạo chat mới: Nút `Cuộc trò chuyện mới` reset context chat và server conversation; không xóa PDF, document metadata, annotation hoặc panel width.
 
 ## §7. Kiểm Thử
 
-Golden set hiện có 43 case, giữ nguyên tổng số case. Trong đó 10 case được chuyển thể từ chatlog VLearn đã ẩn danh và 33 case tổng hợp. Không thêm golden case mới; chỉ cập nhật case history hiện có từ `max_history_count=8` sang `12` để khớp default mới.
+Golden set hiện có đúng 43 case, giữ nguyên phân bổ category. Trong đó 10 case được chuyển thể từ chatlog VLearn đã ẩn danh và 33 case tổng hợp. Các câu hỏi adapted dùng `conversation_id/turn_id` làm nguồn pain ban đầu, không ghi là quote mới. Golden set chạy trên PDF thật `d2-slide-hackathon.pdf`, dùng physical PDF page 1-29 thay vì footer `DAY 02 · x / 83`.
 
-Regression bổ sung sau bug truy hồi thuật ngữ: `eval/term_search_regression.jsonl` có 14 case mới, tách riêng với golden set CP4. Bộ này kiểm tra uppercase/lowercase, tiếng Việt có dấu/không dấu, cụm nhiều từ, hyphen, typo một từ, typo cụm từ, no-evidence và prefix mơ hồ. Runner: `python -X utf8 eval/run_term_search_regression.py`.
+Regression bổ sung sau bug truy hồi thuật ngữ: `eval/term_search_regression.jsonl` có đúng 14 case, tách riêng với golden set CP4. Bộ này kiểm tra uppercase/lowercase, tiếng Việt có dấu/không dấu, cụm nhiều từ, hyphen, typo một từ, typo cụm từ, no-evidence và prefix mơ hồ trên vocabulary/chunks sinh từ PDF Day 02. Runner: `python -X utf8 eval/run_term_search_regression.py --document "path/to/d2-slide-hackathon.pdf"`.
 
 Chiều chất lượng và định nghĩa pass/fail:
 
@@ -125,7 +125,7 @@ Chiều chất lượng và định nghĩa pass/fail:
 - Mode accuracy: routing đúng `GENERAL_CHAT`, `PAGE_CHAT`, `TEXT_SELECTION_CHAT`, `VISUAL_REGION_CHAT`, `DOCUMENT_SEARCH_CHAT`.
 - Page context accuracy: page đúng exact hoặc include required page.
 - Citation accuracy: citation page đúng expected.
-- Provider invocation/media path: gọi provider đúng/không gọi đúng text hoặc multimodal; image path có image khi cần.
+- Provider invocation/media path: gọi provider đúng/không gọi đúng text hoặc multimodal; image render/crop có byte length, hash và kích thước hợp lý khi cần.
 - Fallback accuracy: provider và `fallback_used` đúng, attempted providers đúng với expected.
 - Prompt context accuracy: prompt chứa/không chứa các chuỗi bắt buộc/cấm.
 - History limit accuracy: không vượt giới hạn lịch sử theo case.
@@ -149,11 +149,11 @@ Quality bar trong `eval/run_eval.py`:
 | utf8_response_accuracy | 1.00 | 1.00 |
 | no_crash_rate | 1.00 | 1.00 |
 
-Kết quả latest sau implementation từ `eval/results/latest.json`: 43/43 case pass, `quality_bar_passed=true`, `failed_cases=[]`.
+Kết quả latest sau implementation từ `eval/results/latest.json`: 43/43 case pass, `quality_bar_passed=true`, `failed_cases=[]`. Manifest tài liệu trong report: `filename=d2-slide-hackathon.pdf`, `sha256=5f729b2788a8f6d56a2252f96e96efec8e8cf7d66a20b39d470bca38f0754c5d`, `size_bytes=2435727`, `page_count=29`.
 
 Kết quả term-search regression từ `eval/results/term_search_latest.json`: 14/14 case pass, `failed=[]`. Đây là kiểm thử offline của retrieval/plan/citation, không phải live provider semantic eval.
 
-Offline eval chạy `OrchestrationService`, retrieval và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Trước cleanup cuối, backend unit/integration tests đã chạy để ghi baseline; các test build-only không còn là artifact nộp bài. Nhóm không ghi PASS live provider trong repo vì buổi pitching dùng demo prototype và kết quả eval offline đã được chốt.
+Offline eval chạy `OrchestrationService`, extraction/chunk/retrieval/render thật và fake provider. Nó kiểm tra contract, routing, page, media path, fallback, UTF-8 và history. Nó không thay thế việc chấm chất lượng ngôn ngữ của model thật và không phải bằng chứng tuyệt đối rằng model trả lời đúng kiến thức. Trước cleanup cuối, backend unit/integration tests đã chạy để ghi baseline; các test build-only không còn là artifact nộp bài. Nhóm không ghi PASS live provider trong repo vì buổi pitching dùng demo prototype và kết quả eval offline đã được chốt.
 
 ## §8. Phân Công & Kế Hoạch
 
