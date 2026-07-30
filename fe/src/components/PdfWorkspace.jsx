@@ -13,7 +13,8 @@ export default function PdfWorkspace({
   uploading,
   uploadInputRef,
   onActivePageChange,
-  onContextAttachment,
+  onAttachPage,
+  contextAttachment,
   jumpToPageRequest,
 }) {
   const scrollRef = useRef(null);
@@ -27,6 +28,7 @@ export default function PdfWorkspace({
   const [strokeWidth, setStrokeWidth] = useState(4);
   const [zoom, setZoom] = useState(1);
   const [loadError, setLoadError] = useState("");
+  const [highlightedPage, setHighlightedPage] = useState(null);
   const { getStrokes, addStroke, undoPage, clearPage, eraseNearPoint } = usePageAnnotations(currentDocument?.id);
 
   useEffect(() => {
@@ -43,7 +45,11 @@ export default function PdfWorkspace({
   useEffect(() => {
     if (jumpToPageRequest?.pageNumber) {
       jumpToPage(jumpToPageRequest.pageNumber);
+      setHighlightedPage(jumpToPageRequest.pageNumber);
+      const timer = window.setTimeout(() => setHighlightedPage(null), 1500);
+      return () => window.clearTimeout(timer);
     }
+    return undefined;
   }, [jumpToPageRequest]);
 
   useEffect(() => {
@@ -61,7 +67,7 @@ export default function PdfWorkspace({
       setLoadError("");
       try {
         const response = await fetch(getDocumentFileUrl(currentDocument.id));
-        if (!response.ok) throw new Error("Could not load PDF.");
+        if (!response.ok) throw new Error("Không thể tải tài liệu PDF.");
         const blob = await response.blob();
         objectUrl = URL.createObjectURL(blob);
         if (!cancelled) setPdfUrl(objectUrl);
@@ -69,7 +75,7 @@ export default function PdfWorkspace({
       } catch (error) {
         if (!cancelled) {
           setPdfUrl("");
-          setLoadError(error?.message || "Could not load PDF.");
+          setLoadError(error?.message || "Không thể tải tài liệu PDF.");
         }
       } finally {
         if (!cancelled) setPdfLoading(false);
@@ -144,12 +150,12 @@ export default function PdfWorkspace({
       {loadError && <div className="workspace-error">{loadError}</div>}
 
       <div className="pdf-scroll" ref={scrollRef}>
-        {pdfLoading && <div className="pdf-loading">Loading PDF...</div>}
+        {pdfLoading && <div className="pdf-loading">Đang tải tài liệu PDF...</div>}
         {!pdfLoading && pdfUrl && (
           <Document
             file={pdfUrl}
-            loading={<div className="pdf-loading">Loading PDF...</div>}
-            error={<div className="pdf-loading error">{loadError || "Could not load PDF."}</div>}
+            loading={<div className="pdf-loading">Đang tải tài liệu PDF...</div>}
+            error={<div className="pdf-loading error">{loadError || "Không thể tải tài liệu PDF."}</div>}
             onLoadSuccess={({ numPages }) => {
               setPageCount(numPages);
               setDocumentReady(true);
@@ -157,7 +163,7 @@ export default function PdfWorkspace({
             }}
             onLoadError={(error) => {
               setDocumentReady(false);
-              setLoadError(error?.message || "Could not load PDF.");
+              setLoadError(error?.message || "Không thể tải tài liệu PDF.");
             }}
           >
             {documentReady &&
@@ -173,7 +179,10 @@ export default function PdfWorkspace({
                   getStrokes={getStrokes}
                   addStroke={addStroke}
                   eraseNearPoint={eraseNearPoint}
-                  onContextAttachment={onContextAttachment}
+                  onAttachPage={onAttachPage}
+                  setTool={setTool}
+                  contextAttachment={contextAttachment}
+                  highlighted={highlightedPage === index + 1}
                 />
               ))}
           </Document>

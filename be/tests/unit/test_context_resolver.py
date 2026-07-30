@@ -4,7 +4,7 @@ from app.services.context_resolver import ContextResolver
 
 def test_text_selection_has_priority() -> None:
     request = ChatRequestV2(
-        message="giai thich trang nay",
+        message="Giải thích trang này",
         document_id="00000000-0000-0000-0000-000000000001",
         context=ChatContextV2(
             active_page=20,

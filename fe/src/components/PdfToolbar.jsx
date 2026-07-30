@@ -7,6 +7,7 @@ import {
   PenLine,
   Plus,
   RotateCcw,
+  ScanSearch,
   Trash2,
   Upload,
   ZoomIn,
@@ -53,11 +54,14 @@ export default function PdfToolbar({
         <button className={chooseTool("pen")} onClick={() => setTool("pen")} title="Bút" aria-label="Bút">
           <PenLine size={18} />
         </button>
-        <button className={chooseTool("highlighter")} onClick={() => setTool("highlighter")} title="Highlight" aria-label="Highlight">
+        <button className={chooseTool("highlighter")} onClick={() => setTool("highlighter")} title="Bút đánh dấu" aria-label="Bút đánh dấu">
           <Highlighter size={18} />
         </button>
         <button className={chooseTool("eraser")} onClick={() => setTool("eraser")} title="Tẩy" aria-label="Tẩy">
           <Eraser size={18} />
+        </button>
+        <button className={chooseTool("ask_region")} onClick={() => setTool("ask_region")} title="Khoanh vùng để hỏi AI" aria-label="Khoanh vùng để hỏi AI">
+          <ScanSearch size={18} />
         </button>
       </div>
       <div className="toolbar-group swatches" aria-label="Màu nét vẽ">

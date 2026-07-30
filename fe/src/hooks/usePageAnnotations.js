@@ -1,17 +1,49 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-const emptyAnnotations = {};
+export function distanceToSegment(point, start, end) {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  if (dx === 0 && dy === 0) {
+    return Math.hypot(point.x - start.x, point.y - start.y);
+  }
+  const projection = Math.max(
+    0,
+    Math.min(
+      1,
+      ((point.x - start.x) * dx + (point.y - start.y) * dy) /
+        (dx * dx + dy * dy),
+    ),
+  );
+  const nearestX = start.x + projection * dx;
+  const nearestY = start.y + projection * dy;
+  return Math.hypot(point.x - nearestX, point.y - nearestY);
+}
+
+function strokeTouchesPoint(stroke, point, radius) {
+  const points = stroke.points || [];
+  if (points.length === 1) {
+    return distanceToSegment(point, points[0], points[0]) <= radius;
+  }
+  for (let index = 1; index < points.length; index += 1) {
+    if (distanceToSegment(point, points[index - 1], points[index]) <= radius) {
+      return true;
+    }
+  }
+  return false;
+}
 
 export function usePageAnnotations(documentId) {
   const storageKey = useMemo(
     () => (documentId ? `vlearn-annotations:${documentId}` : null),
     [documentId],
   );
-  const [annotations, setAnnotations] = useState(emptyAnnotations);
+  const [annotations, setAnnotations] = useState({});
+  const [loadedStorageKey, setLoadedStorageKey] = useState(null);
 
   useEffect(() => {
     if (!storageKey) {
-      setAnnotations(emptyAnnotations);
+      setAnnotations({});
+      setLoadedStorageKey(null);
       return;
     }
     try {
@@ -20,12 +52,13 @@ export function usePageAnnotations(documentId) {
     } catch {
       setAnnotations({});
     }
+    setLoadedStorageKey(storageKey);
   }, [storageKey]);
 
   useEffect(() => {
-    if (!storageKey) return;
+    if (!storageKey || loadedStorageKey !== storageKey) return;
     localStorage.setItem(storageKey, JSON.stringify(annotations));
-  }, [annotations, storageKey]);
+  }, [annotations, loadedStorageKey, storageKey]);
 
   const getStrokes = useCallback(
     (pageNumber) => annotations[String(pageNumber)] || [],
@@ -45,10 +78,9 @@ export function usePageAnnotations(documentId) {
   const undoPage = useCallback((pageNumber) => {
     setAnnotations((current) => {
       const key = String(pageNumber);
-      const strokes = current[key] || [];
       return {
         ...current,
-        [key]: strokes.slice(0, -1),
+        [key]: (current[key] || []).slice(0, -1),
       };
     });
   }, []);
@@ -63,14 +95,9 @@ export function usePageAnnotations(documentId) {
   const eraseNearPoint = useCallback((pageNumber, point, radius = 0.025) => {
     setAnnotations((current) => {
       const key = String(pageNumber);
-      const strokes = current[key] || [];
-      const next = strokes.filter((stroke) => {
-        return !stroke.points.some((candidate) => {
-          const dx = candidate.x - point.x;
-          const dy = candidate.y - point.y;
-          return Math.sqrt(dx * dx + dy * dy) <= radius;
-        });
-      });
+      const next = (current[key] || []).filter(
+        (stroke) => !strokeTouchesPoint(stroke, point, radius),
+      );
       return { ...current, [key]: next };
     });
   }, []);

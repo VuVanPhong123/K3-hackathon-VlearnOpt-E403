@@ -1,23 +1,39 @@
-import { FileText, X } from "lucide-react";
+import { FileText, ScanSearch, TextSelect, X } from "lucide-react";
 
 export default function PageAttachment({ attachment, onRemove }) {
   if (!attachment) return null;
-  const label =
-    attachment.type === "text_selection"
-      ? "Selected text"
-      : attachment.type === "visual_region"
-        ? "Visual region"
-        : "Page";
+
+  const details = {
+    page: {
+      icon: <FileText size={18} aria-hidden="true" />,
+      label: `Trang ${attachment.pageNumber}`,
+    },
+    text_selection: {
+      icon: <TextSelect size={18} aria-hidden="true" />,
+      label: `Đoạn đã chọn · Trang ${attachment.pageNumber}`,
+    },
+    visual_region: {
+      icon: <ScanSearch size={18} aria-hidden="true" />,
+      label: `Vùng được chọn · Trang ${attachment.pageNumber}`,
+    },
+  }[attachment.type];
+
+  if (!details) return null;
+
   return (
     <div className="attachment-card">
-      <FileText size={18} aria-hidden="true" />
+      {details.icon}
       <div>
         <strong>{attachment.filename}</strong>
-        <span>
-          {label} {attachment.pageNumber}
-        </span>
+        <span>{details.label}</span>
+        {attachment.type === "text_selection" && attachment.selectedText && (
+          <span className="attachment-preview">
+            {attachment.selectedText.slice(0, 120)}
+            {attachment.selectedText.length > 120 ? "…" : ""}
+          </span>
+        )}
       </div>
-      <button onClick={onRemove} title="Remove attached context" aria-label="Remove attached context">
+      <button onClick={onRemove} title="Gỡ ngữ cảnh đã gắn" aria-label="Gỡ ngữ cảnh đã gắn">
         <X size={16} />
       </button>
     </div>

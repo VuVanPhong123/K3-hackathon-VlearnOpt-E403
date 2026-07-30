@@ -1,88 +1,139 @@
 import { useEffect, useRef, useState } from "react";
 import { Bot, Send } from "lucide-react";
 
+import { PDF_PAGE_MIME } from "../constants/dragTypes";
 import { sendChatV2 } from "../services/api";
 import { buildChatContext } from "../utils/chatContext";
 import ChatMessage from "./ChatMessage";
 import PageAttachment from "./PageAttachment";
 
-const PAGE_MIME = "application/x-vlearn-pdf-page";
 const enableDebugPanel = import.meta.env.VITE_ENABLE_DEBUG_PANEL === "true";
+const WELCOME_MESSAGE = {
+  role: "assistant",
+  content:
+    "Xin chào! Bạn có thể nhập câu hỏi, kéo một trang PDF, bôi đen văn bản hoặc khoanh vùng hình ảnh để hỏi Tutor.",
+};
+
+function readPagePayload(dataTransfer) {
+  const raw =
+    dataTransfer.getData(PDF_PAGE_MIME) ||
+    dataTransfer.getData("text/plain");
+  if (!raw) return null;
+  try {
+    const payload = JSON.parse(raw);
+    if (
+      payload.type !== "page" ||
+      typeof payload.documentId !== "string" ||
+      !payload.documentId.trim() ||
+      !Number.isInteger(payload.pageNumber) ||
+      payload.pageNumber < 1 ||
+      typeof payload.filename !== "string" ||
+      !payload.filename.trim()
+    ) {
+      return null;
+    }
+    return payload;
+  } catch {
+    return null;
+  }
+}
 
 export default function ChatPanel({
   currentDocument,
   activePage,
   contextAttachment,
   setContextAttachment,
-  documentStatus,
   onCitationClick,
 }) {
-  const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content: "Drop a PDF page here, select real text, or draw a region and ask a question.",
-    },
-  ]);
+  const [messages, setMessages] = useState([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [attachment, setAttachment] = useState(null);
-  const [answerMode, setAnswerMode] = useState("document_only");
   const [conversationId, setConversationId] = useState(null);
   const [isOver, setIsOver] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const listRef = useRef(null);
+  const inputRef = useRef(null);
+  const dragEnterCount = useRef(0);
 
   useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
+    if (typeof listRef.current?.scrollTo !== "function") return;
+    listRef.current.scrollTo({
+      top: listRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages, loading]);
 
   useEffect(() => {
     setAttachment(null);
     setContextAttachment?.(null);
     setConversationId(null);
+    setMessages([WELCOME_MESSAGE]);
+    setInput("");
+    setError("");
   }, [currentDocument?.id, setContextAttachment]);
 
   useEffect(() => {
-    if (contextAttachment) setAttachment(contextAttachment);
+    setAttachment(contextAttachment || null);
+    if (contextAttachment?.type === "text_selection") {
+      setInput((current) => current || "Giải thích đoạn được chọn này.");
+    } else if (contextAttachment?.type === "visual_region") {
+      setInput((current) => current || "Giải thích nội dung trong vùng được chọn.");
+    }
+    if (contextAttachment) inputRef.current?.focus();
   }, [contextAttachment]);
 
-  function parseDrag(event) {
-    const raw = event.dataTransfer.getData(PAGE_MIME) || event.dataTransfer.getData("text/plain");
-    if (!raw) return null;
-    try {
-      const payload = JSON.parse(raw);
-      if (!payload.documentId || !payload.pageNumber || !payload.filename) return null;
-      return { ...payload, type: "page" };
-    } catch {
-      return null;
-    }
-  }
-
-  function handleDrop(event) {
-    event.preventDefault();
-    setIsOver(false);
-    const payload = parseDrag(event);
-    if (!payload) {
-      setError("Invalid PDF page.");
-      return;
-    }
-    if (currentDocument && payload.documentId !== currentDocument.id) {
-      setError("This page does not belong to the open document.");
-      return;
-    }
+  function attachPage(payload) {
     setAttachment(payload);
     setContextAttachment?.(payload);
     setError("");
   }
 
-  async function handleSend(nextText) {
-    const text = (nextText || input).trim();
+  function handleDragEnter(event) {
+    event.preventDefault();
+    dragEnterCount.current += 1;
+    setIsOver(true);
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "copy";
+  }
+
+  function handleDragLeave() {
+    dragEnterCount.current = Math.max(0, dragEnterCount.current - 1);
+    if (dragEnterCount.current === 0) setIsOver(false);
+  }
+
+  function handleDrop(event) {
+    event.preventDefault();
+    dragEnterCount.current = 0;
+    setIsOver(false);
+    const payload = readPagePayload(event.dataTransfer);
+    if (!payload) {
+      setError("Dữ liệu trang PDF không hợp lệ.");
+      return;
+    }
+    if (!currentDocument || payload.documentId !== currentDocument.id) {
+      setError("Trang này không thuộc tài liệu đang mở.");
+      return;
+    }
+    attachPage(payload);
+  }
+
+  async function handleSend() {
+    const text = input.trim();
     if (!text || loading) return;
-    const userMessage = { role: "user", content: text, attachment };
-    setMessages((current) => [...current, userMessage]);
+
+    const selectedAttachment = attachment;
+    setMessages((current) => [
+      ...current,
+      { role: "user", content: text, attachment: selectedAttachment },
+    ]);
     setInput("");
     setLoading(true);
     setError("");
+
     try {
       const history = messages
         .filter((message) => message.role === "user" || message.role === "assistant")
@@ -92,10 +143,12 @@ export default function ChatPanel({
         message: text,
         conversation_id: conversationId,
         history,
-        document_id: attachment?.documentId || currentDocument?.id || null,
-        context: buildChatContext({ attachment, activePage }),
-        answer_mode: answerMode,
-        requested_output: null,
+        document_id: currentDocument?.id || null,
+        context: buildChatContext({
+          attachment: selectedAttachment,
+          activePage,
+        }),
+        answer_mode: currentDocument ? "document_only" : "allow_general_knowledge",
       });
       setConversationId(response.conversation_id);
       setMessages((current) => [
@@ -103,15 +156,19 @@ export default function ChatPanel({
         {
           role: "assistant",
           content: response.answer,
-          provider: response.trace?.provider || "Tutor",
+          provider: response.provider || response.trace?.provider,
+          model: response.model || response.trace?.model,
+          fallbackUsed: response.fallback_used ?? response.trace?.fallback ?? false,
           citations: response.citations || [],
-          confidence: response.confidence,
           trace: response.trace,
           debug: response.debug,
         },
       ]);
-    } catch (err) {
-      setError(err.message || "Could not send the question. Try again.");
+    } catch (requestError) {
+      setError(
+        requestError.message ||
+          "Không thể gửi câu hỏi. Hãy thử lại.",
+      );
     } finally {
       setLoading(false);
     }
@@ -124,14 +181,17 @@ export default function ChatPanel({
     }
   }
 
+  function removeAttachment() {
+    setAttachment(null);
+    setContextAttachment?.(null);
+  }
+
   return (
     <aside
       className={isOver ? "chat-panel drag-over" : "chat-panel"}
-      onDragOver={(event) => {
-        event.preventDefault();
-        setIsOver(true);
-      }}
-      onDragLeave={() => setIsOver(false)}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
       <header className="chat-header">
@@ -140,7 +200,7 @@ export default function ChatPanel({
         </div>
         <div>
           <h2>VLearn Tutor</h2>
-          <p>Grounded study assistant</p>
+          <p>Trợ lý học tập theo ngữ cảnh</p>
         </div>
       </header>
 
@@ -155,61 +215,49 @@ export default function ChatPanel({
         ))}
         {loading && (
           <div className="chat-message assistant">
-            <div className="message-bubble loading">Thinking...</div>
+            <div className="message-bubble loading">
+              {attachment?.type === "visual_region" || attachment?.type === "page"
+                ? "Đang đọc hình ảnh và nội dung trang..."
+                : "Đang phân tích tài liệu..."}
+            </div>
           </div>
         )}
       </div>
 
-      {isOver && <div className="drop-hint">Drop the PDF page here</div>}
+      {isOver && <div className="drop-hint">Thả trang PDF vào đây</div>}
       {error && <div className="inline-error">{error}</div>}
 
       <div className="composer">
-        <PageAttachment
-          attachment={attachment}
-          onRemove={() => {
-            setAttachment(null);
-            setContextAttachment?.(null);
-          }}
-        />
-        {attachment && <p className="replace-note">Drop another page, select text, or draw again to replace context.</p>}
-        {documentStatus && documentStatus.status !== "READY" && (
-          <p className="replace-note">
-            Document status: {documentStatus.status} {documentStatus.stage ? `- ${documentStatus.stage}` : ""}
-          </p>
-        )}
-        <div className="quick-actions">
-          <button onClick={() => handleSend("Tom tat tai lieu nay")} disabled={!currentDocument || loading}>
-            Summary
-          </button>
-          <button onClick={() => handleSend("Tao quiz ngan tu noi dung nay")} disabled={!currentDocument || loading}>
-            Quiz
-          </button>
-          <button onClick={() => handleSend("Giai thich doan da chon")} disabled={!attachment || loading}>
-            Selection
-          </button>
-        </div>
-        <label className="mode-toggle">
-          <input
-            type="checkbox"
-            checked={answerMode === "allow_general_knowledge"}
-            onChange={(event) => setAnswerMode(event.target.checked ? "allow_general_knowledge" : "document_only")}
-          />
-          <span>{answerMode === "document_only" ? "Document only" : "General knowledge allowed"}</span>
-        </label>
+        <PageAttachment attachment={attachment} onRemove={removeAttachment} />
         <label htmlFor="chat-input" className="sr-only">
-          Tutor question
+          Câu hỏi cho Tutor
         </label>
         <textarea
+          ref={inputRef}
           id="chat-input"
           value={input}
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask about the selected context..."
+          placeholder={
+            attachment?.type === "text_selection"
+              ? "Hỏi về đoạn được chọn..."
+              : attachment?.type === "visual_region"
+                ? "Hỏi về vùng hình ảnh được chọn..."
+                : attachment
+                  ? "Hỏi về trang đã gắn..."
+                  : "Nhập câu hỏi cho Tutor..."
+          }
           rows={3}
         />
-        <button className="send-button" onClick={() => handleSend()} disabled={!input.trim() || loading} aria-label="Send question" title="Send question">
+        <button
+          className="send-button"
+          onClick={handleSend}
+          disabled={!input.trim() || loading}
+          aria-label="Gửi câu hỏi"
+          title="Gửi câu hỏi"
+        >
           <Send size={18} />
-          Send
+          Gửi
         </button>
       </div>
     </aside>

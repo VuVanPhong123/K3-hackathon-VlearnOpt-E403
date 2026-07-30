@@ -50,7 +50,10 @@ button:disabled {
 
 .app-shell {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
+  grid-template-columns:
+    minmax(480px, 1fr)
+    7px
+    var(--chat-panel-width, 400px);
   height: 100dvh;
   overflow: hidden;
 }
@@ -60,8 +63,30 @@ button:disabled {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--line);
   overflow: hidden;
+}
+
+.panel-divider {
+  width: 7px;
+  height: 100%;
+  background: #e7eaf0;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  cursor: col-resize;
+  touch-action: none;
+  transition: background 120ms ease;
+}
+
+.panel-divider:hover,
+.panel-divider:focus-visible,
+body.resizing-panels .panel-divider {
+  background: #9eabc0;
+  outline: none;
+}
+
+body.resizing-panels {
+  cursor: col-resize;
+  user-select: none;
 }
 
 .workspace-header {
@@ -281,7 +306,7 @@ button:disabled {
 }
 
 .page-card-header {
-  height: 42px;
+  min-height: 44px;
   padding: 0 12px;
   display: flex;
   align-items: center;
@@ -291,18 +316,53 @@ button:disabled {
   font-weight: 650;
 }
 
-.drag-handle {
+.page-card-actions,
+.drag-handle,
+.attach-page-button {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+}
+
+.page-card-actions {
+  gap: 8px;
+}
+
+.drag-handle,
+.attach-page-button {
+  min-height: 30px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
   color: var(--muted);
   font-weight: 500;
   font-size: 13px;
+}
+
+.drag-handle {
   cursor: grab;
 }
 
 .drag-handle:active {
   cursor: grabbing;
+}
+
+.drag-handle:hover,
+.attach-page-button:hover {
+  color: var(--blue);
+  border-color: var(--line);
+  background: var(--blue-soft);
+}
+
+.page-card.dragging {
+  border-color: var(--blue);
+  opacity: 0.78;
+}
+
+.page-card.citation-highlight {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.24), var(--shadow);
 }
 
 .page-jump label {
@@ -327,8 +387,20 @@ button:disabled {
   background: white;
 }
 
+.page-shell.rendered {
+  min-height: 0;
+}
+
+.page-shell .react-pdf__Page {
+  width: 100%;
+}
+
 .page-shell canvas {
   display: block;
+}
+
+.page-shell .react-pdf__Page__textContent {
+  z-index: 2;
 }
 
 .annotation-layer {
@@ -338,11 +410,79 @@ button:disabled {
   height: 100%;
   pointer-events: none;
   touch-action: auto;
+  user-select: none;
+  z-index: 3;
 }
 
 .annotation-layer.drawing {
   pointer-events: auto;
   touch-action: none;
+}
+
+.annotation-layer.pen,
+.annotation-layer.highlighter {
+  cursor: crosshair;
+}
+
+.annotation-layer.eraser {
+  cursor: cell;
+}
+
+.region-select-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.region-preview {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  border: 2px solid var(--blue);
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.region-preview.attached {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.context-popup {
+  position: absolute;
+  z-index: 7;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: max-content;
+  padding: 5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.context-popup.region-popup {
+  transform: translate(-100%, 8px);
+}
+
+.context-popup button {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--navy);
+  background: var(--blue-soft);
+}
+
+.context-popup .icon-only {
+  width: 30px;
+  padding: 5px;
+  justify-content: center;
+  background: transparent;
 }
 
 .page-placeholder,
@@ -366,6 +506,7 @@ button:disabled {
   background: var(--surface);
   position: relative;
   overflow: hidden;
+  border-left: 0;
 }
 
 .chat-panel.drag-over {
@@ -459,16 +600,14 @@ button:disabled {
   font-size: 12px;
 }
 
-.citation-row,
-.quick-actions {
+.citation-row {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 8px;
 }
 
-.citation-row button,
-.quick-actions button {
+.citation-row button {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
@@ -493,7 +632,7 @@ button:disabled {
   position: absolute;
   left: 18px;
   right: 18px;
-  bottom: 166px;
+  bottom: 150px;
   padding: 14px;
   border: 1px dashed var(--blue);
   border-radius: 8px;
@@ -527,22 +666,17 @@ button:disabled {
   display: block;
 }
 
-.attachment-card span,
-.replace-note {
+.attachment-card .attachment-preview {
+  max-width: 100%;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-card span {
   color: var(--muted);
   font-size: 12px;
-}
-
-.replace-note {
-  margin: -4px 0 0;
-}
-
-.mode-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 13px;
 }
 
 .composer textarea {
@@ -592,8 +726,31 @@ button:focus-visible,
     border-top: 1px solid var(--line);
   }
 
+  .panel-divider {
+    display: none;
+  }
+
   .main-area {
     border-right: 0;
     min-height: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .page-card-header {
+    align-items: flex-start;
+    gap: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .page-card-actions {
+    align-items: flex-end;
+    flex-direction: column;
+  }
+
+  .drag-handle,
+  .attach-page-button {
+    white-space: nowrap;
   }
 }

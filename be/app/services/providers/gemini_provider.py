@@ -20,8 +20,9 @@ class GeminiProvider:
 
     def __init__(self) -> None:
         if not settings.gemini_api_key:
-            raise ProviderConfigurationError("GEMINI_API_KEY is not configured.")
+            raise ProviderConfigurationError("Chưa cấu hình GEMINI_API_KEY.")
         self.model = settings.gemini_model
+        self.vision_model = settings.gemini_vision_model or settings.gemini_model
         self.timeout = settings.gemini_timeout_seconds
         self.client = genai.Client(api_key=settings.gemini_api_key)
 
@@ -44,13 +45,47 @@ class GeminiProvider:
             text = getattr(response, "text", "") or "Mình chưa tạo được câu trả lời từ nội dung hiện có."
             return ProviderResult(text=text, provider=self.provider_name, model=self.model)
         except errors.APIError as exc:
-            status_code = getattr(exc, "code", None)
-            if status_code == 429:
-                raise ProviderRateLimitError(str(exc)) from exc
-            if status_code and 500 <= int(status_code) <= 599:
-                raise ProviderTemporaryError(str(exc)) from exc
-            if status_code in {400, 401, 403, 404}:
-                raise ProviderRequestError(str(exc)) from exc
-            raise ProviderTemporaryError(str(exc)) from exc
+            self._raise_provider_error(exc)
         except (TimeoutError, asyncio.TimeoutError) as exc:
             raise ProviderTemporaryError(str(exc)) from exc
+
+    async def generate_multimodal(
+        self,
+        *,
+        system_prompt: str,
+        text_prompt: str,
+        image_bytes: bytes,
+        mime_type: str,
+        history: list[dict[str, str]] | None = None,
+    ) -> ProviderResult:
+        history_prompt = "\n\n".join(f"{item['role']}: {item['content']}" for item in (history or [])[-8:])
+        prompt = f"{history_prompt}\n\nuser: {text_prompt}" if history_prompt else text_prompt
+        try:
+            response = await asyncio.wait_for(
+                self.client.aio.models.generate_content(
+                    model=self.vision_model,
+                    contents=[
+                        types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
+                        prompt,
+                    ],
+                    config=types.GenerateContentConfig(system_instruction=system_prompt),
+                ),
+                timeout=self.timeout + 5,
+            )
+            text = getattr(response, "text", "") or "Mình chưa tạo được câu trả lời từ hình ảnh hiện có."
+            return ProviderResult(text=text, provider=self.provider_name, model=self.vision_model)
+        except errors.APIError as exc:
+            self._raise_provider_error(exc)
+        except (TimeoutError, asyncio.TimeoutError) as exc:
+            raise ProviderTemporaryError(str(exc)) from exc
+
+    @staticmethod
+    def _raise_provider_error(exc: errors.APIError) -> None:
+        status_code = getattr(exc, "code", None)
+        if status_code == 429:
+            raise ProviderRateLimitError(str(exc)) from exc
+        if status_code and 500 <= int(status_code) <= 599:
+            raise ProviderTemporaryError(str(exc)) from exc
+        if status_code in {400, 401, 403, 404}:
+            raise ProviderRequestError(str(exc)) from exc
+        raise ProviderTemporaryError(str(exc)) from exc

@@ -4,20 +4,35 @@ import { describe, expect, it, vi } from "vitest";
 import ChatMessage from "./ChatMessage";
 
 describe("ChatMessage", () => {
-  it("calls citation click with the page number", () => {
+  it("đi tới đúng trang khi bấm citation", () => {
     const onCitationClick = vi.fn();
     render(
       <ChatMessage
-        message={{ role: "assistant", content: "Answer", citations: [{ page_number: 4 }], provider: "deterministic", confidence: 0.8 }}
+        message={{
+          role: "assistant",
+          content: "Câu trả lời",
+          citations: [{ page_number: 4 }],
+          provider: "openai",
+        }}
         onCitationClick={onCitationClick}
       />,
     );
-    fireEvent.click(screen.getByText("page 4"));
+    fireEvent.click(screen.getByText("Trang 4"));
     expect(onCitationClick).toHaveBeenCalledWith(4);
+    expect(screen.getByText("OpenAI")).toBeInTheDocument();
   });
 
-  it("shows low confidence state", () => {
-    render(<ChatMessage message={{ role: "assistant", content: "Answer", confidence: 0.2 }} />);
-    expect(screen.getByText(/Not enough grounding/)).toBeInTheDocument();
+  it("hiển thị Gemini dự phòng bằng tiếng Việt", () => {
+    render(
+      <ChatMessage
+        message={{
+          role: "assistant",
+          content: "Câu trả lời",
+          provider: "gemini",
+          fallbackUsed: true,
+        }}
+      />,
+    );
+    expect(screen.getByText("Gemini dự phòng")).toBeInTheDocument();
   });
 });

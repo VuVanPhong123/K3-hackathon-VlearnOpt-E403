@@ -1,8 +1,7 @@
 export function buildChatContext({ attachment, activePage }) {
   return {
-    active_page: activePage || null,
     attached_pages: attachment?.type === "page" ? [attachment.pageNumber] : [],
-    page_range: null,
+    active_page: activePage || null,
     text_selection:
       attachment?.type === "text_selection"
         ? {

@@ -1,29 +1,36 @@
+function providerLabel(provider, fallbackUsed) {
+  if (provider === "openai") return "OpenAI";
+  if (provider === "gemini") return fallbackUsed ? "Gemini dự phòng" : "Gemini";
+  return "";
+}
+
 export default function ChatMessage({ message, onCitationClick, showDebug = false }) {
   const isAssistant = message.role === "assistant";
+  const badge = providerLabel(message.provider, message.fallbackUsed);
+
   return (
     <article className={isAssistant ? "chat-message assistant" : "chat-message user"}>
       <div className="message-bubble">
         {message.attachment && (
           <div className="message-attachment">
-            {message.attachment.filename} - page {message.attachment.pageNumber}
+            {message.attachment.filename} - Trang {message.attachment.pageNumber}
+            {message.attachment.type === "text_selection" && " - Đoạn văn bản"}
+            {message.attachment.type === "visual_region" && " - Vùng hình ảnh"}
           </div>
         )}
         <p>{message.content}</p>
-        {isAssistant && message.provider && <span className="provider-badge">{message.provider}</span>}
-        {isAssistant && typeof message.confidence === "number" && message.confidence < 0.35 && (
-          <span className="low-confidence">Not enough grounding found in the document.</span>
-        )}
+        {isAssistant && badge && <span className="provider-badge">{badge}</span>}
         {isAssistant && message.citations?.length > 0 && (
           <div className="citation-row">
             {message.citations.map((citation, index) => {
               const page = citation.page_number || citation.page_start;
               return (
                 <button
-                  key={`${page || "source"}-${index}`}
+                  key={`${page || "nguon"}-${index}`}
                   onClick={() => page && onCitationClick?.(page)}
-                  title={page ? `Go to page ${page}` : "Source"}
+                  title={page ? `Đi tới trang ${page}` : "Nguồn tham khảo"}
                 >
-                  {page ? `page ${page}` : citation.label || "source"}
+                  {page ? `Trang ${page}` : citation.label || "Nguồn"}
                 </button>
               );
             })}
@@ -31,7 +38,7 @@ export default function ChatMessage({ message, onCitationClick, showDebug = fals
         )}
         {showDebug && isAssistant && message.trace && (
           <details className="debug-panel">
-            <summary>Debug</summary>
+            <summary>Thông tin kỹ thuật</summary>
             <pre>{JSON.stringify({ trace: message.trace, debug: message.debug }, null, 2)}</pre>
           </details>
         )}

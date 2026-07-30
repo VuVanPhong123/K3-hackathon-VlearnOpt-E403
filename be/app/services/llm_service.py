@@ -44,9 +44,9 @@ class LLMService:
                 f"Tên tài liệu: {metadata.original_filename}\n"
                 f"Trang: {page_context.page_number}\n\n"
                 "Nội dung trích xuất:\n"
-                "--- PAGE CONTEXT ---\n"
+                "--- NỘI DUNG TRANG ---\n"
                 f"{page_text}\n"
-                "--- END PAGE CONTEXT ---\n\n"
+                "--- KẾT THÚC NỘI DUNG ---\n\n"
                 f"Câu hỏi học viên:\n{request.message}"
             )
         return request.message
@@ -86,11 +86,11 @@ class LLMService:
                 page_number=request.page_number,
             )
         except ProviderConfigurationError as exc:
-            logger.info("OpenAI provider is not configured: %s", exc)
+            logger.info("Chưa cấu hình OpenAI: %s", exc)
             if not (settings.enable_gemini_fallback and settings.gemini_api_key):
                 raise HTTPException(
                     status_code=503,
-                    detail="Chưa cấu hình API key cho nhà cung cấp AI.",
+                    detail="Chưa cấu hình API key cho chatbot.",
                 ) from exc
         except (ProviderRateLimitError, ProviderTemporaryError) as exc:
             logger.warning("OpenAI temporary error, attempting Gemini fallback: %s", type(exc).__name__)
@@ -120,7 +120,7 @@ class LLMService:
         except ProviderConfigurationError as exc:
             raise HTTPException(
                 status_code=503,
-                detail="Chưa cấu hình API key cho nhà cung cấp AI.",
+                detail="Chưa cấu hình API key cho chatbot.",
             ) from exc
         except (ProviderRateLimitError, ProviderTemporaryError) as exc:
             logger.warning("Gemini fallback temporary error: %s", type(exc).__name__)

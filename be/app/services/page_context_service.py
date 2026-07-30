@@ -16,10 +16,10 @@ class PageContextService:
     def get_page_text(self, document_id: str, page_number: int) -> PageContextResponse:
         metadata: DocumentMetadata = self.document_service.get_metadata(document_id)
         if page_number < 1 or page_number > metadata.page_count:
-            raise HTTPException(status_code=400, detail="Invalid PDF page.")
+            raise HTTPException(status_code=400, detail="Trang PDF không hợp lệ.")
 
         indexed_page = self.repository.get_page(document_id, page_number)
-        if indexed_page:
+        if indexed_page and indexed_page["raw_text"].strip():
             return PageContextResponse(
                 document_id=document_id,
                 page_number=page_number,
@@ -37,7 +37,7 @@ class PageContextService:
         except HTTPException:
             raise
         except Exception as exc:
-            raise HTTPException(status_code=500, detail="Could not read PDF page text.") from exc
+            raise HTTPException(status_code=500, detail="Không thể đọc nội dung trang PDF này.") from exc
 
         return PageContextResponse(
             document_id=document_id,

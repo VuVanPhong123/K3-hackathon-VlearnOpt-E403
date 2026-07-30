@@ -34,15 +34,15 @@ class DocumentService:
         try:
             uuid.UUID(document_id)
         except ValueError as exc:
-            raise HTTPException(status_code=404, detail="Document not found.") from exc
+            raise HTTPException(status_code=404, detail="Không tìm thấy tài liệu.") from exc
 
     @staticmethod
     def _validate_filename(filename: str | None) -> str:
         if not filename:
-            raise HTTPException(status_code=400, detail="Invalid PDF file.")
+            raise HTTPException(status_code=400, detail="Tệp PDF không hợp lệ.")
         original = Path(filename).name
         if Path(original).suffix.lower() != ".pdf":
-            raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+            raise HTTPException(status_code=400, detail="Chỉ hỗ trợ tệp PDF.")
         return original
 
     def _write_metadata(self, metadata: DocumentMetadata) -> None:
@@ -56,7 +56,7 @@ class DocumentService:
             return metadata
         path = self._metadata_path(document_id)
         if not path.exists():
-            raise HTTPException(status_code=404, detail="Document not found.")
+            raise HTTPException(status_code=404, detail="Không tìm thấy tài liệu.")
         metadata = DocumentMetadata(**json.loads(path.read_text(encoding="utf-8")))
         if metadata.status == "UPLOADED" and metadata.chunk_count == 0:
             metadata.status = "NEEDS_INDEX"
@@ -78,7 +78,7 @@ class DocumentService:
         metadata = self.get_metadata(document_id)
         path = self.storage_dir / Path(metadata.stored_filename).name
         if not path.exists() or path.resolve().parent != self.storage_dir.resolve():
-            raise HTTPException(status_code=404, detail="PDF file not found.")
+            raise HTTPException(status_code=404, detail="Không tìm thấy tệp PDF.")
         return path
 
     async def save_upload(self, file: UploadFile) -> DocumentMetadata:
@@ -88,7 +88,7 @@ class DocumentService:
             "application/x-pdf",
             "application/octet-stream",
         }:
-            raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+            raise HTTPException(status_code=400, detail="Chỉ hỗ trợ tệp PDF.")
 
         document_id = str(uuid.uuid4())
         stored_filename = f"{document_id}.pdf"
@@ -102,7 +102,7 @@ class DocumentService:
                 while chunk := await file.read(1024 * 1024):
                     size_bytes += len(chunk)
                     if size_bytes > max_bytes:
-                        raise HTTPException(status_code=413, detail="File is larger than the configured limit.")
+                        raise HTTPException(status_code=413, detail="Tệp vượt quá dung lượng cho phép.")
                     hasher.update(chunk)
                     output.write(chunk)
 
@@ -116,10 +116,10 @@ class DocumentService:
                 with fitz.open(target_path) as pdf:
                     page_count = pdf.page_count
             except Exception as exc:
-                raise HTTPException(status_code=400, detail="Could not read PDF. Try another file.") from exc
+                raise HTTPException(status_code=400, detail="Không thể đọc PDF. Hãy thử tệp khác.") from exc
 
             if page_count < 1:
-                raise HTTPException(status_code=400, detail="PDF has no valid pages.")
+                raise HTTPException(status_code=400, detail="PDF không có trang hợp lệ.")
 
             metadata = DocumentMetadata(
                 id=document_id,

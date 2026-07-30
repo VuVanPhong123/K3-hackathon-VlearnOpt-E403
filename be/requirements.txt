@@ -6,11 +6,7 @@ python-dotenv==1.1.1
 openai==1.99.9
 google-genai==1.29.0
 PyMuPDF==1.26.3
-httpx==0.28.1
-numpy==2.2.6
-sentence-transformers==5.1.0
-rank-bm25==0.2.2
 rapidfuzz==3.13.0
-Pillow==11.3.0
+httpx==0.28.1
 pytest==8.4.1
 pytest-asyncio==1.1.0

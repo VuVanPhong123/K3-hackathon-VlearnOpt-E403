@@ -3,6 +3,7 @@ from app.repositories.database import Database
 from app.repositories.document_repository import DocumentRepository
 from app.repositories.summary_repository import SummaryRepository
 from app.schemas import DocumentMetadata
+from app.services.section_service import SectionService
 from app.services.summary_service import SummaryService
 
 
@@ -34,3 +35,18 @@ def test_summary_covers_all_sections(tmp_path) -> None:
     result = SummaryService(doc_repo, chunk_repo, summary_repo).summarize("d1")
     assert all(item["covered"] for item in result["coverage"])
     assert len(result["coverage"]) == 2
+
+
+def test_section_detection_supports_accented_vietnamese_heading() -> None:
+    sections = SectionService().detect_sections(
+        "d1",
+        1,
+        [
+            {
+                "page_number": 1,
+                "blocks": [{"text": "Mục tiêu học tập\nNội dung chi tiết"}],
+            }
+        ],
+    )
+
+    assert sections[0]["title"] == "Mục tiêu học tập"

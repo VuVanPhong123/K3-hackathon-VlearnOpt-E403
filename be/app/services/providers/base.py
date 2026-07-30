@@ -35,3 +35,14 @@ class LLMProvider(Protocol):
         messages: list[dict[str, str]],
     ) -> ProviderResult:
         ...
+
+    async def generate_multimodal(
+        self,
+        *,
+        system_prompt: str,
+        text_prompt: str,
+        image_bytes: bytes,
+        mime_type: str,
+        history: list[dict[str, str]] | None = None,
+    ) -> ProviderResult:
+        ...

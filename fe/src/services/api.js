@@ -4,7 +4,7 @@ async function parseResponse(response) {
   const contentType = response.headers.get("content-type") || "";
   const body = contentType.includes("application/json") ? await response.json() : await response.text();
   if (!response.ok) {
-    const message = typeof body === "object" && body?.detail ? body.detail : "Cannot connect to server.";
+    const message = typeof body === "object" && body?.detail ? body.detail : "Không thể kết nối tới máy chủ.";
     throw new Error(message);
   }
   return body;
@@ -61,10 +61,5 @@ export async function sendChatV2(payload) {
 
 export async function getDocumentStatus(documentId) {
   const response = await fetch(`${API_BASE_URL}/api/documents/${documentId}/status`);
-  return parseResponse(response);
-}
-
-export async function getDocumentSummary(documentId, type = "short") {
-  const response = await fetch(`${API_BASE_URL}/api/documents/${documentId}/summary?type=${encodeURIComponent(type)}`);
   return parseResponse(response);
 }

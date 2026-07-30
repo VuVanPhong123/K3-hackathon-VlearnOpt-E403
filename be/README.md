@@ -1,55 +1,52 @@
 # VLearn Tutor Backend
 
-FastAPI backend for the CP2 prototype. It stores uploaded PDFs locally, extracts text from one attached page, and calls OpenAI with Gemini fallback when API keys are configured.
+Backend FastAPI lưu PDF local, trích xuất văn bản, render ảnh/crop bằng PyMuPDF và gọi provider AI thật.
 
-## PowerShell
+## `POST /api/v2/chat`
+
+Active flow có năm mode nội bộ:
+
+- `GENERAL_CHAT`.
+- `PAGE_CHAT` cho trang gắn, số trang trong câu hỏi hoặc active page.
+- `TEXT_SELECTION_CHAT` với kiểm tra đoạn được chọn trên nội dung trang.
+- `VISUAL_REGION_CHAT` với ảnh crop và văn bản giao vùng.
+- `DOCUMENT_SEARCH_CHAT` với một lần lexical/dense retrieval và citation theo evidence.
+
+Page chat luôn gửi cả ảnh toàn trang và văn bản trích xuất. Luồng hình ảnh dùng `VISION_PRIMARY_PROVIDER` và `VISION_FALLBACK_PROVIDER`; fallback chỉ xảy ra với rate limit, quota, timeout, lỗi kết nối hoặc HTTP 5xx. Lỗi API key, model hoặc bad request không fallback.
+
+Endpoint `/api/chat` cũ và các API upload/list/file/delete vẫn được giữ để tương thích.
+
+## Cấu hình
 
 ```powershell
-cd be
-py -m venv .venv
+Copy-Item .env.example .env
+```
+
+Điền ít nhất một trong hai key:
+
+```dotenv
+OPENAI_API_KEY=
+GEMINI_API_KEY=
+```
+
+Chọn model hỗ trợ image input trong `OPENAI_VISION_MODEL` hoặc `GEMINI_VISION_MODEL`. Nếu biến vision model để rỗng, backend dùng model chữ tương ứng. Không commit `.env`.
+
+## Chạy và kiểm tra
+
+Khuyến nghị Python 3.11 hoặc 3.12 64-bit:
+
+```powershell
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-pip install -r requirements.txt
-Copy-Item .env.example .env
-uvicorn app.main:app --reload --port 8000
-```
-
-## Bash/macOS/Linux
-
-```bash
-cd be
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-cp .env.example .env
-uvicorn app.main:app --reload --port 8000
-```
-
-Fill at least `OPENAI_API_KEY` or `GEMINI_API_KEY` in `.env` to enable chat. Do not commit `.env`.
-
-Swagger: http://localhost:8000/docs
-
-## CP3 Backend
-
-Upload now triggers local ingestion in `BackgroundTasks`: checksum, document status, page/block extraction with bounding boxes, section fallback, structured chunks, lexical search, dense embeddings, cached summaries, conversations, and bounded `/api/v2/chat` orchestration.
-
-Key endpoints:
-
-- `GET /api/documents/{id}/status`
-- `POST /api/documents/{id}/reindex`
-- `GET /api/documents/{id}/search?q=rag&top_k=6`
-- `GET /api/documents/{id}/summary?type=short`
-- `POST /api/v2/chat`
-- `GET /api/conversations/{id}`
-- `DELETE /api/conversations/{id}`
-
-Runtime storage is ignored by git: `app/storage/index/vlearn.db`, `app/storage/model-cache`, and `app/storage/page-cache`. The old `/api/chat` endpoint remains available.
-
-```powershell
+python -m pip install -r requirements.txt
 python -m compileall app
 pytest -q
-python ..\eval\run_eval.py
+uvicorn app.main:app --reload --port 8000
 ```
 
-No OCR engine is included yet. Visual-only pages are marked for vision fallback; production OCR is backlog.
+Swagger ở `http://localhost:8000/docs`.
+
+## Giới hạn
+
+Chưa có OCR riêng cho scanned PDF, authentication hoặc production deployment. Summary, quiz, flashcard và AI hiểu nét vẽ không thuộc active CP3.

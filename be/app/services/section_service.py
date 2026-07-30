@@ -3,6 +3,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from app.services.text_utils import search_normalize
+
 
 HEADING_KEYWORDS = ("muc tieu", "noi dung", "phan", "chuong", "section", "chapter", "lesson")
 
@@ -29,7 +31,7 @@ class SectionService:
                     "section_id": f"{document_id}-v{version}-p{page['page_number']:04d}",
                     "document_id": document_id,
                     "document_version": version,
-                    "title": f"Page {page['page_number']}",
+                    "title": f"Trang {page['page_number']}",
                     "start_page": page["page_number"],
                     "end_page": page["page_number"],
                 }
@@ -55,7 +57,7 @@ class SectionService:
             if not first_line:
                 continue
             line = first_line[0].strip()
-            normalized = line.lower()
+            normalized = search_normalize(line)
             if len(line) <= 90 and (
                 re.match(r"^(\d+[\.\)]|[ivx]+\.|chapter|section)\s+", normalized)
                 or any(keyword in normalized for keyword in HEADING_KEYWORDS)

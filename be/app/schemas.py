@@ -79,8 +79,8 @@ class VisualRegion(BaseModel):
 
 
 class ChatContextV2(BaseModel):
-    active_page: int | None = Field(default=None, ge=1)
     attached_pages: list[int] = Field(default_factory=list)
+    active_page: int | None = Field(default=None, ge=1)
     page_range: list[int] | None = None
     text_selection: TextSelection | None = None
     visual_region: VisualRegion | None = None
@@ -92,7 +92,16 @@ class ChatRequestV2(BaseModel):
     history: list[ChatHistoryItem] = Field(default_factory=list)
     document_id: str | None = None
     context: ChatContextV2 = Field(default_factory=ChatContextV2)
+    interaction_mode: Literal[
+        "auto",
+        "general",
+        "page",
+        "text_selection",
+        "visual_region",
+        "document_search",
+    ] = "auto"
     answer_mode: Literal["document_only", "allow_general_knowledge"] = "document_only"
+    # Deprecated: output routing is not part of the active MVP.
     requested_output: str | None = None
 
 
@@ -110,11 +119,12 @@ class TraceInfo(BaseModel):
     trace_id: str
     intent: str
     pages_used: list[int] = Field(default_factory=list)
-    provider: str = "deterministic"
+    provider: str = ""
     model: str = ""
     fallback: bool = False
     latency_ms: dict[str, float] = Field(default_factory=dict)
     confidence: float = 0.0
+    image_used: bool = False
 
 
 class ChatResponseV2(BaseModel):
@@ -125,6 +135,9 @@ class ChatResponseV2(BaseModel):
     abstained: bool = False
     conversation_id: str
     trace: TraceInfo
+    provider: str = ""
+    model: str = ""
+    fallback_used: bool = False
     debug: dict[str, Any] | None = None
 
 

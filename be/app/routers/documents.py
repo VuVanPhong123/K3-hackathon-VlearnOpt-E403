@@ -69,7 +69,7 @@ async def get_document_status(document_id: str) -> DocumentStatusResponse:
 @router.post("/{document_id}/reindex", response_model=DocumentStatusResponse)
 async def reindex_document(document_id: str, background_tasks: BackgroundTasks) -> DocumentStatusResponse:
     if settings.app_env == "production" and not settings.enable_debug_endpoints:
-        raise HTTPException(status_code=404, detail="Not found.")
+        raise HTTPException(status_code=404, detail="Không tìm thấy.")
     metadata = document_service.get_metadata(document_id)
     background_tasks.add_task(ingestion_service.process_document, metadata.id, str(document_service.get_file_path(metadata.id)))
     return DocumentStatusResponse(status="PROCESSING", stage="queued", progress=0, error=None)
@@ -82,7 +82,7 @@ async def search_document(
     top_k: int = Query(default=6, ge=1, le=20),
 ) -> SearchResponse:
     if settings.app_env == "production" and not settings.enable_debug_endpoints:
-        raise HTTPException(status_code=404, detail="Not found.")
+        raise HTTPException(status_code=404, detail="Không tìm thấy.")
     document_service.get_metadata(document_id)
     results = retrieval_service.debug_search(document_id, q, top_k)
     return SearchResponse(

@@ -22,7 +22,7 @@ class SummaryService:
     def summarize(self, document_id: str, summary_type: str = "short", language: str = "vi") -> dict:
         metadata = self.document_repository.get_document(document_id)
         if not metadata:
-            raise ValueError("Document not found")
+            raise ValueError("Không tìm thấy tài liệu")
         cache_key = self.summary_repository.cache_key(
             document_id, metadata.checksum_sha256, metadata.version, summary_type, language
         )
@@ -57,11 +57,11 @@ class SummaryService:
         if summary_type == "outline":
             answer = "\n".join(section_summaries)
         elif summary_type == "key_concepts":
-            answer = "Cac y chinh:\n" + "\n".join(section_summaries[:8])
+            answer = "Các ý chính:\n" + "\n".join(section_summaries[:8])
         elif summary_type == "learning_objectives":
-            answer = "Muc tieu hoc tap co the rut ra:\n" + "\n".join(section_summaries[:6])
+            answer = "Mục tiêu học tập có thể rút ra:\n" + "\n".join(section_summaries[:6])
         else:
-            answer = "Tom tat tai lieu:\n" + "\n".join(section_summaries)
+            answer = "Tóm tắt tài liệu:\n" + "\n".join(section_summaries)
         coverage = [
             {
                 "section_id": section["section_id"],

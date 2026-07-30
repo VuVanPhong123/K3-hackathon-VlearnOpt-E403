@@ -1,35 +1,29 @@
 # VLearn Tutor Frontend
 
-React/Vite frontend for the CP2 prototype.
+Frontend React/Vite hiển thị trình đọc PDF và chatbot trong cùng màn hình.
 
-## PowerShell
+## Luồng chính
+
+- Khi đang mở tài liệu, frontend luôn gửi `document_id` và `active_page`.
+- Page attachment gửi một phần tử trong `attached_pages`.
+- Bôi đen văn bản tạo `text_selection`; tool `Khoanh vùng hỏi AI` tạo `visual_region`.
+- Một lần chỉ có một context attachment; context mới thay context cũ.
+- Đổi tài liệu sẽ xóa attachment, `conversation_id` và lịch sử chat.
+- Pen, highlighter và eraser chỉ lưu annotation trong `localStorage`; không tạo AI attachment.
+- Bấm citation cuộn đến trang tương ứng và nháy sáng page card trong 1,5 giây.
+- Divider desktop lưu độ rộng bằng key `vlearn-chat-panel-width`; dưới 980px giao diện chuyển sang bố cục dọc.
+
+## Chạy và kiểm tra
 
 ```powershell
-cd fe
 npm install
 Copy-Item .env.example .env
 npm run dev
 ```
 
-## Bash/macOS/Linux
-
-```bash
-cd fe
-npm install
-cp .env.example .env
-npm run dev
-```
-
-The frontend expects the backend at `VITE_API_BASE_URL`, defaulting to `http://localhost:8000`.
-
-## CP3 Frontend
-
-The chat panel now sends `/api/v2/chat` payloads with active page, dropped page attachment, selected text, drawn visual region, document-only/general-knowledge answer mode, conversation id, and citation chips that scroll back to cited pages.
-
-`VITE_ENABLE_DEBUG_PANEL=true` enables a collapsible developer panel with intent, pages used, provider/model, latency and trace id. It does not display secrets or internal prompts.
-
 ```powershell
-npm install
 npm run build
 npm test -- --run
 ```
+
+Frontend đọc API URL từ `VITE_API_BASE_URL`. `VITE_ENABLE_DEBUG_PANEL` mặc định là `false`.

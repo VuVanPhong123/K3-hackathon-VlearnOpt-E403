@@ -61,7 +61,9 @@ class RetrievalService:
             if dense_position:
                 score += 1.0 / (60 + dense_position)
             score += lexical_overlap * 0.05
-            normalized_score = min(1.0, score * 32)
+            # RRF scores are small by design. A factor of 32 saturated almost
+            # every candidate at 1.0 and erased the relevance ordering.
+            normalized_score = min(1.0, score * 10)
             if normalized_score < settings.retrieval_min_score:
                 continue
             fused.append(
@@ -77,7 +79,7 @@ class RetrievalService:
                     },
                 )
             )
-        fused.sort(key=lambda item: item.score, reverse=True)
+        fused.sort(key=lambda item: (-item.score, item.chunk["chunk_id"]))
         if not settings.enable_reranker:
             return fused[:final_top_k]
         reranked_chunks = self.reranker.rerank(query, [item.chunk for item in fused[: settings.retrieval_fused_top_k]])

@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     max_evidence_chars: int = 24000
     max_query_chars: int = 2000
     max_selected_text_chars: int = 6000
+    max_selection_chars: int = 6000
     primary_text_provider: str = "openai"
     fallback_text_provider: str = "gemini"
     router_provider: str = "gemini"
@@ -52,6 +53,10 @@ class Settings(BaseSettings):
     vision_fallback_provider: str = "openai"
     gemini_vision_model: str = ""
     openai_vision_model: str = ""
+    page_render_scale: float = 1.6
+    region_render_scale: float = 2.0
+    max_visual_image_bytes: int = 10_000_000
+    text_selection_match_threshold: int = 78
     verifier_enabled: bool = True
     verifier_provider: str = "openai"
     verifier_model: str = ""

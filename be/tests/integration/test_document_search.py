@@ -12,3 +12,43 @@ def test_document_search(tmp_path) -> None:
     ])
     results = RetrievalService(repo, EmbeddingService(HashEmbeddingProvider())).search("d1", "dense search", top_k=1)
     assert results and results[0].chunk["chunk_id"] == "c1"
+
+
+class InMemoryChunkRepository:
+    def __init__(self, chunks: list[dict]) -> None:
+        self.chunks = chunks
+
+    def list_chunks(self, document_id: str) -> list[dict]:
+        return self.chunks
+
+
+def test_retrieval_preserves_relevance_order_instead_of_saturating_scores() -> None:
+    texts = [
+        "Visual-only attention map gồm một ma trận màu.",
+        "Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung.",
+        "Kết luận về trợ lý grounded và bằng chứng.",
+    ]
+    embedding_provider = HashEmbeddingProvider()
+    embeddings = embedding_provider.embed_passages(texts)
+    chunks = [
+        {
+            "chunk_id": f"c{index}",
+            "document_id": "d1",
+            "page_number": index,
+            "text": text,
+            "embedding": embedding,
+        }
+        for index, (text, embedding) in enumerate(
+            zip(texts, embeddings),
+            start=1,
+        )
+    ]
+    service = RetrievalService(
+        InMemoryChunkRepository(chunks),
+        EmbeddingService(embedding_provider),
+    )
+
+    results = service.search("d1", "Multi-head attention có tác dụng gì?", top_k=3)
+
+    assert results[0].chunk["page_number"] == 2
+    assert results[0].score > results[1].score
