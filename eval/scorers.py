@@ -47,6 +47,19 @@ def _media_path(expected: dict, prediction: dict) -> bool | None:
         checks.append(prediction.get("image_used") is expected["image_used"])
     if expected.get("call_kind") == "multimodal":
         checks.append(prediction.get("all_images_attached") is True)
+    if "min_image_byte_length" in expected:
+        lengths = prediction.get("image_byte_lengths", [])
+        checks.append(bool(lengths) and max(lengths) >= expected["min_image_byte_length"])
+    if "min_visual_width" in expected or "min_visual_height" in expected:
+        diagnostics = prediction.get("visual_diagnostics", [])
+        min_width = expected.get("min_visual_width", 1)
+        min_height = expected.get("min_visual_height", 1)
+        checks.append(
+            any(
+                item.get("width", 0) >= min_width and item.get("height", 0) >= min_height
+                for item in diagnostics
+            )
+        )
     return all(checks) if checks else None
 
 

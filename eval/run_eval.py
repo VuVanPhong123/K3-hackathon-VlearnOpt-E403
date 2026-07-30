@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+import argparse
 import asyncio
+import hashlib
 import inspect
 import json
 import logging
 import sys
 import tempfile
 from collections import Counter
+from datetime import UTC, datetime
 from pathlib import Path
-from types import SimpleNamespace
 
 from fastapi import HTTPException
 
@@ -18,9 +20,9 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(BE))
 
 from app.config import settings
-from app.schemas import ChatRequestV2, PageContextResponse
+from app.schemas import ChatRequestV2
 from app.services.answer_service import AnswerService
-from app.services.embedding_service import EmbeddingService, HashEmbeddingProvider
+from app.services.embedding_service import EmbeddingService
 from app.services.orchestration_service import OrchestrationService
 from app.services.provider_gateway import ProviderGateway
 from app.services.providers.base import (
@@ -29,6 +31,7 @@ from app.services.providers.base import (
     ProviderTemporaryError,
 )
 from app.services.retrieval_service import RetrievalService
+from eval.pdf_eval_fixture import DEFAULT_DOCUMENT_ID, PdfEvalFixture
 from eval.scorers import score_case
 
 QUALITY_BAR = {
@@ -46,39 +49,19 @@ QUALITY_BAR = {
     "no_crash_rate": 1.00,
 }
 
-PAGE_TEXTS = {
-    1: "RAG giúp trợ lý trả lời dựa trên bằng chứng tài liệu và trả citation theo trang.",
-    2: (
-        "Selected text is the strongest local context. "
-        "A visual region carries an exact image crop. "
-        "An attached page includes text and the full page image."
-    ),
-    3: (
-        "Figure 1: Encoder-decoder architecture. "
-        "Input tokens flow through attention before output generation."
-    ),
-    4: (
-        "Scaled dot-product attention dùng công thức "
-        "Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V. "
-        "Hệ số scale kiểm soát tích vô hướng lớn trước softmax."
-    ),
-    5: (
-        "Multi-head attention dùng nhiều attention head để học các quan hệ bổ sung. "
-        "Đầu ra được nối lại rồi chiếu tuyến tính."
-    ),
-    6: (
-        "Table 1 so sánh self-attention, recurrent và convolutional theo complexity, "
-        "sequential operations và maximum path length."
-    ),
-    7: (
-        "Training loss chart cho thấy loss giảm dần khi số training step tăng. "
-        "Đường biểu diễn đi xuống ổn định."
-    ),
-    8: "Visual-only attention map gồm một ma trận màu, gần như không có văn bản.",
-    9: (
-        "Kết luận: trợ lý grounded cần nói rõ khi thiếu bằng chứng "
-        "thay vì tự bịa nội dung."
-    ),
+CATEGORY_COUNTS = {
+    "page_chat": 11,
+    "general_chat": 6,
+    "text_selection": 4,
+    "validation": 4,
+    "document_search": 4,
+    "visual_region": 3,
+    "document_visual_search": 3,
+    "context_priority": 2,
+    "provider_fallback": 2,
+    "provider_error": 2,
+    "history": 1,
+    "localization": 1,
 }
 
 
@@ -88,84 +71,6 @@ def load_cases(path: Path) -> list[dict]:
         for line in path.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
-
-
-def _fixture_chunks() -> list[dict]:
-    provider = HashEmbeddingProvider()
-    texts = [PAGE_TEXTS[page] for page in sorted(PAGE_TEXTS)]
-    vectors = provider.embed_passages(texts)
-    return [
-        {
-            "chunk_id": f"fixture-page-{page}",
-            "document_id": "fixture",
-            "page_number": page,
-            "heading": PAGE_TEXTS[page].split(".", 1)[0],
-            "text": PAGE_TEXTS[page],
-            "embedding": vector,
-        }
-        for page, vector in zip(sorted(PAGE_TEXTS), vectors)
-    ]
-
-
-class FixtureDocumentRepository:
-    def list_pages(self, document_id: str) -> list[dict]:
-        return [
-            {"page_number": page, "raw_text": text}
-            for page, text in PAGE_TEXTS.items()
-        ]
-
-
-class FixtureDocumentService:
-    def __init__(self) -> None:
-        self.repository = FixtureDocumentRepository()
-        self.metadata = SimpleNamespace(
-            id="fixture",
-            original_filename="tài-liệu-đánh-giá.pdf",
-            page_count=len(PAGE_TEXTS),
-            version=1,
-            status="READY",
-        )
-
-    def get_metadata(self, document_id: str):
-        if document_id != "fixture":
-            raise HTTPException(status_code=404, detail="Không tìm thấy tài liệu.")
-        return self.metadata
-
-
-class FixturePageContextService:
-    def get_page_text(self, document_id: str, page_number: int) -> PageContextResponse:
-        if document_id != "fixture" or page_number not in PAGE_TEXTS:
-            raise HTTPException(status_code=400, detail="Trang PDF không hợp lệ.")
-        text = PAGE_TEXTS[page_number]
-        return PageContextResponse(
-            document_id=document_id,
-            page_number=page_number,
-            text=text,
-            has_text=bool(text),
-        )
-
-
-class FixtureVisualContextService:
-    def __init__(self, directory: Path) -> None:
-        self.image_path = directory / "fixture-page.png"
-        self.image_path.write_bytes(b"\x89PNG\r\n\x1a\nfixture-image")
-
-    def render_page(self, document_id: str, page_number: int) -> Path:
-        return self.image_path
-
-    def render_crop(self, document_id: str, page_number: int, bbox) -> Path:
-        return self.image_path
-
-    def get_overlapping_text(self, document_id: str, page_number: int, bbox) -> str:
-        return PAGE_TEXTS.get(page_number, "")
-
-
-class FixtureChunkRepository:
-    def __init__(self) -> None:
-        self.chunks = _fixture_chunks()
-
-    def list_chunks(self, document_id: str) -> list[dict]:
-        return self.chunks if document_id == "fixture" else []
 
 
 class NullConversationRepository:
@@ -232,6 +137,9 @@ class RecordingProvider:
             len(history or []),
             bool(image_bytes),
         )
+        self.calls[-1]["image_byte_length"] = len(image_bytes)
+        self.calls[-1]["image_sha256"] = hashlib.sha256(image_bytes).hexdigest() if image_bytes else ""
+        self.calls[-1]["mime_type"] = mime_type
         return ProviderResult(
             text=f"Câu trả lời tiếng Việt từ {self.name}.",
             provider=self.name,
@@ -276,7 +184,7 @@ def _has_vietnamese_diacritics(value: str) -> bool:
     return any(character in value for character in "ăâđêôơưáàảãạấầẩẫậắằẳẵặéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵ")
 
 
-async def predict(case: dict, temp_dir: Path) -> dict:
+async def predict(case: dict, fixture: PdfEvalFixture) -> dict:
     calls: list[dict] = []
     errors = (case.get("scenario") or {}).get("provider_errors") or {}
     openai = RecordingProvider("openai", calls, errors)
@@ -285,20 +193,20 @@ async def predict(case: dict, temp_dir: Path) -> dict:
         openai_factory=lambda: openai,
         gemini_factory=lambda: gemini,
     )
-    document_service = FixtureDocumentService()
     retrieval = RetrievalService(
-        FixtureChunkRepository(),
-        EmbeddingService(HashEmbeddingProvider()),
+        fixture.chunk_repository,
+        EmbeddingService(fixture.embedding_provider),
     )
     service = OrchestrationService(
         answer_service=AnswerService(gateway),
-        document_service=document_service,
-        page_context_service=FixturePageContextService(),
-        visual_context_service=FixtureVisualContextService(temp_dir),
+        document_service=fixture.document_service,
+        page_context_service=fixture.page_context_service,
+        visual_context_service=fixture.visual_context_service,
         retrieval_service=retrieval,
         conversation_repository=NullConversationRepository(),
     )
     original_settings = _configure_case(case)
+    visual_start = len(fixture.visual_context_service.diagnostics)
     try:
         request = build_request(case["input"])
         response = await service.chat(request)
@@ -322,6 +230,17 @@ async def predict(case: dict, temp_dir: Path) -> dict:
             "call_kinds": [item["kind"] for item in calls],
             "attempted_providers": [item["provider"] for item in calls],
             "provider_inputs": [item["payload"] for item in calls],
+            "image_byte_lengths": [
+                item["image_byte_length"]
+                for item in calls
+                if item.get("image_byte_length") is not None
+            ],
+            "image_sha256s": [
+                item["image_sha256"]
+                for item in calls
+                if item.get("image_sha256")
+            ],
+            "visual_diagnostics": fixture.visual_context_service.diagnostics[visual_start:],
             "max_history_count": max(
                 (item["history_count"] for item in calls),
                 default=0,
@@ -350,6 +269,17 @@ async def predict(case: dict, temp_dir: Path) -> dict:
             "call_kinds": [item["kind"] for item in calls],
             "attempted_providers": [item["provider"] for item in calls],
             "provider_inputs": [item["payload"] for item in calls],
+            "image_byte_lengths": [
+                item["image_byte_length"]
+                for item in calls
+                if item.get("image_byte_length") is not None
+            ],
+            "image_sha256s": [
+                item["image_sha256"]
+                for item in calls
+                if item.get("image_sha256")
+            ],
+            "visual_diagnostics": fixture.visual_context_service.diagnostics[visual_start:],
             "max_history_count": max(
                 (item["history_count"] for item in calls),
                 default=0,
@@ -370,6 +300,7 @@ async def predict(case: dict, temp_dir: Path) -> dict:
             "citation_pages": [],
             "provider_calls": calls,
             "provider_called": bool(calls),
+            "visual_diagnostics": fixture.visual_context_service.diagnostics[visual_start:],
             "no_crash": False,
         }
     finally:
@@ -419,18 +350,53 @@ def _assert_prediction_independence() -> None:
         raise RuntimeError("Hàm predict không được đọc expected.")
 
 
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run the VLearn Tutor golden eval against a real PDF.")
+    parser.add_argument(
+        "--document",
+        type=Path,
+        default=None,
+        help="Path to d2-slide-hackathon.pdf. Defaults to eval/fixtures/d2-slide-hackathon.pdf if present.",
+    )
+    return parser.parse_args()
+
+
+def _resolve_document_path(path: Path | None) -> Path:
+    default = ROOT / "eval" / "fixtures" / "d2-slide-hackathon.pdf"
+    document = path or default
+    if not document.exists():
+        raise FileNotFoundError(
+            "Không tìm thấy PDF eval. Truyền rõ --document \"path/to/d2-slide-hackathon.pdf\"; "
+            "runner không còn fallback sang fixture text giả."
+        )
+    return document
+
+
+def _assert_case_contract(cases: list[dict]) -> None:
+    if len(cases) != 43:
+        raise RuntimeError(f"Golden set phải có đúng 43 case, hiện có {len(cases)}.")
+    counts = Counter(item["category"] for item in cases)
+    if dict(counts) != CATEGORY_COUNTS:
+        raise RuntimeError(f"Phân bổ category sai: {dict(counts)}")
+
+
 async def main() -> int:
     logging.getLogger("app.services.provider_gateway").setLevel(logging.CRITICAL)
+    args = _parse_args()
     _assert_prediction_independence()
     cases = load_cases(ROOT / "eval" / "golden_set.jsonl")
-    if len(cases) < 31:
-        raise RuntimeError("Golden set không được giảm xuống dưới 31 case.")
+    _assert_case_contract(cases)
 
     results = []
     with tempfile.TemporaryDirectory(prefix="vlearn-eval-") as directory:
         temp_dir = Path(directory)
+        fixture = PdfEvalFixture.from_pdf(
+            _resolve_document_path(args.document),
+            temp_dir,
+            document_id=DEFAULT_DOCUMENT_ID,
+        )
         for case in cases:
-            prediction = await predict(case, temp_dir)
+            prediction = await predict(case, fixture)
             scores = score_case(case, prediction)
             results.append(
                 {
@@ -447,6 +413,8 @@ async def main() -> int:
         for metric, threshold in QUALITY_BAR.items()
     )
     report = {
+        "document": fixture.manifest,
+        "generated_at": datetime.now(UTC).isoformat(),
         "quality_bar": QUALITY_BAR,
         "quality_bar_passed": quality_bar_passed,
         "metrics": metrics,
@@ -467,6 +435,7 @@ async def main() -> int:
         json.dumps(
             {
                 "cases": len(cases),
+                "document": fixture.manifest,
                 "quality_bar_passed": quality_bar_passed,
                 "metrics": metrics,
                 "failed_cases": report["failed_cases"],

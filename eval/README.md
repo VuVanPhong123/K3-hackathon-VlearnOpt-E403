@@ -1,49 +1,27 @@
 # VLearn Tutor Eval
 
-`golden_set.jsonl` hiện có 43 ca, tăng từ 31 ca của bộ cũ. Trong đó có 10 ca
-được chuyển thể từ chatlog VLearn đã ẩn danh và 33 ca tổng hợp.
+`golden_set.jsonl` có đúng 43 ca, giữ phân bổ category cũ. Trong đó có 10 ca được chuyển thể từ chatlog VLearn đã ẩn danh và 33 ca tổng hợp.
 
-Bộ eval bao phủ:
+Bộ eval hiện chạy trên PDF thật `d2-slide-hackathon.pdf` (AI IN ACTION DAY 02 - Xác định bài toán cho AI), không còn hardcode text/page fixture. Runner đọc PDF bằng pipeline production: extract page text/block/bbox, detect section, chunk, hash embedding, retrieval, render full page/crop bằng PyMuPDF, rồi gọi provider giả để kiểm contract offline.
 
-- 5 chế độ tương tác: chat chung, chat theo trang, vùng văn bản, vùng hình ảnh
-  và tìm kiếm toàn tài liệu.
-- Thứ tự ưu tiên ngữ cảnh, trang không hợp lệ, nhiều trang đính kèm và vùng
-  văn bản không khớp.
-- Retrieval, citation, đường gọi text/multimodal và ảnh đính kèm.
-- Fallback OpenAI/Gemini, lỗi request, thiếu API key và giới hạn lịch sử chat.
-- Chuỗi trả lời tiếng Việt UTF-8 có dấu.
-
-Chạy từ thư mục gốc:
+PDF không được commit. Khi chạy từ thư mục gốc, truyền rõ đường dẫn PDF:
 
 ```powershell
-codebase\backend\.venv\Scripts\python.exe -X utf8 eval\run_eval.py
+$env:PYTHONPATH=".;codebase/backend"
+python -X utf8 eval/run_eval.py --document "path/to/d2-slide-hackathon.pdf"
 ```
 
-Runner gọi `OrchestrationService` và retrieval thật, nhưng dùng provider giả để
-chạy offline, ổn định và không tốn API. Chỉ scorer được đọc trường `expected`;
-runner có kiểm tra chống rò đáp án. Kết quả chi tiết được ghi vào
-`eval/results/latest.json`.
+Nếu có file local `eval/fixtures/d2-slide-hackathon.pdf`, runner có thể dùng làm default; nếu thiếu, runner fail rõ và không fallback sang text giả.
 
-Bộ này đánh giá contract, routing, grounding context và fallback. Chất lượng
-ngôn ngữ của mô hình thật cần được kiểm tra riêng bằng live smoke test hoặc
-LLM-as-judge khi có API key.
+Kết quả mới nhất ghi vào `eval/results/latest.json`, gồm manifest tài liệu `{filename, sha256, size_bytes, page_count}` và `generated_at`, không ghi absolute PDF path.
 
 ## Term Search Regression
 
-`term_search_regression.jsonl` là bộ regression bổ sung sau khi phát hiện bug
-hỏi thuật ngữ trong tài liệu. Bộ này tách riêng khỏi golden set 43 case để
-không chỉnh lịch sử CP4.
-
-Chạy từ thư mục gốc:
+`term_search_regression.jsonl` có đúng 14 ca, tách riêng golden set 43 case. Bộ này dùng vocabulary/chunks sinh từ chính PDF Day 02, kiểm tra uppercase/lowercase, tiếng Việt có dấu/không dấu, cụm nhiều từ, hyphen, typo, no-evidence và prefix mơ hồ.
 
 ```powershell
-codebase\backend\.venv\Scripts\python.exe -X utf8 eval\run_term_search_regression.py
+$env:PYTHONPATH=".;codebase/backend"
+python -X utf8 eval/run_term_search_regression.py --document "path/to/d2-slide-hackathon.pdf"
 ```
 
-Runner dùng retrieval thật, query planner thật và fixture offline có nhiều loại
-thuật ngữ: tiếng Anh, tiếng Việt, cụm nhiều từ, hyphen, chữ viết tắt, typo,
-không tồn tại và prefix mơ hồ. Kết quả mới nhất ghi vào
-`eval/results/term_search_latest.json`.
-
-Kết quả hiện tại: 14/14 case pass, `failed=[]`. Đây là regression về truy hồi
-và evidence/citation, không phải live provider semantic evaluation.
+Kết quả mới nhất: golden 43/43 pass, quality bar passed; term regression 14/14 pass. Đây là regression offline về routing, retrieval, evidence/citation, media path và fallback, không phải live provider semantic evaluation.

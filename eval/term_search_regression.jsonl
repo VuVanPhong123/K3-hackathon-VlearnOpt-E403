@@ -1,14 +1,14 @@
-{"case_id":"term_encoder_vi_filler","query":"encoder là gì thế","expected_pages":[1],"expected_selected_spelling_candidate":null}
-{"case_id":"term_encoder_uppercase","query":"ENCODER LÀ GÌ","expected_pages":[1],"expected_selected_spelling_candidate":null}
-{"case_id":"term_encoder_no_accent","query":"encoder la gi","expected_pages":[1],"expected_selected_spelling_candidate":null}
-{"case_id":"term_encoder_prefix_explain","query":"giải thích encoder","expected_pages":[1],"expected_selected_spelling_candidate":null}
-{"case_id":"term_encoder_typo","query":"encodr là gì","expected_pages":[1],"expected_selected_spelling_candidate":"Encoder"}
-{"case_id":"term_multi_head_how","query":"multi head attention hoạt động thế nào","expected_pages":[2],"expected_selected_spelling_candidate":null}
-{"case_id":"term_rag_vi","query":"RAG nghĩa là gì","expected_pages":[3],"expected_selected_spelling_candidate":null}
-{"case_id":"term_prompt_injection_vi","query":"prompt injection là gì","expected_pages":[4],"expected_selected_spelling_candidate":null}
-{"case_id":"term_context_window_use","query":"context window dùng để làm gì","expected_pages":[5],"expected_selected_spelling_candidate":null}
-{"case_id":"term_vietnamese_no_accent","query":"chuoi cung ung la gi","expected_pages":[6],"expected_selected_spelling_candidate":null}
-{"case_id":"term_overfitting_typo","query":"overfiting nghĩa là gì","expected_pages":[7],"expected_selected_spelling_candidate":"Overfitting"}
-{"case_id":"term_reinforcement_phrase_typo","query":"reinforcemnt learning là gì","expected_pages":[8],"expected_selected_spelling_candidate":"Reinforcement learning"}
-{"case_id":"term_nonexistent","query":"xyzabc là gì","expected_pages":[],"expected_selected_spelling_candidate":null}
-{"case_id":"term_ambiguous_prefix","query":"encod là gì","expected_pages":[],"expected_selected_spelling_candidate":null}
+{"case_id":"term_double_diamond_vi_filler","query":"mô hình double diamond là gì thế","expected_top_page_any_of":[3],"must_include_any_page":[3],"expect_no_spelling_candidate":true}
+{"case_id":"term_double_diamond_uppercase","query":"MÔ HÌNH DOUBLE DIAMOND LÀ GÌ","expected_top_page_any_of":[3],"must_include_any_page":[3],"expect_no_spelling_candidate":true}
+{"case_id":"term_double_diamond_no_accent","query":"mo hinh double diamond la gi","expected_top_page_any_of":[3],"must_include_any_page":[3],"expect_no_spelling_candidate":true}
+{"case_id":"term_double_diamond_prefix_explain","query":"giải thích mô hình double diamond","expected_top_page_any_of":[3],"must_include_any_page":[3],"expect_no_spelling_candidate":true}
+{"case_id":"term_double_diamond_typo","query":"double diamnd là gì","expected_top_page_any_of":[3],"must_include_any_page":[3],"expected_selected_spelling_candidate_normalized":"double diamond"}
+{"case_id":"term_human_in_the_loop_hyphen","query":"human in the loop là gì","expected_top_page_any_of":[7],"must_include_any_page":[7],"expect_no_spelling_candidate":true}
+{"case_id":"term_hitl_acronym","query":"rủi ro HITL Problem Statement","expected_top_page_any_of":[27],"must_include_any_page":[27,26],"expect_no_spelling_candidate":true}
+{"case_id":"term_prompt_chaining","query":"prompt chaining là gì","expected_top_page_any_of":[20],"must_include_any_page":[20],"expect_no_spelling_candidate":true}
+{"case_id":"term_nut_that_tac_dong_no_accent","query":"nut that tac dong problem card","expected_top_page_any_of":[9],"must_include_any_page":[9,27],"expect_no_spelling_candidate":true}
+{"case_id":"term_go_not_yet_no_go","query":"khung quyết định go not yet no go","expected_top_page_any_of":[28],"must_include_any_page":[28],"expect_no_spelling_candidate":true}
+{"case_id":"term_parallelization_typo","query":"paralelization là gì","expected_top_page_any_of":[20],"must_include_any_page":[20],"expected_selected_spelling_candidate_normalized":"parallelization"}
+{"case_id":"term_automation_augmentation_typo","query":"automtion vs augmentation là gì","expected_top_page_any_of":[17],"must_include_any_page":[17],"expected_selected_spelling_candidate_normalized":"automation vs augmentation"}
+{"case_id":"term_nonexistent_xyzabc","query":"xyzabc là gì","expect_no_results":true,"expect_no_spelling_candidate":true}
+{"case_id":"term_ambiguous_prefix_automa","query":"automa là gì","expect_no_spelling_candidate":true}
