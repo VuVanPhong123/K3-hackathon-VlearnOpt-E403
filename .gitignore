@@ -1,3 +1,27 @@
 .DS_Store
 node_modules/
 *.env
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+be/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Node
+fe/node_modules/
+fe/dist/
+
+# Uploaded documents
+be/app/storage/documents/*
+!be/app/storage/documents/.gitkeep
+be/app/storage/metadata/*
+!be/app/storage/metadata/.gitkeep
+
+# Misc
+job.txt

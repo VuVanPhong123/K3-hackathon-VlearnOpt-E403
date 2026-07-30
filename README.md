@@ -94,3 +94,67 @@ Dữ liệu trong `data/` là dữ liệu thật của khoá học (đã ẩn da
 6. Sau sự kiện, **xoá các bản sao data pack** khỏi máy cá nhân và các công cụ đã upload nếu ban tổ chức yêu cầu.
 
 Vi phạm được xử lý theo quy định của khoá và có thể ảnh hưởng trực tiếp đến điểm của nhóm.
+
+## Checkpoint 2 Prototype
+
+Prototype CP2 gồm:
+
+- `fe/`: React Vite frontend, render PDF, annotation local-only, kéo một trang PDF vào khung chat.
+- `be/`: FastAPI backend, upload/lưu PDF local, extract text đúng trang, gọi OpenAI primary và Gemini fallback khi có API key.
+
+Không commit `.env`, API key, `.venv`, `node_modules`, PDF upload runtime hoặc metadata runtime.
+
+### Backend - Windows PowerShell
+
+```powershell
+cd be
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+Copy-Item .env.example .env
+uvicorn app.main:app --reload --port 8000
+```
+
+### Backend - Bash/macOS/Linux
+
+```bash
+cd be
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn app.main:app --reload --port 8000
+```
+
+Backend chạy ở `http://localhost:8000`. Swagger ở `http://localhost:8000/docs`.
+
+### Frontend - Windows PowerShell
+
+```powershell
+cd fe
+npm install
+Copy-Item .env.example .env
+npm run dev
+```
+
+### Frontend - Bash/macOS/Linux
+
+```bash
+cd fe
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Frontend chạy ở `http://localhost:5173`.
+
+### API Key
+
+Copy `.env.example` thành `.env` trong `be/`, rồi điền ít nhất một key:
+
+- `OPENAI_API_KEY`: provider chính.
+- `GEMINI_API_KEY`: fallback khi OpenAI hết quota/rate limit/timeout/lỗi tạm thời, hoặc chạy trực tiếp nếu OpenAI chưa cấu hình và `ENABLE_GEMINI_FALLBACK=true`.
+
+Model được đọc từ `.env`: `OPENAI_MODEL` và `GEMINI_MODEL`. Không ghi API key vào source code hoặc commit `.env`.
