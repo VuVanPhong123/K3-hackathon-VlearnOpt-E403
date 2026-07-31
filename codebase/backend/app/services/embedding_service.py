@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import hashlib
+import logging
 import math
 import threading
 from typing import Protocol
 
 from app.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class EmbeddingProvider(Protocol):
@@ -88,25 +91,34 @@ class EmbeddingService:
             try:
                 self.provider = HuggingFaceEmbeddingProvider()
                 return self.provider
-            except Exception:
-                self.provider = HashEmbeddingProvider()
-                return self.provider
+            except Exception as exc:
+                return self._fallback_or_raise(exc)
+        self.provider = HashEmbeddingProvider()
+        return self.provider
+
+    def _fallback_or_raise(self, exc: Exception) -> HashEmbeddingProvider:
+        if not settings.embedding_fallback_enabled:
+            raise exc
+        logger.warning(
+            "HuggingFace embedding failed; falling back to hash embeddings",
+            exc_info=(type(exc), exc, exc.__traceback__),
+        )
         self.provider = HashEmbeddingProvider()
         return self.provider
 
     def embed_chunks(self, chunks: list[dict]) -> dict[str, list[float]]:
         try:
             vectors = self._provider().embed_passages([chunk["text"] for chunk in chunks])
-        except Exception:
-            self.provider = HashEmbeddingProvider()
+        except Exception as exc:
+            self.provider = self._fallback_or_raise(exc)
             vectors = self.provider.embed_passages([chunk["text"] for chunk in chunks])
         return {chunk["chunk_id"]: vector for chunk, vector in zip(chunks, vectors)}
 
     def embed_query(self, query: str) -> list[float]:
         try:
             return self._provider().embed_query(query)
-        except Exception:
-            self.provider = HashEmbeddingProvider()
+        except Exception as exc:
+            self.provider = self._fallback_or_raise(exc)
             return self.provider.embed_query(query)
 
 

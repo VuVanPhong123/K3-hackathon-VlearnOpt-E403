@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     embedding_device: str = "cpu"
     embedding_batch_size: int = 16
     embedding_timeout_seconds: float = 120
+    embedding_fallback_enabled: bool = True
     enable_reranker: bool = False
     reranker_model: str = "BAAI/bge-reranker-v2-m3"
     reranker_top_n: int = 12

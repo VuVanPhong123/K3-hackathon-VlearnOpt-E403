@@ -57,13 +57,13 @@ export default function App() {
       setDocuments(items);
       setCurrentDocument((current) => current || items[0] || null);
     } catch {
-      setError("Backend chưa sẵn sàng. Hãy chạy API ở cổng 8000.");
+      setError("Backend chưa sẵn sàng. Hãy kiểm tra API URL đã cấu hình.");
     }
   }
 
   useEffect(() => {
     healthCheck().catch(() =>
-      setError("Backend chưa sẵn sàng. Hãy chạy API ở cổng 8000."),
+      setError("Backend chưa sẵn sàng. Hãy kiểm tra API URL đã cấu hình."),
     );
     loadDocuments();
   }, []);
